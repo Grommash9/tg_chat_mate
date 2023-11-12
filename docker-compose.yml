@@ -58,8 +58,8 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
-      MYSQL_DATABASE: "support_bot_database"
-      MYSQL_USER: "rootuser"
+      MYSQL_DATABASE: support_bot_database
+      MYSQL_USER: rootuser
       MYSQL_PASSWORD: ${ROOT_PASSWORD}
     ports:
       - "3306:3306"
