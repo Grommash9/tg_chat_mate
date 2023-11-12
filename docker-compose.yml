@@ -1,0 +1,76 @@
+version: '3.17'
+services:
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    networks:
+      my_network:
+        ipv4_address: 192.168.1.10
+    depends_on:
+      - nginx-service
+      - redis
+      - mysql-server
+    ports:
+      - "2005:2005"
+    restart: on-failure
+    environment:
+      ROOT_PASSWORD: ${ROOT_PASSWORD}
+      BOT_TOKEN: ${BOT_TOKEN}
+      SERVER_IP_ADDRESS: ${SERVER_IP_ADDRESS}
+    volumes:
+      - nginx-certs:/nginx-certs
+  nginx-service:
+    build:
+      context: ./nginx-service
+      dockerfile: Dockerfile
+      args:
+        SERVER_IP_ADDRESS: ${SERVER_IP_ADDRESS}
+    ports:
+      - "443:443"
+    volumes:
+      - nginx-certs:/nginx-certs
+    restart: on-failure
+    networks:
+      my_network:
+        ipv4_address: 192.168.1.20
+  redis:
+    image: redis:latest
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    environment:
+        - REDIS_MAXMEMORY=100mb
+  mysql-server:
+    image: mysql:latest
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "support_bot_database"
+      MYSQL_USER: "rootuser"
+      MYSQL_PASSWORD: ${ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.1.0/24
+
+volumes:
+  mysql-data:
+    driver: local
+  nginx-certs:
