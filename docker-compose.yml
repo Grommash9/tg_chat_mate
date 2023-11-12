@@ -41,6 +41,18 @@ services:
       - "6379:6379"
     environment:
         - REDIS_MAXMEMORY=100mb
+  typescript-app:
+    build:
+      context: ./typescript-app
+      dockerfile: Dockerfile
+    networks:
+      my_network:
+        ipv4_address: 192.168.1.30  # Adjust the IP address as needed
+    depends_on:
+      - bot
+    restart: on-failure
+    ports:
+      - "3000:3000"
   mysql-server:
     image: mysql:latest
     environment:
