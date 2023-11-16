@@ -13,47 +13,7 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 from aiohttp.web_request import Request
 from aiomysql import Connection, Cursor, DictCursor, connect
 from aiogram.types import User
-
-MYSQL = {
-    "host": getenv('SERVER_IP_ADDRESS'),
-    "user": "rootuser",
-    "password": getenv("ROOT_PASSWORD"),
-    "db": "support_bot_database",
-    "port": 3306,
-}
-
-async def create_con():
-    con: Connection = await connect(**MYSQL)
-    cur: Cursor = await con.cursor()
-    return con, cur
-
-async def new(user: User):
-    con, cur = await create_con()
-    await cur.execute(
-        "insert ignore into tg_user (tg_chat_id, full_name, user_name, locale) "
-        "VALUES (%s, %s, %s, %s)",
-        (user.id, user.full_name, user.username, None),
-    )
-
-    await con.commit()
-    await con.ensure_closed()
-
-async def get_all():
-    con, cur = await create_con()
-    await cur.execute(
-        "select * from tg_user",
-    )
-    users_data = await cur.fetchall()
-    await con.ensure_closed()
-    return users_data
-
-async def run_sql_file(filename: str):
-    con, cur = await create_con()
-    with open(filename, 'r') as sql_file:
-        sql_script = sql_file.read()
-        await cur.execute(sql_script)
-    await con.commit()
-    await con.ensure_closed()
+import db
 
 TOKEN = getenv("BOT_TOKEN")
 
@@ -71,13 +31,14 @@ web_routes = web.RouteTableDef()
 
 @web_routes.get(f"/tg-bot/get_users")
 async def get_200(request: Request):
-    users_data = await get_all()
+    users_data = db.user.get_all_users()
     return web.json_response(
         {"error": "bot get", "users": users_data}, status=200)
 
+
 @router.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
-    await new(message.from_user)
+    db.user.new_user(message.from_user)
     await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
 
 
@@ -85,6 +46,7 @@ async def command_start_handler(message: Message) -> None:
 async def echo_handler(message: types.Message) -> None:
     try:
         await message.send_copy(chat_id=message.chat.id)
+        db.message.new_message(message)
     except TypeError:
         await message.answer("Nice try!")
 
@@ -103,9 +65,7 @@ def main() -> None:
     dp.include_router(router)
     dp.startup.register(on_startup)
 
-    sql_file_path = os.path.join(os.path.dirname(__file__), 'dump.sql')
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(run_sql_file(sql_file_path))
+
 
     bot = Bot(TOKEN, parse_mode=ParseMode.HTML)
     app = web.Application()

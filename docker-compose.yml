@@ -53,26 +53,20 @@ services:
     restart: on-failure
     ports:
       - "3000:3000"
-  mysql-server:
-    image: mysql:latest
+  mongo-db:
+    image: mongo:latest
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_DATABASE: support_bot_database
-      MYSQL_USER: rootuser
-      MYSQL_PASSWORD: ${ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     ports:
-      - "3306:3306"
-      - "33060:33060"
+      - "27017:27017"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mongo-data:/data/db
     restart: on-failure
-    healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
-
+    networks:
+      my_network:
+        ipv4_address: 192.168.1.50
 
 networks:
   my_network:
@@ -83,6 +77,5 @@ networks:
         - subnet: 192.168.1.0/24
 
 volumes:
-  mysql-data:
+  mongo-data:
     driver: local
-  nginx-certs:
