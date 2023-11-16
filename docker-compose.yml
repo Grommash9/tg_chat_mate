@@ -15,7 +15,7 @@ services:
       - "2005:2005"
     restart: on-failure
     environment:
-      MONGO_USER_NAME: ${MONGO_USERNAME}
+      MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
