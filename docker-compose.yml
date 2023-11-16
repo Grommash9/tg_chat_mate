@@ -10,7 +10,7 @@ services:
     depends_on:
       - nginx-service
       - redis
-      - mysql-server
+      - mongo-db
     ports:
       - "2005:2005"
     restart: on-failure
