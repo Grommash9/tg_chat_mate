@@ -79,3 +79,4 @@ networks:
 volumes:
   mongo-data:
     driver: local
+  nginx-certs:
