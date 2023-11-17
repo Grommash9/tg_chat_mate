@@ -1,8 +1,19 @@
-docker-compose down
-docker volume prune -f
-docker system prune -af
-echo "Docker cleanup complete."
-git pull
+sudo apt update
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo docker --version
+sudo docker run hello-world
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+echo "Docker and Docker Compose have been installed successfully."
+
 docker compose up -d
 
 set -a
@@ -24,5 +35,3 @@ else
     docker compose restart bot
 
 fi
-
-
