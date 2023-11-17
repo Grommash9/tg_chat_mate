@@ -62,7 +62,6 @@ async def on_startup(bot: Bot) -> None:
     else:
         result = await bot.set_webhook(
             f"{BASE_WEBHOOK_URL}",
-            certificate=FSInputFile(WEBHOOK_SSL_CERT),
             secret_token=WEBHOOK_SECRET,
         )
         
