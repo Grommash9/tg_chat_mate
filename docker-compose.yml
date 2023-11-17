@@ -31,7 +31,6 @@ services:
         SERVER_IP_ADDRESS: ${SERVER_IP_ADDRESS}
     ports:
       - "443:443"
-      - "80:80"
     volumes:
       - nginx-certs:/nginx-certs
     restart: on-failure
