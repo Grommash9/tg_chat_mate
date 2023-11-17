@@ -21,6 +21,7 @@ else
     certbot --nginx -d $SERVER_IP_ADDRESS --register-unsafely-without-email --agree-tos --no-eff-email --force-renewal && \
     cp /home/cert_bot_default.conf /etc/nginx/conf.d/default.conf && \
     nginx -s reload "
+    docker compose restart bot
 
 fi
 
