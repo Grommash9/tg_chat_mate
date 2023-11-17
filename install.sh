@@ -23,6 +23,4 @@ else
 
 fi
 
-docker compose down
-docker compose up -d
 
