@@ -30,6 +30,7 @@ if [[ $SERVER_IP_ADDRESS =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 else
     # Domain name logic
     if [ "$CLOUD_FLARE" = false ]; then
+        apt-get update && apt-get install -y python3 python3-venv python3-pip
         apt-get install -y certbot python3-certbot-nginx
         certbot --nginx -d $SERVER_IP_ADDRESS --register-unsafely-without-email --agree-tos --no-eff-email --nginx
         cp /etc/letsencrypt/live/$SERVER_IP_ADDRESS/fullchain.pem /nginx-certs/$SERVER_IP_ADDRESS/
