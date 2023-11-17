@@ -14,9 +14,10 @@ from aiohttp.web_request import Request
 from aiomysql import Connection, Cursor, DictCursor, connect
 from aiogram.types import User
 import db
+import re
 
 TOKEN = getenv("BOT_TOKEN")
-
+ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
 WEB_SERVER_HOST = "192.168.1.10"
 WEB_SERVER_PORT = 2005
 
@@ -52,11 +53,19 @@ async def echo_handler(message: types.Message) -> None:
 
 
 async def on_startup(bot: Bot) -> None:
-    result = await bot.set_webhook(
-        f"{BASE_WEBHOOK_URL}",
-        certificate=FSInputFile(WEBHOOK_SSL_CERT),
-        secret_token=WEBHOOK_SECRET,
-    )
+    if bool(ip_address_pattern.match(getenv('SERVER_IP_ADDRESS'))):
+        result = await bot.set_webhook(
+            f"{BASE_WEBHOOK_URL}",
+            certificate=FSInputFile(WEBHOOK_SSL_CERT),
+            secret_token=WEBHOOK_SECRET,
+        )
+    else:
+        result = await bot.set_webhook(
+            f"{BASE_WEBHOOK_URL}",
+            certificate=FSInputFile(WEBHOOK_SSL_CERT),
+            secret_token=WEBHOOK_SECRET,
+        )
+        
     print(f"{BASE_WEBHOOK_URL}")
     print(result)
 
