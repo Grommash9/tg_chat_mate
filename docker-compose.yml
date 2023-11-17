@@ -37,19 +37,6 @@ services:
     networks:
       my_network:
         ipv4_address: 192.168.1.20
-  nginx-certbot:
-    build:
-      context: ./nginx-certbot
-      dockerfile: Dockerfile
-      args:
-        SERVER_IP_ADDRESS: ${SERVER_IP_ADDRESS}
-    depends_on:
-      - nginx-service
-    volumes:
-      - nginx-certs:/nginx-certs
-    restart: on-failure
-    networks:
-      - my_network
   redis:
     image: redis:latest
     restart: on-failure
