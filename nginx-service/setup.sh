@@ -28,25 +28,22 @@ if [[ $SERVER_IP_ADDRESS =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     cp /etc/ssl/certs/nginx-selfsigned.crt /nginx-certs/
     cp /etc/ssl/private/nginx-selfsigned.key /nginx-certs/
 else
-    # Domain name logic
-    if [ "$CLOUD_FLARE" = false ]; then
-        echo "apt-get update && apt-get install -y python3 python3-venv python3-pip"
-        apt-get update && apt-get install -y python3 python3-venv python3-pip
-        echo "install -y certbot python3-certbot-nginx"
-        apt-get install -y certbot python3-certbot-nginx
-        echo "certbot"
-        certbot --nginx -d $SERVER_IP_ADDRESS --register-unsafely-without-email --agree-tos --no-eff-email --nginx
-        echo "cp"
-        cp /etc/letsencrypt/live/$SERVER_IP_ADDRESS/fullchain.pem /nginx-certs/$SERVER_IP_ADDRESS/
-        echo "cp2"
-        cp /etc/letsencrypt/live/$SERVER_IP_ADDRESS/privkey.pem /nginx-certs/$SERVER_IP_ADDRESS/
-        echo "cp3"
-        cp /etc/letsencrypt/options-ssl-nginx.conf /nginx-certs/
-        echo "cp4"
-        cp /etc/letsencrypt/ssl-dhparams.pem /nginx-certs/
-        echo "cp5"
-        sed -i "s/SERVER_IP_PLACEHOLDER/$SERVER_IP_ADDRESS/g" /home/cert_bot_default.conf
-        echo "cp6"
-        cp /home/cert_bot_default.conf /etc/nginx/conf.d/my-custom-server.conf
-    fi
+    echo "apt-get update && apt-get install -y python3 python3-venv python3-pip"
+    apt-get update && apt-get install -y python3 python3-venv python3-pip
+    echo "install -y certbot python3-certbot-nginx"
+    apt-get install -y certbot python3-certbot-nginx
+    echo "certbot"
+    certbot --nginx -d $SERVER_IP_ADDRESS --register-unsafely-without-email --agree-tos --no-eff-email --nginx
+    echo "cp"
+    cp /etc/letsencrypt/live/$SERVER_IP_ADDRESS/fullchain.pem /nginx-certs/$SERVER_IP_ADDRESS/
+    echo "cp2"
+    cp /etc/letsencrypt/live/$SERVER_IP_ADDRESS/privkey.pem /nginx-certs/$SERVER_IP_ADDRESS/
+    echo "cp3"
+    cp /etc/letsencrypt/options-ssl-nginx.conf /nginx-certs/
+    echo "cp4"
+    cp /etc/letsencrypt/ssl-dhparams.pem /nginx-certs/
+    echo "cp5"
+    sed -i "s/SERVER_IP_PLACEHOLDER/$SERVER_IP_ADDRESS/g" /home/cert_bot_default.conf
+    echo "cp6"
+    cp /home/cert_bot_default.conf /etc/nginx/conf.d/my-custom-server.conf
 fi
