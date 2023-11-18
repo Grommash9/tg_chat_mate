@@ -7,9 +7,11 @@ const app = express();
 const port = 3000;
 const httpServer = createServer(app);
 const io = new SocketIOServer(httpServer);
+const cors = require('cors');
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json()); // Middleware to parse JSON requests
+app.use(cors());
 
 // have no idea why it's not working as static file 
 app.get('/main.css', (req, res) => {

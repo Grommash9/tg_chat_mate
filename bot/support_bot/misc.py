@@ -21,9 +21,10 @@ ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
 # MONGO_DB_NAME = "support_db_table"
 
 # PROD
+SERVER_IP_ADDRESS = getenv('SERVER_IP_ADDRESS')
 TOKEN = getenv("BOT_TOKEN")
 WEB_SERVER_HOST = "192.168.1.10"
-BASE_WEBHOOK_URL = f"https://{getenv('SERVER_IP_ADDRESS')}/tg-bot"
+BASE_WEBHOOK_URL = f"https://{SERVER_IP_ADDRESS}/tg-bot"
 WEBHOOK_SSL_CERT = "/nginx-certs/nginx-selfsigned.crt"
 WEBHOOK_SSL_PRIV = "/nginx-certs/nginx-selfsigned.key"
 MONGO_USER_NAME = getenv("MONGO_USERNAME")
@@ -34,6 +35,12 @@ MONGO_DB_NAME = getenv("MONGO_DB_NAME")
 
 WEB_SERVER_PORT = 2005
 WEBHOOK_SECRET = "my-secret"
+
+def set_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
 
 async def on_startup(bot: Bot) -> None:
     if getenv('SERVER_IP_ADDRESS') is not None and bool(ip_address_pattern.match(getenv('SERVER_IP_ADDRESS'))):

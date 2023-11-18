@@ -8,8 +8,10 @@
   <script>
     // TODO MAKE DOMAIN CHANGABLE IN DOCKER 
     const api_domain = "test10.telegram-crm.work";
+    let active_chat = 0
     const socket = io();
     socket.on('new_message', function(message) {
+        getChatListFromApi();
         const messagesList = document.getElementById('messages-list');
         const messageElement = document.createElement('li');
         messageElement.className = "message-from-manager";
@@ -23,7 +25,43 @@
         messageElement.scrollIntoView({behavior: "smooth"});
     });
 
-    document.addEventListener('DOMContentLoaded', getChatListFromApi);
+    document.addEventListener('DOMContentLoaded', function() {
+        getChatListFromApi();
+        let message_send_button = document.getElementById('message-send-button');
+        message_send_button.addEventListener("click", sendMessageToCustomer);
+    });
+
+    function sendMessageToCustomer() {
+        let message_text_input = document.getElementById('message-input');
+        let message_text = message_text_input.innerText
+        console.log(message_text, active_chat)
+        const payload = {
+        chat_id: active_chat,
+        text: message_text
+        };
+
+        fetch(`https://${api_domain}/tg-bot/new-message`, {
+        method: 'POST', // Set the method to POST
+        headers: {
+            'Content-Type': 'application/json' // Set the headers to inform the server that you're sending JSON
+        },
+        body: JSON.stringify(payload) // Stringify your payload and set it in the body property
+        })
+        .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // Parse the response as JSON if necessary
+        })
+        .then(data => {
+        console.log('Success:', data);
+        })
+        .catch((error) => {
+        console.error('Error:', error);
+        });
+    };
+
+        
     
     function loadChatMessages(chat_id) {
         fetch('https://' + api_domain + '/tg-bot/get-messages/' + chat_id)
@@ -122,9 +160,11 @@
             loadChatMessages(uniqueNumber);
 
             this.classList.add('active-contact');
+            active_chat = uniqueNumber
             });
         });
     }
+    console.log("active_chat", active_chat)
 
   </script>
 </head>
@@ -154,9 +194,10 @@
                 </ul>
             </div>
             <div id="input_chat_box" class="input-chat-bot-object">
-                <form id="form" action="">
-                    <input id="input" class="message-input-form" autocomplete="off" /><button>Send</button>
-                </form>
+                <!-- <form id="form" action=""> -->
+                <input id="message-input" class="message-input-form" autocomplete="off" />
+                <button id="message-send-button">Send Message</button>
+                <!-- </form> -->
             </div>
             
         </div>

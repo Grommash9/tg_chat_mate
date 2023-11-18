@@ -1,7 +1,8 @@
 from aiohttp import web
 from aiohttp.web_request import Request
 from support_bot import db
-from support_bot.misc import web_routes, bot
+from support_bot.misc import web_routes, bot, set_cors_headers
+
 
 @web_routes.post(f"/tg-bot/new-message")
 async def new_message_from_manager(request: Request):
@@ -14,7 +15,11 @@ async def new_message_from_manager(request: Request):
         response = web.json_response({"result": "Sent"}, status=200)
     except Exception as e:
         response = web.json_response({"result": str(e)}, status=500)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-    return response
+    return set_cors_headers(response)
+
+
+
+@web_routes.options("/tg-bot/new-message")
+async def new_message_options(request: Request):
+    response = web.Response(status=200)
+    return set_cors_headers(response)
