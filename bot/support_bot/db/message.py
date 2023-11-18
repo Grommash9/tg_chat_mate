@@ -7,7 +7,9 @@ from support_bot.db.collection_names import MESSAGE_COLLECTION_NAME, USER_COLLEC
 def new_message(message: Message, unread=False):
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
-    post = {"message_id": message.message_id, "chat_id": message.chat.id, "message_text": message.text, "date": message.date, "from_user": message.from_user.id, "unread": unread}
+    post = {"message_id": message.message_id, "chat_id": message.chat.id, "message_text": message.text, "date": message.date, "from_user": message.from_user.id}
+    if unread:
+        post["unread"] = unread
     collection.insert_one(post).inserted_id
 
 def convert_objects_str(data):
@@ -38,10 +40,10 @@ def get_chat_list():
     messages_collection = db[MESSAGE_COLLECTION_NAME]
     pipeline = [
     # Sort by user and date first to prepare for the grouping
-    {"$sort": {"from_user": 1, "date": DESCENDING}},
+    {"$sort": {"chat_id": 1, "date": DESCENDING}},
     # Group by user ID to get the last message and its time
     {"$group": {
-        "_id": "$from_user",
+        "_id": "$chat_id",
         "last_message_text": {"$first": "$message_text"},
         "last_message_time": {"$first": "$date"},
         # Add all messages to an array to calculate unread count later
