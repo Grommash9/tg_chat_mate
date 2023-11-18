@@ -12,7 +12,7 @@ async def new_message_from_manager(request: Request):
     try:
         message = await bot.send_message(chat_id, message)
         db.message.new_message(message)
-        send_update_to_socket(message)
+        await send_update_to_socket(message)
         response = web.json_response({"result": "Sent"}, status=200)
     except Exception as e:
         response = web.json_response({"result": str(e)}, status=500)
