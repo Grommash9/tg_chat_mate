@@ -8,5 +8,9 @@ from pymongo import MongoClient, DESCENDING
 async def get_messages_list(request: Request):
     chat_id = int(request.match_info['chat_id'])
     messages_list = db.message.get_all_chat_messages(chat_id)
-    return web.json_response(
+    response = web.json_response(
         {"messages_list": messages_list}, status=200)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response

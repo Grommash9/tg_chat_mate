@@ -21,24 +21,38 @@
         messageElement.scrollIntoView({behavior: "smooth"});
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-    let contactListItems = document.querySelectorAll('#contacts li');
+    // document.addEventListener('DOMContentLoaded', function() {
+    // let contactListItems = document.querySelectorAll('#contacts li');
 
-    contactListItems.forEach((li) => {
-        li.addEventListener('click', function() {
-        console.log('Item clicked:', this.textContent);
-        let uniqueNumber = this.id.split('_')[1];
-        console.log("Unique chat ID:", uniqueNumber);
-        });
-    });
-    });
+    // contactListItems.forEach((li) => {
+    //     li.addEventListener('click', function() {
+    //     console.log('Item clicked:', this.textContent);
+    //     let uniqueNumber = this.id.split('_')[1];
+    //     console.log("Unique chat ID:", uniqueNumber);
+    //     });
+    // });
+    // });
+    document.addEventListener('DOMContentLoaded', getChatListFromApi);
 
-    // let ContactCard = document.getElementById("contact-item-object");
-    // document.addEventListener("click", () => openDialog());
-
-    // function openDialog() {
-    //     console.log("dialog opened!");
+    // function getChatListFromApi() {
+    //     fetch('https://test10.telegram-crm.work/tg-bot/chat-list', { mode: 'no-cors' })
+    //             .then(response => {
+    //                 if (!response.status === 200) {
+    //                     throw new Error('Network response was not ok ' + response.statusText);
+    //                 }
+    //                 console.log("data", response.json())
+    //                 return response.json(); // Parse JSON response
+    //             })
+    //             .then(data => {
+    //                 // Display the data
+    //                 console.log('Data received:', data);
+    //                 displayDataOnPage(data); // Function to handle the display of data
+    //             })
+    //             .catch(error => {
+    //                 console.error('There has been a problem with your fetch operation:', error);
+    //             });
     // }
+
   </script>
 </head>
 <body>
