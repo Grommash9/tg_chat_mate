@@ -18,6 +18,7 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 
 ## Next Steps
 
+- Implement logic for particular loading for chat list and messages history (load on scrolling end)
 - Implement authentication mechanisms for manager and root roles within the UI.
 - Enhance media storage in MongoDB within the messages collection.
   - Add logic for handling different Telegram media types for sending and receiving.
@@ -31,6 +32,11 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 - Capture `start_param` from the bot initiation and store it in the MongoDB user collection as an extra field, e.g., `{"start_param": "facebook"}`.
 - Implement search functionality for chat names, chat messages, and user custom fields.
 - Design a pre-conversation questionnaire for customers on Telegram with optional storage of responses in user collection extra fields, e.g., `{"phone": "+4407308483234"}`.
+- Add user details check button to see extra fields
+- Add langugage support for users in bot
+- Add settings in UI to change bot greeting message
+- Select languages what could be selected by customer from UI
+- Mark messages as read on reading it
 
 
 ## Installation Guide
