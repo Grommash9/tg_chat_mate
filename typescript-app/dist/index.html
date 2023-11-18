@@ -12,17 +12,20 @@
     const socket = io();
     socket.on('new_message', function(message) {
         getChatListFromApi();
-        const messagesList = document.getElementById('messages-list');
-        const messageElement = document.createElement('li');
-        messageElement.className = "message-from-manager";
-        messageElement.classList.add("message-from-manager")
-        const messageText = document.createElement('p');
-        console.log(message)
-        messageText.innerText = message.text;
-        messageElement.appendChild(messageText);
-        messagesList.appendChild(messageElement);
 
-        messageElement.scrollIntoView({behavior: "smooth"});
+        if (String(message.chat_id) === String(active_chat)) {
+            const messagesList = document.getElementById('messages-list');
+            const messageElement = document.createElement('li');
+            messageElement.className = "message-from-manager";
+            messageElement.classList.add("message-from-manager")
+            const messageText = document.createElement('p');
+            console.log(message)
+            messageText.innerText = message.text;
+            messageElement.appendChild(messageText);
+            messagesList.appendChild(messageElement);
+
+            messageElement.scrollIntoView({behavior: "smooth"});
+        }
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -121,11 +124,18 @@
     }
 
     function displayDialogList(chat_list) {
-        chat_list.chat_list.forEach(chatItem => {
         const contacList = document.getElementById('contacts');
+        contacList.innerHTML = '';
+        
+
+        chat_list.chat_list.forEach(chatItem => {
         const ContactItem = document.createElement('li');
         ContactItem.id = `contact-item-object_${chatItem.user_id}`;
         ContactItem.className = 'contact-item';
+
+        if (String(active_chat) === String(chatItem.user_id)) {
+            ContactItem.classList.add('active-contact');
+        }
 
         const nameParagraph = document.createElement('p');
         nameParagraph.textContent = chatItem.name;
