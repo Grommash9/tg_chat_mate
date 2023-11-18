@@ -2,7 +2,8 @@ from os import getenv
 from aiohttp import web
 from aiogram import Bot, Dispatcher, Router
 from aiogram.enums import ParseMode
-from aiogram.types import FSInputFile
+from aiogram.types import FSInputFile, Message
+import aiohttp
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 import re
 
@@ -41,6 +42,15 @@ def set_cors_headers(response):
     response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     return response
+
+async def send_update_to_socket(message: Message):
+    async with aiohttp.ClientSession() as session:
+        post_data = {'text': message.text, 'chat_id': message.chat.id, "from_user_id": message.from_user.id}
+        async with session.post(f'https://{SERVER_IP_ADDRESS}/send-message', json=post_data) as resp:
+            print(resp.status)
+            print(await resp.text())
+
+
 
 async def on_startup(bot: Bot) -> None:
     if getenv('SERVER_IP_ADDRESS') is not None and bool(ip_address_pattern.match(getenv('SERVER_IP_ADDRESS'))):

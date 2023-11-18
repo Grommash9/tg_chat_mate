@@ -14,10 +14,15 @@
         getChatListFromApi();
 
         if (String(message.chat_id) === String(active_chat)) {
+            
             const messagesList = document.getElementById('messages-list');
             const messageElement = document.createElement('li');
-            messageElement.className = "message-from-manager";
-            messageElement.classList.add("message-from-manager")
+            if (String(message.from_user_id) === String(active_chat)) {
+                messageElement.className = "message-from-client";
+            } else {
+                messageElement.className = "message-from-manager";
+            }
+            
             const messageText = document.createElement('p');
             console.log(message)
             messageText.innerText = message.text;
@@ -92,8 +97,13 @@
         messagesList.innerHTML = '';
         message_list.messages_list.forEach(message_from_db => {
             const messageElement = document.createElement('li');
-            messageElement.className = "message-from-manager";
-            messageElement.classList.add("message-from-manager")
+
+            if (String(message_from_db.from_user) === String(active_chat)) {
+                messageElement.className = "message-from-client";
+            } else {
+                messageElement.className = "message-from-manager";
+            }
+
             const messageText = document.createElement('p');
             console.log(message_from_db)
             messageText.innerText = message_from_db.message_text;
