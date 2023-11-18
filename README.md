@@ -18,7 +18,6 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 
 ## Next Steps
 
-- Develop the user interface to display messages and chats, enabling real-time sending and receiving of messages.
 - Implement authentication mechanisms for manager and root roles within the UI.
 - Enhance media storage in MongoDB within the messages collection.
   - Add logic for handling different Telegram media types for sending and receiving.
@@ -49,6 +48,7 @@ cd anonymous_support_bot
 nano .env
 ```
 Add the environment variables as shown in `.env.example`.
+
 4. Make the `install.sh` script executable and run it:
 ```
 chmod +x install.sh
