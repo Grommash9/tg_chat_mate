@@ -1,0 +1,30 @@
+/* Base layout */
+.container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 30%;
+    /* your styles for sidebar */
+  }
+  
+  .chat-area {
+    width: 70%;
+    /* your styles for chat area */
+  }
+  
+  /* Mobile view */
+  @media (max-width: 768px) {
+    .sidebar {
+      display: none; /* hide sidebar on mobile */
+    }
+  
+    .chat-area {
+      width: 100%; /* chat area takes full width on mobile */
+    }
+  
+    .back-button {
+      display: block; /* show back button on mobile */
+    }
+  }
+  
