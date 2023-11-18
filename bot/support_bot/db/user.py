@@ -1,8 +1,9 @@
 from aiogram.types import User
-from db.client import get_mongo_db
+from support_bot.db.client import get_mongo_db
 from pymongo.errors import DuplicateKeyError
 
-USER_COLLECTION_NAME = 'user'
+from support_bot.db.collection_names import USER_COLLECTION_NAME
+
 
 def new_user(user: User):
     db = get_mongo_db()

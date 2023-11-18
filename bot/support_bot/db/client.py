@@ -1,12 +1,7 @@
 from pymongo import MongoClient
 from pymongo.database import Database
 from os import getenv
-
-MONGO_USER_NAME = getenv("MONGO_USERNAME")
-MONGO_PASSWORD = getenv("MONGO_PASSWORD")
-MONGO_HOST = getenv('SERVER_IP_ADDRESS')
-MONGO_PORT = getenv("MONGO_PORT")
-MONGO_DB_NAME = getenv("MONGO_DB_NAME")
+from support_bot.misc import MONGO_DB_NAME, MONGO_USER_NAME, MONGO_PASSWORD, MONGO_HOST, MONGO_PORT
 
 
 def get_mongo_db() -> Database:

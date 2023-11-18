@@ -16,4 +16,4 @@ RUN pipenv install --ignore-pipfile
 EXPOSE 2005
 
 # Start your Telegram bot using pipenv
-CMD pipenv run python bot.py
+CMD pipenv run python -m support_bot
