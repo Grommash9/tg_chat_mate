@@ -23,18 +23,43 @@
         messageElement.scrollIntoView({behavior: "smooth"});
     });
 
-    // document.addEventListener('DOMContentLoaded', function() {
-    // let contactListItems = document.querySelectorAll('#contacts li');
-
-    // contactListItems.forEach((li) => {
-    //     li.addEventListener('click', function() {
-    //     console.log('Item clicked:', this.textContent);
-    //     let uniqueNumber = this.id.split('_')[1];
-    //     console.log("Unique chat ID:", uniqueNumber);
-    //     });
-    // });
-    // });
     document.addEventListener('DOMContentLoaded', getChatListFromApi);
+    
+    function loadChatMessages(chat_id) {
+        fetch('https://' + api_domain + '/tg-bot/get-messages/' + chat_id)
+                .then(response => {
+                            if (!response.status === 200) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            
+                            return response.json(); // Parse JSON response
+                        })
+                        .then(data => {
+                            // Display the data
+                            console.log('Data received:', data);
+                            displayChatHistory(data); // Function to handle the display of data
+                        })
+                        .catch(error => {
+                            console.error('There has been a problem with your fetch operation:', error);
+                        });
+    }
+
+    function displayChatHistory(message_list) {
+        const messagesList = document.getElementById('messages-list');
+        messagesList.innerHTML = '';
+        message_list.messages_list.forEach(message_from_db => {
+            const messageElement = document.createElement('li');
+            messageElement.className = "message-from-manager";
+            messageElement.classList.add("message-from-manager")
+            const messageText = document.createElement('p');
+            console.log(message_from_db)
+            messageText.innerText = message_from_db.message_text;
+            messageElement.appendChild(messageText);
+            messagesList.appendChild(messageElement);
+            messageElement.scrollIntoView({behavior: "smooth"});
+        })
+        
+    }
 
     function getChatListFromApi() {
         fetch('https://' + api_domain + '/tg-bot/chat-list')
@@ -48,14 +73,14 @@
                 .then(data => {
                     // Display the data
                     console.log('Data received:', data);
-                    displayDataOnPage(data); // Function to handle the display of data
+                    displayDialogList(data); // Function to handle the display of data
                 })
                 .catch(error => {
                     console.error('There has been a problem with your fetch operation:', error);
                 });
     }
 
-    function displayDataOnPage(chat_list) {
+    function displayDialogList(chat_list) {
         chat_list.chat_list.forEach(chatItem => {
         const contacList = document.getElementById('contacts');
         const ContactItem = document.createElement('li');
@@ -90,6 +115,7 @@
             console.log('Item clicked:', this.textContent);
             let uniqueNumber = this.id.split('_')[1];
             console.log("Unique chat ID:", uniqueNumber);
+            loadChatMessages(uniqueNumber);
             });
         });
     }
