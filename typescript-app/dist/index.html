@@ -33,11 +33,12 @@
 
     function sendMessageToCustomer() {
         let message_text_input = document.getElementById('message-input');
-        let message_text = message_text_input.innerText
+
+        let message_text = message_text_input.value;
         console.log(message_text, active_chat)
         const payload = {
-        chat_id: active_chat,
-        text: message_text
+        "chat_id": active_chat,
+        "text": message_text
         };
 
         fetch(`https://${api_domain}/tg-bot/new-message`, {
@@ -48,9 +49,10 @@
         body: JSON.stringify(payload) // Stringify your payload and set it in the body property
         })
         .then(response => {
-        if (!response.ok) {
+        if (!response.status === 200) {
             throw new Error('Network response was not ok');
         }
+        message_text_input.value = ""
         return response.json(); // Parse the response as JSON if necessary
         })
         .then(data => {
