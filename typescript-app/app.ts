@@ -11,6 +11,11 @@ const io = new SocketIOServer(httpServer);
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json()); // Middleware to parse JSON requests
 
+// have no idea why it's not working as static file 
+app.get('/main.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'main.css'));
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });

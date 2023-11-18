@@ -2,33 +2,158 @@
 <html>
 <head>
   <title>Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/main.css">
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
     socket.on('new_message', function(message) {
         const messagesList = document.getElementById('messages-list');
         const messageElement = document.createElement('li');
+        messageElement.className = "message-from-manager";
+        messageElement.classList.add("message-from-manager")
         const messageText = document.createElement('p');
         console.log(message)
         messageText.innerText = message.text;
         messageElement.appendChild(messageText);
         messagesList.appendChild(messageElement);
+
+        messageElement.scrollIntoView({behavior: "smooth"});
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    let contactListItems = document.querySelectorAll('#contacts li');
+
+    contactListItems.forEach((li) => {
+        li.addEventListener('click', function() {
+        console.log('Item clicked:', this.textContent);
+        let uniqueNumber = this.id.split('_')[1];
+        console.log("Unique chat ID:", uniqueNumber);
+        });
+    });
+    });
+
+    // let ContactCard = document.getElementById("contact-item-object");
+    // document.addEventListener("click", () => openDialog());
+
+    // function openDialog() {
+    //     console.log("dialog opened!");
+    // }
   </script>
 </head>
 <body>
-    <div id="contact-list">
-        <ul id="contacts"></ul>
-      </div>
-      <div id="chat-window">
+    <div class="main-page-container">
+        <div class="contants-list">
+            <ul id="contacts" class="contacts-list-object">
+                <li id="contact-item-object_1" class="contact-item">
+                    <p>Takoj-to chel</p>
+                    <p>Privet</p>
+                    <p>17.05</p>
+                    <p>(7)</p>
+                </li>
+                <li id="contact-item-object_2" class="contact-item">
+                    <p>Takoj-to chel 2</p>
+                    <p>Privet</p>
+                    <p>17.05</p>
+                    <p>(6)</p>
+                </li>
+                <li id="contact-item-object_3"  class="contact-item">
+                    <p>Takoj-to chel 3</p>
+                    <p>Privet</p>
+                    <p>17.05</p>
+                    <p>(5)</p>
+                </li>
+                <li id="contact-item-object_4" class="contact-item">
+                    <p>Takoj-to chel 3</p>
+                    <p>Privet</p>
+                    <p>17.05</p>
+                    <p>(5)</p>
+                </li>
+                <li id="contact-item-object_5" class="contact-item">
+                    <p>Takoj-to chel 3</p>
+                    <p>Privet</p>
+                    <p>17.05</p>
+                    <p>(5)</p>
+                </li>
+                <li id="contact-item-object_6" class="contact-item">
+                    <p>Takoj-to chel 3</p>
+                    <p>Privet</p>
+                    <p>17.05</p>
+                    <p>(5)</p>
+                </li>
+                <li id="contact-item-object_6" class="contact-item">
+                    <p>Takoj-to chel 3</p>
+                    <p>Privet</p>
+                    <p>17.05</p>
+                    <p>(5)</p>
+                </li>
+            </ul>
+        </div>
+        <div class="chat-window">
             
-        <div id="chat-messages"></div>
-            <button class="back-button" onclick="showContactList()">Back to contacts</button>
-                <ul id="messages-list"></ul>
+            <div id="top_chat_setting_panel" class="chat-setting">
+                <button class="back-button">Back to contacts</button>
+            </div>
+            <div id="messages_list_box" class="messages-list-box">
+                <ul id="messages-list" class="message-list-object">
+                    <li class="message-from-client">
+                        <p>Privet tu tut</p>
+                        <p>17.02</p>
+                    </li>
+                    <li class="message-from-client">
+                        <p>Privet tu tut</p>
+                        <p>17.02</p>
+                    </li>
+                    <li class="message-from-manager">
+                        <p>Da brat</p>
+                        <p>18.02</p>
+                    </li>
+                    <li class="message-from-manager">
+                        <p>Da brat</p>
+                        <p>18.02</p>
+                    </li>
+                    <li class="message-from-client">
+                        <p>Privet tu tut</p>
+                        <p>17.02</p>
+                    </li>
+                    <li class="message-from-client">
+                        <p>Privet tu tut</p>
+                        <p>17.02</p>
+                    </li>
+                    <li class="message-from-manager">
+                        <p>Da brat</p>
+                        <p>18.02</p>
+                    </li>
+                    <li class="message-from-manager">
+                        <p>Da brat</p>
+                        <p>18.02</p>
+                    </li>
+                    <li class="message-from-client">
+                        <p>Privet tu tut</p>
+                        <p>17.02</p>
+                    </li>
+                    <li class="message-from-client">
+                        <p>Privet tu tut</p>
+                        <p>17.02</p>
+                    </li>
+                    <li class="message-from-manager">
+                        <p>Da brat</p>
+                        <p>18.02</p>
+                    </li>
+                    <li class="message-from-manager">
+                        <p>Da brat</p>
+                        <p>18.02</p>
+                    </li>
+                </ul>
+            </div>
+            <div id="input_chat_box" class="input-chat-bot-object">
                 <form id="form" action="">
-                    <input id="input" autocomplete="off" /><button>Send</button>
+                    <input id="input" class="message-input-form" autocomplete="off" /><button>Send</button>
                 </form>
-      </div>
-  
+            </div>
+            
+        </div>
+        
+    </div>
 </body>
 </html>
