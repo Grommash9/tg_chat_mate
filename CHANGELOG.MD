@@ -6,3 +6,4 @@
         - `/tg-bot/mark-as-read` POST for mark message as read from UI
         - `/tg-bot/new-message` POST for send message from UI into bot
         - CORS headers added to all routes
+        - chat list loading logic added

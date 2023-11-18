@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="/main.css">
   <script src="/socket.io/socket.io.js"></script>
   <script>
+    // TODO MAKE DOMAIN CHANGABLE IN DOCKER 
+    const api_domain = "test10.telegram-crm.work";
     const socket = io();
     socket.on('new_message', function(message) {
         const messagesList = document.getElementById('messages-list');
@@ -34,24 +36,63 @@
     // });
     document.addEventListener('DOMContentLoaded', getChatListFromApi);
 
-    // function getChatListFromApi() {
-    //     fetch('https://test10.telegram-crm.work/tg-bot/chat-list', { mode: 'no-cors' })
-    //             .then(response => {
-    //                 if (!response.status === 200) {
-    //                     throw new Error('Network response was not ok ' + response.statusText);
-    //                 }
-    //                 console.log("data", response.json())
-    //                 return response.json(); // Parse JSON response
-    //             })
-    //             .then(data => {
-    //                 // Display the data
-    //                 console.log('Data received:', data);
-    //                 displayDataOnPage(data); // Function to handle the display of data
-    //             })
-    //             .catch(error => {
-    //                 console.error('There has been a problem with your fetch operation:', error);
-    //             });
-    // }
+    function getChatListFromApi() {
+        fetch('https://' + api_domain + '/tg-bot/chat-list')
+                .then(response => {
+                    if (!response.status === 200) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    
+                    return response.json(); // Parse JSON response
+                })
+                .then(data => {
+                    // Display the data
+                    console.log('Data received:', data);
+                    displayDataOnPage(data); // Function to handle the display of data
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
+    }
+
+    function displayDataOnPage(chat_list) {
+        chat_list.chat_list.forEach(chatItem => {
+        const contacList = document.getElementById('contacts');
+        const ContactItem = document.createElement('li');
+        ContactItem.id = `contact-item-object_${chatItem.user_id}`;
+        ContactItem.className = 'contact-item';
+
+        const nameParagraph = document.createElement('p');
+        nameParagraph.textContent = chatItem.name;
+        ContactItem.appendChild(nameParagraph);
+
+        // Create and append the <p> elements for the last message text
+        const messageParagraph = document.createElement('p');
+        messageParagraph.textContent = chatItem.last_message_text;
+        ContactItem.appendChild(messageParagraph);
+
+        // Create and append the <p> elements for the last message time
+        const timeParagraph = document.createElement('p');
+        timeParagraph.textContent = chatItem.last_message_time;
+        ContactItem.appendChild(timeParagraph);
+        
+        const UnreadMessagesCount = document.createElement('p');
+        UnreadMessagesCount.textContent = chatItem.unread_count;
+        ContactItem.appendChild(UnreadMessagesCount);
+        contacList.appendChild(ContactItem);
+
+        
+        });
+        let contactListItems = document.querySelectorAll('#contacts li');
+
+        contactListItems.forEach((li) => {
+            li.addEventListener('click', function() {
+            console.log('Item clicked:', this.textContent);
+            let uniqueNumber = this.id.split('_')[1];
+            console.log("Unique chat ID:", uniqueNumber);
+            });
+        });
+    }
 
   </script>
 </head>
@@ -59,48 +100,12 @@
     <div class="main-page-container">
         <div class="contants-list">
             <ul id="contacts" class="contacts-list-object">
-                <li id="contact-item-object_1" class="contact-item">
+                <!-- <li id="contact-item-object_1" class="contact-item">
                     <p>Takoj-to chel</p>
                     <p>Privet</p>
                     <p>17.05</p>
                     <p>(7)</p>
-                </li>
-                <li id="contact-item-object_2" class="contact-item">
-                    <p>Takoj-to chel 2</p>
-                    <p>Privet</p>
-                    <p>17.05</p>
-                    <p>(6)</p>
-                </li>
-                <li id="contact-item-object_3"  class="contact-item">
-                    <p>Takoj-to chel 3</p>
-                    <p>Privet</p>
-                    <p>17.05</p>
-                    <p>(5)</p>
-                </li>
-                <li id="contact-item-object_4" class="contact-item">
-                    <p>Takoj-to chel 3</p>
-                    <p>Privet</p>
-                    <p>17.05</p>
-                    <p>(5)</p>
-                </li>
-                <li id="contact-item-object_5" class="contact-item">
-                    <p>Takoj-to chel 3</p>
-                    <p>Privet</p>
-                    <p>17.05</p>
-                    <p>(5)</p>
-                </li>
-                <li id="contact-item-object_6" class="contact-item">
-                    <p>Takoj-to chel 3</p>
-                    <p>Privet</p>
-                    <p>17.05</p>
-                    <p>(5)</p>
-                </li>
-                <li id="contact-item-object_6" class="contact-item">
-                    <p>Takoj-to chel 3</p>
-                    <p>Privet</p>
-                    <p>17.05</p>
-                    <p>(5)</p>
-                </li>
+                </li> -->
             </ul>
         </div>
         <div class="chat-window">
