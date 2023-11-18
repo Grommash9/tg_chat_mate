@@ -33,6 +33,12 @@
     
     /* your styles for chat area */
   }
+
+  .active-contact {
+    background-color: gray;
+    color: black;
+  }
+
   
   .top_chat_setting_panel{
     display: block;

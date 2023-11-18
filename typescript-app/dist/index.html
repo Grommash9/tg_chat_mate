@@ -111,11 +111,17 @@
         let contactListItems = document.querySelectorAll('#contacts li');
 
         contactListItems.forEach((li) => {
+
             li.addEventListener('click', function() {
+                contactListItems.forEach((item) => {
+                item.classList.remove('active-contact');
+                });
             console.log('Item clicked:', this.textContent);
             let uniqueNumber = this.id.split('_')[1];
             console.log("Unique chat ID:", uniqueNumber);
             loadChatMessages(uniqueNumber);
+
+            this.classList.add('active-contact');
             });
         });
     }
@@ -141,54 +147,10 @@
             </div>
             <div id="messages_list_box" class="messages-list-box">
                 <ul id="messages-list" class="message-list-object">
-                    <li class="message-from-client">
+                    <!-- <li class="message-from-client">
                         <p>Privet tu tut</p>
                         <p>17.02</p>
-                    </li>
-                    <li class="message-from-client">
-                        <p>Privet tu tut</p>
-                        <p>17.02</p>
-                    </li>
-                    <li class="message-from-manager">
-                        <p>Da brat</p>
-                        <p>18.02</p>
-                    </li>
-                    <li class="message-from-manager">
-                        <p>Da brat</p>
-                        <p>18.02</p>
-                    </li>
-                    <li class="message-from-client">
-                        <p>Privet tu tut</p>
-                        <p>17.02</p>
-                    </li>
-                    <li class="message-from-client">
-                        <p>Privet tu tut</p>
-                        <p>17.02</p>
-                    </li>
-                    <li class="message-from-manager">
-                        <p>Da brat</p>
-                        <p>18.02</p>
-                    </li>
-                    <li class="message-from-manager">
-                        <p>Da brat</p>
-                        <p>18.02</p>
-                    </li>
-                    <li class="message-from-client">
-                        <p>Privet tu tut</p>
-                        <p>17.02</p>
-                    </li>
-                    <li class="message-from-client">
-                        <p>Privet tu tut</p>
-                        <p>17.02</p>
-                    </li>
-                    <li class="message-from-manager">
-                        <p>Da brat</p>
-                        <p>18.02</p>
-                    </li>
-                    <li class="message-from-manager">
-                        <p>Da brat</p>
-                        <p>18.02</p>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <div id="input_chat_box" class="input-chat-bot-object">
