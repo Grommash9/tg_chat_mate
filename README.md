@@ -37,6 +37,8 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 - Add settings in UI to change bot greeting message
 - Select languages what could be selected by customer from UI
 - Mark messages as read on reading it
+- Message markup support for ui and tg bot
+- Message editting logic support
 
 
 ## Installation Guide
