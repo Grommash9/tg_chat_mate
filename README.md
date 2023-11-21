@@ -12,7 +12,7 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 ## Technical Debt
 
 - Refactor Cloudflare Nginx logic.
-- Create scripts for dumping and loading data for MongoDB.
+- Create scripts for dumping and loading data for MongoDB.(dropbox)
 - Implement lazy loading for new messages and chats upon scrolling instead of loading all at once.
 - Establish a testing strategy and framework.
 
