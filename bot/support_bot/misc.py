@@ -46,6 +46,7 @@ def set_cors_headers(response):
 async def send_update_to_socket(message: Message):
     async with aiohttp.ClientSession() as session:
         post_data = {'text': message.text, 'chat_id': message.chat.id, "from_user_id": message.from_user.id}
+        #TODO ADD SSL VERIFICATION IGNORING FOR SELF SIGNED SERTIFICATE BOT WORKING WELL
         async with session.post(f'https://{SERVER_IP_ADDRESS}/send-message', json=post_data) as resp:
             print(resp.status)
             print(await resp.text())
