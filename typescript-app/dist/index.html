@@ -7,7 +7,8 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     // TODO MAKE DOMAIN CHANGABLE IN DOCKER 
-    const api_domain = "test10.telegram-crm.work";
+    const api_domain = '<%= domain %>';
+    console.log(domain);
     let active_chat = 0
     const socket = io();
     socket.on('new_message', function(message) {

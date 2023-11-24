@@ -19,6 +19,8 @@ app.get('/main.css', (req, res) => {
 });
 
 app.get('/', (req, res) => {
+  const domain = process.env.DOMAIN; 
+  res.render('index', { domain: domain });
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -37,7 +39,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// Start the server
+
 httpServer.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
