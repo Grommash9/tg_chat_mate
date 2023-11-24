@@ -2,7 +2,7 @@
 FROM nginx:1.24
 
 # Set an argument for the server's IP address
-ARG SERVER_IP_ADDRESS
+ARG DOMAIN
 
 # Copy the shell script into the container
 COPY setup.sh /usr/local/bin/

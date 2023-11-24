@@ -22,7 +22,7 @@ services:
       MONGO_PORT: ${MONGO_PORT}
       MONGO_DB_NAME: ${MONGO_DATABASE}
       BOT_TOKEN: ${BOT_TOKEN}
-      SERVER_IP_ADDRESS: ${SERVER_IP_ADDRESS}
+      DOMAIN: ${DOMAIN}
     volumes:
       - nginx-certs:/nginx-certs
   nginx-service:
@@ -30,7 +30,7 @@ services:
       context: ./nginx-service
       dockerfile: Dockerfile
       args:
-        SERVER_IP_ADDRESS: ${SERVER_IP_ADDRESS}
+        DOMAIN: ${DOMAIN}
     ports:
       - "443:443"
       - "80:80"

@@ -14,7 +14,7 @@ ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
 
 # TODO change after local dev
 # LOCAL DEV
-# SERVER_IP_ADDRESS = "befc-86-30-162-24.ngrok-free.app"
+# DOMAIN = "befc-86-30-162-24.ngrok-free.app"
 # TOKEN = "6703786868:AAGep_3TuaTsirZFBm0hrLRSHYs6OL9g1ZA"
 # WEB_SERVER_HOST = "127.0.0.1"
 # BASE_WEBHOOK_URL = "https://9dc1-86-30-162-24.ngrok-free.app/tg-bot"
@@ -27,15 +27,15 @@ ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
 # ROOT_PASSWORD = "somepass"
 
 # PROD
-SERVER_IP_ADDRESS = getenv("SERVER_IP_ADDRESS")
+DOMAIN = getenv("DOMAIN")
 TOKEN = getenv("BOT_TOKEN")
 WEB_SERVER_HOST = "192.168.1.10"
-BASE_WEBHOOK_URL = f"https://{SERVER_IP_ADDRESS}/tg-bot"
+BASE_WEBHOOK_URL = f"https://{DOMAIN}/tg-bot"
 WEBHOOK_SSL_CERT = "/nginx-certs/nginx-selfsigned.crt"
 WEBHOOK_SSL_PRIV = "/nginx-certs/nginx-selfsigned.key"
 MONGO_USER_NAME = getenv("MONGO_USERNAME")
 MONGO_PASSWORD = getenv("MONGO_PASSWORD")
-MONGO_HOST = getenv("SERVER_IP_ADDRESS")
+MONGO_HOST = getenv("DOMAIN")
 MONGO_PORT = getenv("MONGO_PORT")
 MONGO_DB_NAME = getenv("MONGO_DB_NAME")
 LONG_GOOD_SECRET_KEY = getenv("LONG_GOOD_SECRET_KEY")
@@ -58,9 +58,8 @@ async def send_update_to_socket(message: Message):
             "chat_id": message.chat.id,
             "from_user_id": message.from_user.id,
         }
-        # TODO ADD SSL VERIFICATION IGNORING FOR SELF SIGNED SERTIFICATE BOT WORKING WELL
         async with session.post(
-            f"https://{SERVER_IP_ADDRESS}/send-message", json=post_data
+            f"https://{DOMAIN}/send-message", json=post_data, verify=False,
         ) as resp:
             print(resp.status)
             print(await resp.text())
@@ -71,8 +70,8 @@ async def on_startup(bot: Bot) -> None:
         db.manager.new_manager("Root admin", "root", ROOT_PASSWORD, root=True)
     except Exception as e:
         print(f"Can't create root user: {e}")
-    if SERVER_IP_ADDRESS is not None and bool(
-        ip_address_pattern.match(SERVER_IP_ADDRESS)
+    if DOMAIN is not None and bool(
+        ip_address_pattern.match(DOMAIN)
     ):
         result = await bot.set_webhook(
             f"{BASE_WEBHOOK_URL}",
