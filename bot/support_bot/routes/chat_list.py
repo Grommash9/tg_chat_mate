@@ -19,3 +19,9 @@ async def get_chat_list(request: Request):
         {"error": "bot get", "chat_list": chat_list}, status=200
     )
     return set_cors_headers(response)
+
+
+@web_routes.options("/tg-bot/chat-list")
+async def chat_list_option(request: Request):
+    response = web.Response(status=200)
+    return set_cors_headers(response)
