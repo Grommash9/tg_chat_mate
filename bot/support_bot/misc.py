@@ -15,9 +15,9 @@ ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
 # TODO change after local dev
 # LOCAL DEV
 # SERVER_IP_ADDRESS = "befc-86-30-162-24.ngrok-free.app"
-# TOKEN = "6703786868:AAGep_3TuaTs9g1ZA"
+# TOKEN = "6703786868:AAGep_3TuaTsirZFBm0hrLRSHYs6OL9g1ZA"
 # WEB_SERVER_HOST = "127.0.0.1"
-# BASE_WEBHOOK_URL = "https://befc-86-30-162-24.ngrok-free.app/tg-bot"
+# BASE_WEBHOOK_URL = "https://9dc1-86-30-162-24.ngrok-free.app/tg-bot"
 # MONGO_USER_NAME = "root"
 # MONGO_PASSWORD = "root"
 # MONGO_HOST = "127.0.0.1"
@@ -67,7 +67,10 @@ async def send_update_to_socket(message: Message):
 
 
 async def on_startup(bot: Bot) -> None:
-    db.manager.new_manager("Root admin", "root", ROOT_PASSWORD, root=True)
+    try:
+        db.manager.new_manager("Root admin", "root", ROOT_PASSWORD, root=True)
+    except Exception as e:
+        print(f"Can't create root user: {e}")
     if SERVER_IP_ADDRESS is not None and bool(
         ip_address_pattern.match(SERVER_IP_ADDRESS)
     ):

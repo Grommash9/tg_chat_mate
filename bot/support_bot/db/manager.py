@@ -14,15 +14,17 @@ def hash_password(password: str):
     return hashed
 
 
-def new_manager(full_name, user_name, password, root=False):
+def new_manager(full_name, username, password, root=False):
     db = get_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
 
-    if collection.find_one({"username": user_name}):
+    print("manager founded", collection.find_one({"username": username}))
+
+    if collection.find_one({"username": username}):
         raise DuplicateKeyError("Username is not unique")
 
     manager = {
-        "user_name": user_name,
+        "username": username,
         "hashed_password": hash_password(password).decode("utf-8"),
         "full_name": full_name,
         "tokens": [],
