@@ -14,10 +14,10 @@ async def manager_login(request: Request):
 
     if not db.manager.check_password(user_name, password):
         response = web.json_response({"result": "Wrong credentials"}, status=401)
-        return response
+        return set_cors_headers(response)
     token = db.manager.create_token_for_manager(user_name)
     response = web.json_response({"token": token}, status=200)
-    return response
+    return set_cors_headers(response)
 
 
 @web_routes.options("/tg-bot/login")

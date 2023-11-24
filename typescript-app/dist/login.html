@@ -5,12 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login page</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="login.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+              let login_button = document.getElementById('login-button-object');
+              login_button.addEventListener("click", SignIn);
+          });
+      
+          function SignIn () {
+            let email_input = document.getElementById("login-input-object")
+            let password_input = document.getElementById("password-input-object")
+            if (email_input.value.length > 5  || password_input.value.length > 5) {
+              console.log(email_input.value)
+              console.log(password_input.value)
+              payload = {"user_name": email_input.value, "password": password_input.value}
+              fetch(`https://test12.telegram-crm.work/tg-bot/login`, {
+              method: 'POST', // Set the method to POST
+              headers: {
+                  'Content-Type': 'application/json' // Set the headers to inform the server that you're sending JSON
+              },
+              body: JSON.stringify(payload) // Stringify your payload and set it in the body property
+              })
+              .then(response => {
+              if (!response.status === 200) {
+                  password_input.value = ""
+                  throw new Error('Network response was not ok');
+              }
+              
+              return response.json(); // Parse the response as JSON if necessary
+              })
+              .then(data => {
+              password_input.value = ""
+              console.log('Success:', data);
+              })
+              .catch((error) => {
+              password_input.value = ""
+              console.error('Error:', error);
+              });
+
+            }
+              
+
+          }
+    </script>
   </head>
   <body>
     <main>
-        <h1>Welcome to Login page</h1>  
+        <div class="login-square-container">
+          <h2 class="welcome-label">Welcome</h2>
+          <p class="welcome-description">Enter your credentials to access your account</p>
+          <input class="login-input-field" id="login-input-object" type="text" placeholder="Enter your email" required autofocus autocomplete="email">
+          <input class="password-input-field" id="password-input-object" type="password" placeholder="Enter your password" required autocomplete="current-password">
+          <button class="login-button" id="login-button-object">Sign in</button>
+          <button class="sing-up-button">Create Account</button>
+        </div>
     </main>
 
   </body>

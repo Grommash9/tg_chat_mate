@@ -18,8 +18,16 @@ app.get('/main.css', (req, res) => {
   res.sendFile(path.join(__dirname, 'main.css'));
 });
 
+app.get('/login.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'main.css'));
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 // Endpoint to send a message to the server and broadcast it to all connected clients via Socket.IO
