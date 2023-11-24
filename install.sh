@@ -24,7 +24,7 @@ set +a
 if [[ $DOMAIN =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "ip conf from sh skipped"
 else
-    docker exec anonymous_support_bot-nginx-service-1 /bin/bash -c "apt-get update && apt-get install -y python3 && \
+    docker exec tg_chat_mate-nginx-service-1 /bin/bash -c "apt-get update && apt-get install -y python3 && \
     apt-get install -y certbot python3-certbot-nginx && \
     sed -i \"s/SERVER_IP_PLACEHOLDER/$DOMAIN/g\" /home/cert_bot_base.conf && \
     sed -i \"s/SERVER_IP_PLACEHOLDER/$DOMAIN/g\" /home/cert_bot_default.conf && \
