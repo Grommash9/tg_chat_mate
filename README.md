@@ -15,6 +15,7 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 - Create scripts for dumping and loading data for MongoDB.(dropbox)
 - Implement lazy loading for new messages and chats upon scrolling instead of loading all at once.
 - Establish a testing strategy and framework.
+- ban ip address from many attepms of login
 
 ## Next Steps
 
@@ -22,6 +23,8 @@ BEFORE FIRST RELEASE:
 - Add changing Domain name in HTML CODE
 - ADD SSL VERIFICATION IGNORING FOR SELF SIGNED SERTIFICATE BOT WORKING WELL
 - Implement authentication mechanisms for manager and root roles within the UI.
+  - check update socket endpoint!
+  - replace existing cokie by new one!
 - Enhance media storage in MongoDB within the messages collection.
   - Add logic for handling different Telegram media types for sending and receiving.
   - Integrate storage of customer photos in the MongoDB users collection and display them in the UI.
