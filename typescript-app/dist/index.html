@@ -114,8 +114,27 @@
         
     }
 
+    function getCookie(name) {
+    var cookieArr = document.cookie.split(";");
+    for(var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+        if(name == cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+    return "";
+    }
+
     function getChatListFromApi() {
-        fetch('https://' + api_domain + '/tg-bot/chat-list')
+        var authToken = getCookie("AUTHToken");
+        console.log(authToken)
+
+        fetch('https://' + api_domain + '/tg-bot/chat-list', {
+            method: 'GET',
+            headers: {
+            'AuthorizationToken': authToken,
+        }
+        })
                 .then(response => {
                     if (!response.status === 200) {
                         throw new Error('Network response was not ok ' + response.statusText);

@@ -20,7 +20,7 @@
             if (email_input.value.length > 5  || password_input.value.length > 5) {
               console.log(email_input.value)
               console.log(password_input.value)
-              payload = {"user_name": email_input.value, "password": password_input.value}
+              let payload = {"user_name": email_input.value, "password": password_input.value}
               fetch(`https://test12.telegram-crm.work/tg-bot/login`, {
               method: 'POST', // Set the method to POST
               headers: {
@@ -38,12 +38,27 @@
               })
               .then(data => {
               password_input.value = ""
+              setCookie("AUTHToken", data["token"], 7)
               console.log('Success:', data);
+              window.location.replace("/");
               })
               .catch((error) => {
               password_input.value = ""
               console.error('Error:', error);
               });
+
+              function setCookie(name, value, daysToLive) {
+                var cookieValue = encodeURIComponent(value);
+                var cookie = name + "=" + cookieValue;
+
+                if (typeof daysToLive === "number") {
+                    cookie += "; max-age=" + (daysToLive*24*60*60);
+                    cookie += "; path=/";
+                }
+
+                // Set the cookie
+                document.cookie = cookie;
+            }
 
             }
               
