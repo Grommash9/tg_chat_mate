@@ -25,7 +25,8 @@ async def manager_check_token(request: Request):
     token = payload.get("token")
     manager = db.manager.get_manager_by_token(token)
     if manager is None:
-        response = web.json_response({"result": "Wrong credentials"}, status=401)
+        response = web.json_response({"result": "Wrong credentials"}, status=401)#
+        return set_cors_headers(response)
     response = web.json_response({"token": token}, status=200)
     return set_cors_headers(response)
 

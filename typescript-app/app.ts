@@ -1,9 +1,13 @@
 import express from 'express';
+import axios from 'axios';
+import cookieParser from 'cookie-parser';
 import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import path from 'path';
 
+
 const app = express();
+app.use(cookieParser());
 const port = 3000;
 const httpServer = createServer(app);
 const io = new SocketIOServer(httpServer);
@@ -23,12 +27,33 @@ app.get('/login.css', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  let token = req.cookies['your-cookie-name']
-  fetch("")
+  const token = req.cookies['AUTHToken'];
+  const payload = { "token": token };
 
-
-  res.sendFile(path.join(__dirname, 'index.html'));
+  axios.post("https://test12.telegram-crm.work/tg-bot/check_token", payload, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  })
+  .then(response => {
+    console.log("Status:", response.status)
+    // Check if the status code is 200
+    if (response.status !== 200) {
+      // If not, send the login page
+      res.sendFile(path.join(__dirname, 'login.html'));
+      throw new Error(`Network response was not ok: ${response.status}`);
+    }
+    // If the status code is 200, send the index page
+    res.sendFile(path.join(__dirname, 'index.html'));
+    console.log('Success:', response.data);
+  })
+  .catch(error => {
+    // Log the error and send the login page
+    console.error('Error:', error);
+    res.sendFile(path.join(__dirname, 'login.html'));
+  });
 });
+
 
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'login.html'));
