@@ -74,7 +74,14 @@
         
     
     function loadChatMessages(chat_id) {
-        fetch('https://' + api_domain + '/tg-bot/get-messages/' + chat_id)
+        var authToken = getCookie("AUTHToken");
+        fetch('https://' + api_domain + '/tg-bot/get-messages/' + chat_id, {
+            method: 'GET',
+            headers: {
+            'AuthorizationToken': authToken,
+        }
+        }
+        )
                 .then(response => {
                             if (!response.status === 200) {
                                 throw new Error('Network response was not ok ' + response.statusText);

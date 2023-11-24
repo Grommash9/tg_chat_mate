@@ -18,3 +18,8 @@ async def get_messages_list(request: Request):
     messages_list = db.message.get_all_chat_messages(chat_id)
     response = web.json_response({"messages_list": messages_list}, status=200)
     return set_cors_headers(response)
+
+@web_routes.options("/tg-bot/get-messages/{chat_id}")
+async def get_messages_list_option(request: Request):
+    response = web.Response(status=200)
+    return set_cors_headers(response)

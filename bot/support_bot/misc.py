@@ -50,6 +50,12 @@ def set_cors_headers(response):
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, AuthorizationToken"
     return response
 
+import ssl
+
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+
 
 async def send_update_to_socket(message: Message):
     async with aiohttp.ClientSession() as session:
@@ -59,7 +65,7 @@ async def send_update_to_socket(message: Message):
             "from_user_id": message.from_user.id,
         }
         async with session.post(
-            f"https://{DOMAIN}/send-message", json=post_data, verify=False,
+            f"https://{DOMAIN}/send-message", json=post_data, ssl=ssl_context,
         ) as resp:
             print(resp.status)
             print(await resp.text())
