@@ -9,6 +9,8 @@ aiomysql = "*"
 cryptography = "*"
 pymongo = "*"
 aiohttp = "*"
+bcrypt = "*"
+pyjwt = "*"
 
 [dev-packages]
 
