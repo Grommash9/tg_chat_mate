@@ -19,8 +19,6 @@ app.get('/main.css', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  const domain = process.env.DOMAIN; 
-  res.render('index', { domain: domain });
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
