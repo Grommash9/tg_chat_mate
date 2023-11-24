@@ -23,6 +23,10 @@ app.get('/login.css', (req, res) => {
 });
 
 app.get('/', (req, res) => {
+  let token = req.cookies['your-cookie-name']
+  fetch("")
+
+
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
