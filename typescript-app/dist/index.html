@@ -49,10 +49,12 @@
         "text": message_text
         };
 
+        var authToken = getCookie("AUTHToken");
         fetch(`https://${api_domain}/tg-bot/new-message`, {
         method: 'POST', // Set the method to POST
         headers: {
-            'Content-Type': 'application/json' // Set the headers to inform the server that you're sending JSON
+            'Content-Type': 'application/json',
+            "AuthorizationToken": authToken
         },
         body: JSON.stringify(payload) // Stringify your payload and set it in the body property
         })
