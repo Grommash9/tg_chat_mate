@@ -18,18 +18,20 @@ async def new_message_from_manager(request: Request):
 
     payload = await request.json()
     chat_id = payload.get("chat_id")
-    message = payload.get("text")
+    message_text = payload.get("text")
     file_attachment_id = payload.get("file_attachment_id")
     try:
         if file_attachment_id is not None:
             file_attachment = db.files.get_file(file_attachment_id)
             if file_attachment["content_type"] == "application/pdf":
-                message = await bot.send_document(chat_id, caption=message, document=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
+                message = await bot.send_document(chat_id, caption=message_text, document=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
+                
             # message = await bot.send_message(chat_id, message)
             # message = await bot.send_message(chat_id, message)
+            message_document = db.message.new_message(message, unread=False, attachment=file_attachment)
         else:
-            message = await bot.send_message(chat_id, message)
-        message_document = db.message.new_message(message)
+            message = await bot.send_message(chat_id, message_text)
+            message_document = db.message.new_message(message, unread=False)
         await send_update_to_socket(message_document)
         response = web.json_response({"result": "Sent"}, status=200)
     except Exception as e:
