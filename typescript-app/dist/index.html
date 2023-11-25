@@ -101,7 +101,7 @@
             messageElement.className = "message-from-manager";
         }
         if (message_object.attachment) {
-            const image_source = 'https://' + api_domain + '/tg-bot/file?file_uuid=' + message_object.attachment;
+            const image_source = 'https://' + api_domain + '/tg-bot/file?file_uuid=' + message_object.attachment.file_id;
             const photoObject = document.createElement('img');
             photoObject.src = image_source;
             photoObject.width = 200;
