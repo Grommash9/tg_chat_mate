@@ -67,7 +67,7 @@ async def upload_file_to_db_using_file_id(file_id: str):
 
 
 async def upload_file_to_db(binary, file_name, mime_type):
-    headers = {"X-Filename": file_name, "Content-Type": mime_type, "LONG_GOOD_SECRET_KEY": LONG_GOOD_SECRET_KEY}
+    headers = {"X-Filename": file_name, "Content-Type": mime_type}
     async with aiohttp.ClientSession() as session:
         async with session.post(
             f"https://{DOMAIN}/tg-bot/file_upload", headers=headers, data=binary
