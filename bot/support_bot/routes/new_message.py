@@ -32,8 +32,7 @@ async def new_message_from_manager(request: Request):
             if file_attachment["content_type"].startswith("application/"):
                 message = await bot.send_document(chat_id, caption=message_text, document=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
             message_document = db.message.new_message(message, unread=False, attachment=file_attachment)
-            print("message_document in", message_document)
-            message_document["attachment"]["binary_data"] = ""
+            message_document["attachment"] = {"file_id": file_attachment_id, "mime_type": file_attachment["content_type"], "file_name": file_attachment["filename"]}
         else:
             message = await bot.send_message(chat_id, message_text)
             message_document = db.message.new_message(message, unread=False)
