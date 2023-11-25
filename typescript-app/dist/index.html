@@ -12,25 +12,7 @@
     const socket = io();
     socket.on('new_message', function(message) {
         getChatListFromApi();
-
-        if (String(message.chat_id) === String(active_chat)) {
-            
-            const messagesList = document.getElementById('messages-list');
-            const messageElement = document.createElement('li');
-            if (String(message.from_user_id) === String(active_chat)) {
-                messageElement.className = "message-from-client";
-            } else {
-                messageElement.className = "message-from-manager";
-            }
-            
-            const messageText = document.createElement('p');
-            console.log(message)
-            messageText.innerText = message.text;
-            messageElement.appendChild(messageText);
-            messagesList.appendChild(messageElement);
-
-            messageElement.scrollIntoView({behavior: "smooth"});
-        }
+        DisplayMessage(message);
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -105,30 +87,34 @@
         const messagesList = document.getElementById('messages-list');
         messagesList.innerHTML = '';
         message_list.messages_list.forEach(message_from_db => {
-            const messageElement = document.createElement('li');
-
-            if (String(message_from_db.from_user) === String(active_chat)) {
-                messageElement.className = "message-from-client";
-            } else {
-                messageElement.className = "message-from-manager";
-            }
-            if (message_from_db.attachment) {
-                const image_source = 'https://' + api_domain + '/tg-bot/file?file_uuid=' + message_from_db.attachment;
-                const photoObject = document.createElement('img');
-                photoObject.src = image_source;
-                photoObject.width = 200;
-                photoObject.height = 300;
-                messageElement.appendChild(photoObject);
-            }
-
-            const messageText = document.createElement('p');
-            console.log(message_from_db)
-            messageText.innerText = message_from_db.message_text;
-            messageElement.appendChild(messageText);
-            messagesList.appendChild(messageElement);
-            messageElement.scrollIntoView({behavior: "smooth"});
+            DisplayMessage(message_from_db);
         })
         
+    }
+
+    function DisplayMessage(message_object) {
+        const messagesList = document.getElementById('messages-list');
+        const messageElement = document.createElement('li');
+        if (String(message_object.from_user) === String(active_chat)) {
+            messageElement.className = "message-from-client";
+        } else {
+            messageElement.className = "message-from-manager";
+        }
+        if (message_object.attachment) {
+            const image_source = 'https://' + api_domain + '/tg-bot/file?file_uuid=' + message_object.attachment;
+            const photoObject = document.createElement('img');
+            photoObject.src = image_source;
+            photoObject.width = 200;
+            photoObject.height = 300;
+            messageElement.appendChild(photoObject);
+        }
+
+        const messageText = document.createElement('p');
+        console.log(message_object)
+        messageText.innerText = message_object.message_text;
+        messageElement.appendChild(messageText);
+        messagesList.appendChild(messageElement);
+        messageElement.scrollIntoView({behavior: "smooth"});
     }
 
 
