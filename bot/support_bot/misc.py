@@ -77,6 +77,8 @@ async def upload_file_to_db(binary, file_name, mime_type):
 
 
 async def send_update_to_socket(message: dict):
+    message["_id"] = str(message["date"])
+    message["date"] = str(message["date"])
     async with aiohttp.ClientSession() as session:
         async with session.post(
             f"https://{DOMAIN}/send-message",
