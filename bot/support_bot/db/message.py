@@ -22,7 +22,7 @@ def new_message(
     }
     if unread:
         post["unread"] = unread
-    if unread:
+    if attachment:
         post["attachment"] = attachment
     if location:
         post["location"] = location
