@@ -46,7 +46,9 @@ async def file_upload_options(request: Request):
 @web_routes.get("/tg-bot/file")
 async def get_file(request: Request):
     if DOMAIN != request.headers.get("Host"):
-        token = request.headers.get("AuthorizationToken")
+        token = request.cookies.get("AUTHToken")
+        if not token:
+            token = request.headers.get("AuthorizationToken")
         manager = db.manager.get_manager_by_token(token)
         if manager is None:
             response = web.json_response(
