@@ -15,32 +15,32 @@ from support_bot import db
 ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
 
 
-if getenv("Local"):
-    DOMAIN = "ddd0-86-30-162-24.ngrok-free.app"
-    TOKEN = "6703786868:AAGep_3TuaTsirZFBm0hrLRSHYs6OL9g1ZA"
-    WEB_SERVER_HOST = "127.0.0.1"
-    BASE_WEBHOOK_URL = "https://ddd0-86-30-162-24.ngrok-free.app/tg-bot"
-    MONGO_USER_NAME = "root"
-    MONGO_PASSWORD = "root"
-    MONGO_HOST = "127.0.0.1"
-    MONGO_PORT = 27016
-    MONGO_DB_NAME = "support_db_table"
-    LONG_GOOD_SECRET_KEY = "somekey"
-    ROOT_PASSWORD = "somepass"
-else:
-    DOMAIN = getenv("DOMAIN")
-    TOKEN = getenv("BOT_TOKEN")
-    WEB_SERVER_HOST = "192.168.1.10"
-    BASE_WEBHOOK_URL = f"https://{DOMAIN}/tg-bot"
-    WEBHOOK_SSL_CERT = "/nginx-certs/nginx-selfsigned.crt"
-    WEBHOOK_SSL_PRIV = "/nginx-certs/nginx-selfsigned.key"
-    MONGO_USER_NAME = getenv("MONGO_USERNAME")
-    MONGO_PASSWORD = getenv("MONGO_PASSWORD")
-    MONGO_HOST = getenv("DOMAIN")
-    MONGO_PORT = getenv("MONGO_PORT")
-    MONGO_DB_NAME = getenv("MONGO_DB_NAME")
-    LONG_GOOD_SECRET_KEY = getenv("LONG_GOOD_SECRET_KEY")
-    ROOT_PASSWORD = getenv("ROOT_PASSWORD")
+# if getenv("Local"):
+#     DOMAIN = "ddd0-86-30-162-24.ngrok-free.app"
+#     TOKEN = "6703786868:AAGep_3TuaTsirZFBm0hrLRSHYs6OL9g1ZA"
+#     WEB_SERVER_HOST = "127.0.0.1"
+#     BASE_WEBHOOK_URL = "https://ddd0-86-30-162-24.ngrok-free.app/tg-bot"
+#     MONGO_USER_NAME = "root"
+#     MONGO_PASSWORD = "root"
+#     MONGO_HOST = "127.0.0.1"
+#     MONGO_PORT = 27016
+#     MONGO_DB_NAME = "support_db_table"
+#     LONG_GOOD_SECRET_KEY = "somekey"
+#     ROOT_PASSWORD = "somepass"
+# else:
+DOMAIN = getenv("DOMAIN")
+TOKEN = getenv("BOT_TOKEN")
+WEB_SERVER_HOST = "192.168.1.10"
+BASE_WEBHOOK_URL = f"https://{DOMAIN}/tg-bot"
+WEBHOOK_SSL_CERT = "/nginx-certs/nginx-selfsigned.crt"
+WEBHOOK_SSL_PRIV = "/nginx-certs/nginx-selfsigned.key"
+MONGO_USER_NAME = getenv("MONGO_USERNAME")
+MONGO_PASSWORD = getenv("MONGO_PASSWORD")
+MONGO_HOST = getenv("DOMAIN")
+MONGO_PORT = getenv("MONGO_PORT")
+MONGO_DB_NAME = getenv("MONGO_DB_NAME")
+LONG_GOOD_SECRET_KEY = getenv("LONG_GOOD_SECRET_KEY")
+ROOT_PASSWORD = getenv("ROOT_PASSWORD")
 
 WEB_SERVER_PORT = 2005
 
