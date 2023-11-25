@@ -1,1 +1,1 @@
-from . import income_messages_handlers, start
+from . import start, income_messages_handlers
