@@ -123,20 +123,22 @@
                 audioObject.controls = true;
                 messageElement.appendChild(audioObject);}
                 
-                if (message_object.attachment.mime_type.startsWith('application/')) {
+            else if (message_object.attachment.mime_type.startsWith('application/')) {
                 // Extract the file extension for display, if available
                 const fileExtension = message_object.attachment.file_name.split('.').pop() || 'file';
-
+                console.log(fileExtension)
                 // Create an icon or text to indicate the file type
                 const fileIcon = document.createElement('span');
                 fileIcon.innerText = `${fileExtension.toUpperCase()} File`; // Display the file extension
                 messageElement.appendChild(fileIcon);
-
+                
+                const EmptyNewLine = document.createElement('p');
                 // Create a download link
                 const downloadLink = document.createElement('a');
                 downloadLink.href = attachment_source;
-                downloadLink.innerText = `Download ${fileExtension.toUpperCase()}`;
-                downloadLink.download = message_object.attachment.file_name || `download.${fileExtension}`; // Suggest a default filename for download
+                downloadLink.innerText = `${message_object.attachment.file_name}`;
+                downloadLink.download = message_object.attachment.file_name; // Suggest a default filename for download
+                messageElement.appendChild(EmptyNewLine)
                 messageElement.appendChild(downloadLink);}
         }
 
