@@ -63,7 +63,7 @@ async def upload_file_to_db_using_file_id(file_id: str):
     file_data = await upload_file_to_db(
         Binary(photo_binary.getvalue()), file_name, mime_type
     )
-    return file_data["file_id"]
+    return {"file_id": file_data["file_id"], "mime_type": mime_type}
 
 
 async def upload_file_to_db(binary, file_name, mime_type):
