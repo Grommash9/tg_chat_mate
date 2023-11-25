@@ -1,5 +1,6 @@
 from aiohttp import web
 from aiohttp.web_request import Request
+
 from support_bot import db
 from support_bot.misc import bot, send_update_to_socket, set_cors_headers, web_routes
 
@@ -17,8 +18,8 @@ async def new_message_from_manager(request: Request):
     message = payload.get("text")
     try:
         message = await bot.send_message(chat_id, message)
-        db.message.new_message(message)
-        await send_update_to_socket(message)
+        message_document = db.message.new_message(message)
+        await send_update_to_socket(message_document)
         response = web.json_response({"result": "Sent"}, status=200)
     except Exception as e:
         response = web.json_response({"result": str(e)}, status=500)

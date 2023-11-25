@@ -1,5 +1,6 @@
 from aiogram.types import Message
 from pymongo import DESCENDING
+
 from support_bot.db.client import get_mongo_db
 from support_bot.db.collection_names import (
     MESSAGE_COLLECTION_NAME,
@@ -7,19 +8,26 @@ from support_bot.db.collection_names import (
 )
 
 
-def new_message(message: Message, unread=False):
+def new_message(
+    message: Message, unread=False, attachment: str = False, location: dict = False
+):
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
     post = {
         "message_id": message.message_id,
         "chat_id": message.chat.id,
-        "message_text": message.text,
+        "message_text": message.text if message.text is not None else message.caption,
         "date": message.date,
         "from_user": message.from_user.id,
     }
     if unread:
         post["unread"] = unread
+    if unread:
+        post["attachment"] = attachment
+    if location:
+        post["location"] = location
     collection.insert_one(post).inserted_id
+    return post
 
 
 def convert_objects_str(data):

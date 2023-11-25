@@ -1,5 +1,6 @@
 from aiohttp import web
 from aiohttp.web_request import Request
+
 from support_bot import db
 from support_bot.misc import set_cors_headers, web_routes
 
@@ -22,6 +23,7 @@ async def mark_message_as_read(request: Request):
         {"result": "Marked!", "modified_count": modified_count}, status=200
     )
     return set_cors_headers(response)
+
 
 @web_routes.options("/tg-bot/mark-as-read")
 async def mark_message_as_read_option(request: Request):

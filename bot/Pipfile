@@ -11,6 +11,7 @@ pymongo = "*"
 aiohttp = "*"
 bcrypt = "*"
 pyjwt = "*"
+python-magic = "*"
 
 [dev-packages]
 

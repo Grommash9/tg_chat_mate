@@ -1,5 +1,6 @@
 from aiohttp import web
 from aiohttp.web_request import Request
+
 from support_bot import db
 from support_bot.misc import bot, send_update_to_socket, set_cors_headers, web_routes
 
@@ -19,21 +20,24 @@ async def manager_login(request: Request):
     response = web.json_response({"token": token}, status=200)
     return set_cors_headers(response)
 
+
 @web_routes.post(f"/tg-bot/check_token")
 async def manager_check_token(request: Request):
     payload = await request.json()
     token = payload.get("token")
     manager = db.manager.get_manager_by_token(token)
     if manager is None:
-        response = web.json_response({"result": "Wrong credentials"}, status=401)#
+        response = web.json_response({"result": "Wrong credentials"}, status=401)  #
         return set_cors_headers(response)
     response = web.json_response({"token": token}, status=200)
     return set_cors_headers(response)
+
 
 @web_routes.options("/tg-bot/check_token")
 async def manager_check_token_option(request: Request):
     response = web.Response(status=200)
     return set_cors_headers(response)
+
 
 @web_routes.options("/tg-bot/login")
 async def manager_login_option(request: Request):

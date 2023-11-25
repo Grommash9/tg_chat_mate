@@ -1,5 +1,6 @@
 from aiogram.types import User
 from pymongo.errors import DuplicateKeyError
+
 from support_bot.db.client import get_mongo_db
 from support_bot.db.collection_names import USER_COLLECTION_NAME
 

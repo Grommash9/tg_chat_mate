@@ -1,1 +1,1 @@
-from . import client, collection_names, manager, message, user, files
+from . import client, collection_names, files, manager, message, user
