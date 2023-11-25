@@ -63,7 +63,7 @@ app.get('/login', (req, res) => {
 app.post('/send-message', (req, res) => {
   const { text, chat_id, from_user_id, unread, attachment, location } = req.body;
   console.log(req.body);
-  io.emit('new_message', { text: text, chat_id: chat_id, from_user_id: from_user_id, unread: unread, attachment: attachment, location: location });
+  io.emit('new_message', { message_text: text, chat_id: chat_id, from_user: from_user_id, unread: unread, attachment: attachment, location: location });
   res.status(200).send('Message sent to all clients');
 });
 
