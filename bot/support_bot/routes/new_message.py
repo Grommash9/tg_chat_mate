@@ -31,8 +31,8 @@ async def new_message_from_manager(request: Request):
             #     message = await bot.send_photo(chat_id, caption=message_text, photo=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
             if file_attachment["content_type"].startswith("application/") or file_attachment["content_type"].startswith("image/"):
                 message = await bot.send_document(chat_id, caption=message_text, document=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
-            message_document = db.message.new_message(message, unread=False, attachment=file_attachment)
             message_document["attachment"] = {"file_id": file_attachment_id, "mime_type": file_attachment["content_type"], "file_name": file_attachment["filename"]}
+            message_document = db.message.new_message(message, unread=False, attachment=file_attachment)
         else:
             message = await bot.send_message(chat_id, message_text)
             message_document = db.message.new_message(message, unread=False)
