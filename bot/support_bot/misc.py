@@ -78,17 +78,9 @@ async def upload_file_to_db(binary, file_name, mime_type):
 
 async def send_update_to_socket(message: dict):
     async with aiohttp.ClientSession() as session:
-        post_data = {
-            "text": message["message_text"],
-            "chat_id": message["chat_id"],
-            "from_user_id": message["from_user"],
-            "unread": message.get("unread", False),
-            "attachment": message.get("attachment", None),
-            "location": message.get("location", None)
-        }
         async with session.post(
             f"https://{DOMAIN}/send-message",
-            json=post_data,
+            json=message,
         ) as resp:
             print(resp.status)
             print(await resp.text())
