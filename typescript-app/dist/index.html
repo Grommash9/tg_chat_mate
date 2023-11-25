@@ -34,6 +34,7 @@
             fetch('https://test12.telegram-crm.work/tg-bot/file_upload', {
                 method: 'POST',
                 body: formData,
+                headers: headers,
             })
             .then(response => response.json())
             .then(data => {
