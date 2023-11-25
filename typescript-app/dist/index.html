@@ -141,8 +141,8 @@
         const url = URL.createObjectURL(blob);
         const photoObject = document.createElement('img');
         photoObject.src = url;
-        photoObject.width = 500;
-        photoObject.height = 600;
+        photoObject.width = 200;
+        photoObject.height = 300;
         messageElement.appendChild(photoObject);
     })
     .catch(error => console.error('Error fetching the image:', error));
