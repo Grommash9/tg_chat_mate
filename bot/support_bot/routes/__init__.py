@@ -1,1 +1,1 @@
-from . import chat_list, get_message, mark_as_read, new_message, manager_auth
+from . import chat_list, get_message, mark_as_read, new_message, manager_auth, file_routes

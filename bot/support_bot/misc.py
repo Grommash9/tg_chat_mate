@@ -14,10 +14,10 @@ ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
 
 # TODO change after local dev
 # LOCAL DEV
-# DOMAIN = "befc-86-30-162-24.ngrok-free.app"
+# DOMAIN = "ddd0-86-30-162-24.ngrok-free.app"
 # TOKEN = "6703786868:AAGep_3TuaTsirZFBm0hrLRSHYs6OL9g1ZA"
 # WEB_SERVER_HOST = "127.0.0.1"
-# BASE_WEBHOOK_URL = "https://9dc1-86-30-162-24.ngrok-free.app/tg-bot"
+# BASE_WEBHOOK_URL = "https://ddd0-86-30-162-24.ngrok-free.app/tg-bot"
 # MONGO_USER_NAME = "root"
 # MONGO_PASSWORD = "root"
 # MONGO_HOST = "127.0.0.1"
