@@ -82,7 +82,7 @@ async def send_update_to_socket(message: dict):
     async with aiohttp.ClientSession() as session:
         async with session.post(
             f"https://{DOMAIN}/send-message",
-            json=message,
+            json={"message": message},
         ) as resp:
             print(resp.status)
             print(await resp.text())
