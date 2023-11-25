@@ -24,3 +24,4 @@ async def echo_handler(message: types.Message) -> None:
             await message.answer(f"Manager delivery error! {str(e)}")
     except TypeError:
         await message.answer("Nice try!")
+
