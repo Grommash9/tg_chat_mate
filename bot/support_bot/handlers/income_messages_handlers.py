@@ -80,7 +80,7 @@ async def sticker_message_from_user(message: types.Message) -> None:
 
 @router.message(F.document)
 async def document_message_from_user(message: types.Message) -> None:
-    attachment = await upload_file_to_db_using_file_id(message.document.file_id)
+    attachment = await upload_file_to_db_using_file_id(message.document.file_id, message.document.file_name)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
         await send_update_to_socket(message_document)
@@ -91,7 +91,7 @@ async def document_message_from_user(message: types.Message) -> None:
 @router.message(F.photo)
 async def photo_message_from_user(message: types.Message) -> None:
     attachment = await upload_file_to_db_using_file_id(
-        message.photo[-1].file_id
+        message.photo[-1].file_id,
     )
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:

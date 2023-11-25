@@ -122,6 +122,22 @@
                 audioObject.src = attachment_source;
                 audioObject.controls = true;
                 messageElement.appendChild(audioObject);}
+                
+                if (message_object.attachment.mime_type.startsWith('application/')) {
+                // Extract the file extension for display, if available
+                const fileExtension = message_object.attachment.file_name.split('.').pop() || 'file';
+
+                // Create an icon or text to indicate the file type
+                const fileIcon = document.createElement('span');
+                fileIcon.innerText = `${fileExtension.toUpperCase()} File`; // Display the file extension
+                messageElement.appendChild(fileIcon);
+
+                // Create a download link
+                const downloadLink = document.createElement('a');
+                downloadLink.href = attachment_source;
+                downloadLink.innerText = `Download ${fileExtension.toUpperCase()}`;
+                downloadLink.download = message_object.attachment.file_name || `download.${fileExtension}`; // Suggest a default filename for download
+                messageElement.appendChild(downloadLink);}
         }
 
         const messageText = document.createElement('p');

@@ -54,7 +54,7 @@ def set_cors_headers(response):
     return response
 
 
-async def upload_file_to_db_using_file_id(file_id: str):
+async def upload_file_to_db_using_file_id(file_id: str, file_name: str = None):
     file_info = await bot.get_file(file_id)
     photo_binary = await bot.download_file(file_info.file_path)
     photo_bytes = photo_binary.getvalue()
@@ -63,7 +63,7 @@ async def upload_file_to_db_using_file_id(file_id: str):
     file_data = await upload_file_to_db(
         Binary(photo_binary.getvalue()), file_name, mime_type
     )
-    return {"file_id": file_data["file_id"], "mime_type": mime_type}
+    return {"file_id": file_data["file_id"], "mime_type": mime_type, "file_name": file_name}
 
 
 async def upload_file_to_db(binary, file_name, mime_type):
