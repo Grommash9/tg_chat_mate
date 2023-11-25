@@ -112,6 +112,9 @@
             } else {
                 messageElement.className = "message-from-manager";
             }
+            if (message_from_db.attachment) {
+                fetchImageWithHeaders(message_from_db.attachment, messageElement);
+            }
 
             const messageText = document.createElement('p');
             console.log(message_from_db)
@@ -122,6 +125,28 @@
         })
         
     }
+
+    function fetchImageWithHeaders(attachmentId, messageElement) {
+    var authToken = getCookie("AUTHToken");
+    const image_source = 'https://' + api_domain + '/tg-bot/file?file_uuid=' + attachmentId;
+    
+    fetch(image_source, {
+        method: 'GET',
+        headers: {
+            'AuthorizationToken': authToken,
+        }
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const photoObject = document.createElement('img');
+        photoObject.src = url;
+        photoObject.width = 500;
+        photoObject.height = 600;
+        messageElement.appendChild(photoObject);
+    })
+    .catch(error => console.error('Error fetching the image:', error));
+}
 
     function getCookie(name) {
     var cookieArr = document.cookie.split(";");

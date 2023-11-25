@@ -61,9 +61,9 @@ app.get('/login', (req, res) => {
 
 // Endpoint to send a message to the server and broadcast it to all connected clients via Socket.IO
 app.post('/send-message', (req, res) => {
-  const { text, chat_id, from_user_id } = req.body;
+  const { text, chat_id, from_user_id, unread, attachment, location } = req.body;
   console.log(req.body);
-  io.emit('new_message', { text: text, chat_id: chat_id, from_user_id: from_user_id });
+  io.emit('new_message', { text: text, chat_id: chat_id, from_user_id: from_user_id, unread: unread, attachment: attachment, location: location });
   res.status(200).send('Message sent to all clients');
 });
 
