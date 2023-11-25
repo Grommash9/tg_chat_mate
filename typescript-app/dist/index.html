@@ -100,13 +100,28 @@
         } else {
             messageElement.className = "message-from-manager";
         }
-        if (message_object.attachment) {
-            const image_source = 'https://' + api_domain + '/tg-bot/file?file_uuid=' + message_object.attachment.file_id;
-            const photoObject = document.createElement('img');
-            photoObject.src = image_source;
-            photoObject.width = 200;
-            photoObject.height = 300;
-            messageElement.appendChild(photoObject);
+        if (message_object.attachment && message_object.attachment.mime_type) {
+            const attachment_source = 'https://' + api_domain + '/tg-bot/file?file_uuid=' + message_object.attachment.file_id;
+            if (message_object.attachment.mime_type.startsWith('image/')) {
+                const photoObject = document.createElement('img');
+                photoObject.src = attachment_source;
+                photoObject.width = 200;
+                photoObject.height = 300;
+                messageElement.appendChild(photoObject);}
+            else if (message_object.attachment.mime_type.startsWith('video/')) {
+                // If it's a video, create a video element
+                const videoObject = document.createElement('video');
+                videoObject.src = attachment_source;
+                videoObject.width = 400; // Set your desired width
+                videoObject.height = 300; // Set your desired height
+                videoObject.controls = true; // Add controls so the user can play the video
+                messageElement.appendChild(videoObject);}
+            else if (message_object.attachment.mime_type.startsWith('audio/')) {
+                // If it's a video, create a video element
+                const audioObject = document.createElement('audio');
+                audioObject.src = attachment_source;
+                audioObject.controls = true;
+                messageElement.appendChild(audioObject);}
         }
 
         const messageText = document.createElement('p');
