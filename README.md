@@ -18,7 +18,8 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 - Implement lazy loading for new messages and chats upon scrolling instead of loading all at once.
 - Establish a testing strategy and framework.
 - ban ip address from many attepms of login
-
+- restart docker after server restart
+- 
 ## Next Steps
 
 BEFORE FIRST RELEASE:
