@@ -19,7 +19,7 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 - Establish a testing strategy and framework.
 - ban ip address from many attepms of login
 - restart docker after server restart
-- 
+- record files into database only once and reuse for less storage consumpsion
 ## Next Steps
 
 BEFORE FIRST RELEASE:
