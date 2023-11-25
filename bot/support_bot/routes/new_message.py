@@ -7,7 +7,9 @@ from support_bot.misc import bot, send_update_to_socket, set_cors_headers, web_r
 
 @web_routes.post(f"/tg-bot/new-message")
 async def new_message_from_manager(request: Request):
-    token = request.headers.get("AuthorizationToken")
+    token = request.cookies.get("AUTHToken")
+    if not token:
+        token = request.headers.get("AuthorizationToken")
     manager = db.manager.get_manager_by_token(token)
     if manager is None:
         response = web.json_response({"result": "AuthorizationToken"}, status=401)

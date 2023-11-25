@@ -50,7 +50,7 @@ def set_cors_headers(response):
     response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS, GET"
     response.headers[
         "Access-Control-Allow-Headers"
-    ] = "Content-Type, Authorization, AuthorizationToken, LONG_GOOD_SECRET_KEY"
+    ] = "Content-Type, Authorization, AuthorizationToken, X-Filename"
     return response
 
 

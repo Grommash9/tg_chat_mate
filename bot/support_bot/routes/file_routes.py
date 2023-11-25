@@ -6,13 +6,15 @@ from aiohttp.web_request import Request
 from pymongo import DESCENDING, MongoClient
 
 from support_bot import db
-from support_bot.misc import set_cors_headers, web_routes, DOMAIN
+from support_bot.misc import set_cors_headers, web_routes, DOMAIN, bot
 
 
 @web_routes.post(f"/tg-bot/file_upload")
 async def file_uploading(request: Request):
     if DOMAIN != request.headers.get("Host"):
-        token = request.headers.get("AuthorizationToken")
+        token = request.cookies.get("AUTHToken")
+        if not token:
+            token = request.headers.get("AuthorizationToken")
         manager = db.manager.get_manager_by_token(token)
         if manager is None:
             response = web.json_response(
@@ -72,7 +74,7 @@ async def get_file(request: Request):
     response.headers["CONTENT-DISPOSITION"] = f'attachment; filename="{filename}"'
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS, GET"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, AuthorizationToken, LONG_GOOD_SECRET_KEY"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, AuthorizationToken, X-Filename"
 
     response.content_type = content_type
     await response.prepare(request)

@@ -7,7 +7,9 @@ from support_bot.misc import set_cors_headers, web_routes
 
 @web_routes.get("/tg-bot/get-messages/{chat_id}")
 async def get_messages_list(request: Request):
-    token = request.headers.get("AuthorizationToken")
+    token = request.cookies.get("AUTHToken")
+    if not token:
+        token = request.headers.get("AuthorizationToken")
     manager = db.manager.get_manager_by_token(token)
     if manager is None:
         response = web.json_response(

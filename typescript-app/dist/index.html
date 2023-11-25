@@ -19,16 +19,69 @@
         getChatListFromApi();
         let message_send_button = document.getElementById('message-send-button');
         message_send_button.addEventListener("click", sendMessageToCustomer);
+        document.getElementById('attachment-send-button').addEventListener('click', FileUpload);
     });
 
+    function FileUpload () {
+        document.getElementById('file-input').click();
+
+        document.getElementById('file-input').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            let headers = {"X-Filename": file.name, "Content-Type": file.type}
+            fetch('https://test12.telegram-crm.work/tg-bot/file_upload', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error && data.error === 'file uploaded!') {
+                    const fileList = document.getElementById('files-attachment-list');
+                    fileList.innerHTML = ''; 
+                    const listItem = document.createElement('li');
+                    listItem.innerText = file.name;
+                    listItem.id = data["file_id"]
+                    const removeButton = document.createElement('button');
+                    removeButton.innerText = 'Remove';
+                    removeButton.onclick = function() {
+                        listItem.remove(); 
+                    };
+
+                    listItem.appendChild(removeButton);
+                    fileList.appendChild(listItem);
+                    console.log("File uploaded id:", data["file_id"])
+                } else {
+                    console.error('Failed to upload file:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+        }
+        });}
+
     function sendMessageToCustomer() {
+
+        file_attachment_id = null
+
+        const fileList = document.getElementById('files-attachment-list');
+        const fileAttachedList = fileList.querySelectorAll('li');
+
+        fileAttachedList.forEach(fileAttached => {
+            file_attachment_id = fileAttached.id
+        })
+
+
         let message_text_input = document.getElementById('message-input');
 
         let message_text = message_text_input.value;
         console.log(message_text, active_chat)
         const payload = {
         "chat_id": active_chat,
-        "text": message_text
+        "text": message_text,
+        "file_attachment_id": file_attachment_id,
         };
 
         var authToken = getCookie("AUTHToken");
@@ -44,7 +97,9 @@
         if (!response.status === 200) {
             throw new Error('Network response was not ok');
         }
+        fileList.innerHTML = ''; 
         message_text_input.value = ""
+        
         return response.json(); // Parse the response as JSON if necessary
         })
         .then(data => {
@@ -272,10 +327,15 @@
                 </ul>
             </div>
             <div id="input_chat_box" class="input-chat-bot-object">
-                <!-- <form id="form" action=""> -->
+
                 <input id="message-input" class="message-input-form" autocomplete="off" />
                 <button id="message-send-button">Send Message</button>
-                <!-- </form> -->
+                <input type="file" id="file-input" hidden />
+                <button id="attachment-send-button">Send Attachment</button>
+
+                <ul id="files-attachment-list" class="files-attachment-list-object">
+                </ul>
+
             </div>
             
         </div>
