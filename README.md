@@ -23,6 +23,8 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 ## Next Steps
 
 BEFORE FIRST RELEASE:
+- messages going to empty chat problem fix
+- sound notification about new message
 - Add changing Domain name in HTML CODE
 - ADD SSL VERIFICATION IGNORING FOR SELF SIGNED SERTIFICATE BOT WORKING WELL
 - Implement authentication mechanisms for manager and root roles within the UI.
