@@ -50,7 +50,7 @@ def set_cors_headers(response):
     response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS, GET"
     response.headers[
         "Access-Control-Allow-Headers"
-    ] = "Content-Type, Authorization, AuthorizationToken"
+    ] = "Content-Type, Authorization, AuthorizationToken, LONG_GOOD_SECRET_KEY"
     return response
 
 
@@ -67,7 +67,7 @@ async def upload_file_to_db_using_file_id(file_id: str):
 
 
 async def upload_file_to_db(binary, file_name, mime_type):
-    headers = {"X-Filename": file_name, "Content-Type": mime_type}
+    headers = {"X-Filename": file_name, "Content-Type": mime_type, "LONG_GOOD_SECRET_KEY": LONG_GOOD_SECRET_KEY}
     async with aiohttp.ClientSession() as session:
         async with session.post(
             f"https://{DOMAIN}/tg-bot/file_upload", headers=headers, data=binary

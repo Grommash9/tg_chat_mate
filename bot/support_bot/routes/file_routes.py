@@ -6,22 +6,20 @@ from aiohttp.web_request import Request
 from pymongo import DESCENDING, MongoClient
 
 from support_bot import db
-from support_bot.misc import set_cors_headers, web_routes
+from support_bot.misc import set_cors_headers, web_routes, LONG_GOOD_SECRET_KEY
 
 
 @web_routes.post(f"/tg-bot/file_upload")
 async def file_uploading(request: Request):
-    peername = request.transport.get_extra_info('peername')
-    if peername is not None:
-        host, _ = peername
-        if host != '127.0.0.1':
-            token = request.headers.get("AuthorizationToken")
-            manager = db.manager.get_manager_by_token(token)
-            if manager is None:
-                response = web.json_response(
-                    {"error": "AuthorizationToken", "chat_list": []}, status=401
-                )
-                return set_cors_headers(response)
+    secret_key = request.headers.get("LONG_GOOD_SECRET_KEY")
+    if secret_key != LONG_GOOD_SECRET_KEY:
+        token = request.headers.get("AuthorizationToken")
+        manager = db.manager.get_manager_by_token(token)
+        if manager is None:
+            response = web.json_response(
+                {"error": "AuthorizationToken"}, status=401
+            )
+            return set_cors_headers(response)
     
     data = await request.read()
     file_uuid = str(uuid.uuid4())
@@ -48,17 +46,16 @@ async def file_upload_options(request: Request):
 
 @web_routes.get("/tg-bot/file")
 async def get_file(request: Request):
-    peername = request.transport.get_extra_info('peername')
-    if peername is not None:
-        host, _ = peername
-        if host != '127.0.0.1':
-            token = request.headers.get("AuthorizationToken")
-            manager = db.manager.get_manager_by_token(token)
-            if manager is None:
-                response = web.json_response(
-                    {"error": "AuthorizationToken", "chat_list": []}, status=401
-                )
-                return set_cors_headers(response)
+    secret_key = request.headers.get("LONG_GOOD_SECRET_KEY")
+    if secret_key != LONG_GOOD_SECRET_KEY:
+        token = request.headers.get("AuthorizationToken")
+        manager = db.manager.get_manager_by_token(token)
+        if manager is None:
+            response = web.json_response(
+                {"error": "AuthorizationToken"}, status=401
+            )
+            return set_cors_headers(response)
+            
             
     file_uuid = request.query.get("file_uuid", "")
     file_document = db.files.get_file(file_uuid)
@@ -75,7 +72,7 @@ async def get_file(request: Request):
     response.headers["CONTENT-DISPOSITION"] = f'attachment; filename="{filename}"'
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS, GET"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, AuthorizationToken"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, AuthorizationToken, LONG_GOOD_SECRET_KEY"
 
     response.content_type = content_type
     await response.prepare(request)
