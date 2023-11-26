@@ -23,8 +23,6 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 ## Next Steps
 
 BEFORE FIRST RELEASE:
-- Enhance media storage in MongoDB within the messages collection.
-  - record files into database only once and reuse for less storage consumpsion
 - Mark messages as read on reading it
 - Message markup support for ui and tg bot
 
