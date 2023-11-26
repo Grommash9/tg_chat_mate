@@ -19,7 +19,6 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 - Establish a testing strategy and framework.
 - ban ip address from many attepms of login
 - restart docker after server restart
-- record files into database only once and reuse for less storage consumpsion
 - CI pipline with installing product on own server with public ip and run tests using Github Actions, building and destroy should be described in ssh scripts
 ## Next Steps
 
@@ -32,8 +31,8 @@ BEFORE FIRST RELEASE:
   - check update socket endpoint!
   - replace existing cokie by new one!
 - Enhance media storage in MongoDB within the messages collection.
-  - Add logic for handling different Telegram media types for sending and receiving.
   - Integrate storage of customer photos in the MongoDB users collection and display them in the UI.
+  - record files into database only once and reuse for less storage consumpsion
 - Mark messages as read on reading it
 - Message markup support for ui and tg bot
 
