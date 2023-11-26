@@ -11,38 +11,6 @@ Anonymous Support Bot - це комплексне рішення техн під
 The Anonymous Support Bot is a comprehensive support solution that leverages Docker Compose to seamlessly run a suite of services including MongoDB, Redis, Nginx, a Telegram bot built with Aiogram 3, and a TypeScript-based web UI service. This project simplifies the process of integrating a support bot into your server, allowing customers to send messages directly to the Telegram bot. The messages can be monitored and responded to through a web-based UI interface.
 
 
-## Technical Debt
-
-- Refactor Cloudflare Nginx logic.
-- Create scripts for dumping and loading data for MongoDB.(dropbox)
-- Implement lazy loading for new messages and chats upon scrolling instead of loading all at once.
-- Establish a testing strategy and framework.
-- ban ip address from many attepms of login
-- restart docker after server restart
-- CI pipline with installing product on own server with public ip and run tests using Github Actions, building and destroy should be described in ssh scripts
-## Next Steps
-
-BEFORE FIRST RELEASE:
-- 
-
-
-- Implement logic for particular loading for chat list and messages history (load on scrolling end)
-- Create a mobile-responsive version of the UI.
-- Allow root users to create manager accounts through the UI.
-  - Set up tracking of managers' working hours.
-  - Link managers' accounts to their Telegram accounts for receiving notifications about new messages.
-  - Consider automatic assignment of managers to new chats.
-- Add a mass messaging feature accessible from the bot, the UI, or both.
-- Capture `start_param` from the bot initiation and store it in the MongoDB user collection as an extra field, e.g., `{"start_param": "facebook"}`.
-- Implement search functionality for chat names, chat messages, and user custom fields.
-- Design a pre-conversation questionnaire for customers on Telegram with optional storage of responses in user collection extra fields, e.g., `{"phone": "+4407308483234"}`.
-- Add user details check button to see extra fields
-- Add langugage support for users in bot
-- Add settings in UI to change bot greeting message
-- Select languages what could be selected by customer from UI
-- Message editting logic support
-
-
 ## Installation Guide
 To install the Anonymous Support Bot, follow these steps:
 1. Clone the repository:
