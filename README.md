@@ -23,8 +23,7 @@ The Anonymous Support Bot is a comprehensive support solution that leverages Doc
 ## Next Steps
 
 BEFORE FIRST RELEASE:
-- Mark messages as read on reading it
-- Message markup support for ui and tg bot
+- 
 
 
 - Implement logic for particular loading for chat list and messages history (load on scrolling end)
