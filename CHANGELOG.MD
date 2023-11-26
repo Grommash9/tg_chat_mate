@@ -7,3 +7,6 @@
         - `/tg-bot/new-message` POST for send message from UI into bot
         - CORS headers added to all routes
         - chat list loading logic added
+    - Add logic for handling different Telegram media types for sending and receiving.
+    - Endpoints for file managing
+    - Login page and login endpoints
