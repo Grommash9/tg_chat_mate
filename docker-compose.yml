@@ -15,6 +15,7 @@ services:
       - "2005:2005"
     restart: on-failure
     environment:
+      ISSUE_SSL: ${ISSUE_SSL}
       LONG_GOOD_SECRET_KEY: ${LONG_GOOD_SECRET_KEY}
       ROOT_PASSWORD: ${ROOT_PASSWORD}
       MONGO_USERNAME: ${MONGO_USERNAME}

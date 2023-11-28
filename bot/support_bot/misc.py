@@ -27,6 +27,7 @@ MONGO_PORT = getenv("MONGO_PORT")
 MONGO_DB_NAME = getenv("MONGO_DB_NAME")
 LONG_GOOD_SECRET_KEY = getenv("LONG_GOOD_SECRET_KEY")
 ROOT_PASSWORD = getenv("ROOT_PASSWORD")
+ISSUE_SSL = getenv("ISSUE_SSL")
 
 WEB_SERVER_PORT = 2005
 
@@ -80,7 +81,7 @@ async def on_startup(bot: Bot) -> None:
         db.manager.new_manager("Root admin", "root", ROOT_PASSWORD, root=True)
     except Exception as e:
         print(f"Can't create root user: {e}")
-    if DOMAIN is not None and bool(ip_address_pattern.match(DOMAIN)):
+    if DOMAIN is not None and bool(ip_address_pattern.match(DOMAIN)) and ISSUE_SSL.lower() == "true":
         result = await bot.set_webhook(
             f"{BASE_WEBHOOK_URL}",
             certificate=FSInputFile(WEBHOOK_SSL_CERT),
