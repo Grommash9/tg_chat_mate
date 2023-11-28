@@ -21,7 +21,7 @@
               console.log(email_input.value)
               console.log(password_input.value)
               let payload = {"user_name": email_input.value, "password": password_input.value}
-              fetch(`https://test12.telegram-crm.work/tg-bot/login`, {
+              fetch(`/tg-bot/login`, {
               method: 'POST', // Set the method to POST
               headers: {
                   'Content-Type': 'application/json' // Set the headers to inform the server that you're sending JSON
