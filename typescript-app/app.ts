@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import path from 'path';
-
+const https = require('https');
 
 const app = express();
 app.use(cookieParser());
@@ -12,6 +12,11 @@ const port = 3000;
 const httpServer = createServer(app);
 const io = new SocketIOServer(httpServer);
 const cors = require('cors');
+const axiosInstance = axios.create({
+  httpsAgent: new https.Agent({  
+    rejectUnauthorized: false // Disable SSL certificate validation
+  })
+});
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.json()); // Middleware to parse JSON requests
@@ -36,7 +41,7 @@ app.get('/', (req, res) => {
 
   const domain = process.env.DOMAIN;
 
-  axios.post(`https://${domain}/tg-bot/check_token`, payload, {
+  axiosInstance.post(`https://${domain}/tg-bot/check_token`, payload, {
     headers: {
       'Content-Type': 'application/json',
     }
