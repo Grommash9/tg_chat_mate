@@ -6,8 +6,6 @@
   <link rel="stylesheet" href="/main.css">
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    // TODO MAKE DOMAIN CHANGABLE IN DOCKER 
-    const api_domain = 'test12.telegram-crm.work';
     let active_chat = 0
     const socket = io();
     socket.on('new_message', function(message) {
@@ -31,7 +29,7 @@
     //         const formData = new FormData();
     //         formData.append('file', file);
     //         let headers = {"X-Filename": file.name, "Content-Type": file.type}
-    //         fetch('https://test12.telegram-crm.work/tg-bot/file_upload', {
+    //         fetch('/tg-bot/file_upload', {
     //             method: 'POST',
     //             body: formData,
     //             headers: headers,
@@ -78,7 +76,7 @@
                 "Content-Type": file.type
                 };
                 // Send the binary blob in the fetch body
-                fetch('https://test12.telegram-crm.work/tg-bot/file_upload', {
+                fetch('/tg-bot/file_upload', {
                 method: 'POST',
                 body: binary,
                 headers: headers,
@@ -137,7 +135,7 @@
         };
 
         var authToken = getCookie("AUTHToken");
-        fetch(`https://${api_domain}/tg-bot/new-message`, {
+        fetch(`/tg-bot/new-message`, {
         method: 'POST', // Set the method to POST
         headers: {
             'Content-Type': 'application/json',
@@ -166,7 +164,7 @@
     
     function loadChatMessages(chat_id) {
         var authToken = getCookie("AUTHToken");
-        fetch('https://' + api_domain + '/tg-bot/get-messages/' + chat_id, {
+        fetch('/tg-bot/get-messages/' + chat_id, {
             method: 'GET',
             headers: {
             'AuthorizationToken': authToken,
@@ -208,7 +206,7 @@
             messageElement.className = "message-from-manager";
         }
         if (message_object.attachment && message_object.attachment.mime_type) {
-            const attachment_source = 'https://' + api_domain + '/tg-bot/file?file_uuid=' + message_object.attachment.file_id;
+            const attachment_source = '/tg-bot/file?file_uuid=' + message_object.attachment.file_id;
             if (message_object.attachment.mime_type.startsWith('image/')) {
                 const photoObject = document.createElement('img');
                 photoObject.src = attachment_source;
@@ -273,7 +271,7 @@
         var authToken = getCookie("AUTHToken");
         console.log(authToken)
 
-        fetch('https://' + api_domain + '/tg-bot/chat-list', {
+        fetch('/tg-bot/chat-list', {
             method: 'GET',
             headers: {
             'AuthorizationToken': authToken,

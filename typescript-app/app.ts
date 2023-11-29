@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
   const token = req.cookies['AUTHToken'];
   const payload = { "token": token };
 
-  axios.post("https://test12.telegram-crm.work/tg-bot/check_token", payload, {
+  axios.post("/tg-bot/check_token", payload, {
     headers: {
       'Content-Type': 'application/json',
     }
