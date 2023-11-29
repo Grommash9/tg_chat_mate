@@ -13,7 +13,7 @@ services:
       - mongo-db
     ports:
       - "2005:2005"
-    restart: on-failure
+    restart: always
     environment:
       ISSUE_SSL: ${ISSUE_SSL}
       LONG_GOOD_SECRET_KEY: ${LONG_GOOD_SECRET_KEY}
@@ -37,13 +37,13 @@ services:
       - "80:80"
     volumes:
       - nginx-certs:/nginx-certs
-    restart: on-failure
+    restart: always
     networks:
       my_network:
         ipv4_address: 192.168.1.20
   redis:
     image: redis:latest
-    restart: on-failure
+    restart: always
     ports:
       - "6379:6379"
     environment:
@@ -52,12 +52,14 @@ services:
     build:
       context: ./typescript-app
       dockerfile: Dockerfile
+    environment:
+      DOMAIN: ${DOMAIN}
     networks:
       my_network:
         ipv4_address: 192.168.1.30  # Adjust the IP address as needed
     depends_on:
       - bot
-    restart: on-failure
+    restart: always
     ports:
       - "3000:3000"
   mongo-db:
@@ -70,7 +72,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-    restart: on-failure
+    restart: always
     networks:
       my_network:
         ipv4_address: 192.168.1.50

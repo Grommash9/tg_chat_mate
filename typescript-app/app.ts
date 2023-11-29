@@ -34,7 +34,9 @@ app.get('/', (req, res) => {
   const token = req.cookies['AUTHToken'];
   const payload = { "token": token };
 
-  axios.post("/tg-bot/check_token", payload, {
+  const domain = process.env.DOMAIN;
+
+  axios.post(`https://${domain}/tg-bot/check_token`, payload, {
     headers: {
       'Content-Type': 'application/json',
     }
