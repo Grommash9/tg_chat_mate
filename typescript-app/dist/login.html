@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login page</title>
+    
+    <link rel="stylesheet" href="normal.css">
     <link rel="stylesheet" href="login.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <script>
@@ -67,14 +69,17 @@
     </script>
   </head>
   <body>
+    
     <main>
         <div class="login-square-container">
-          <h2 class="welcome-label">Welcome</h2>
-          <p class="welcome-description">Enter your credentials to access your account</p>
-          <input class="login-input-field" id="login-input-object" type="text" placeholder="Enter your email" required autofocus autocomplete="email">
-          <input class="password-input-field" id="password-input-object" type="password" placeholder="Enter your password" required autocomplete="current-password">
-          <button class="login-button" id="login-button-object">Sign in</button>
-          <button class="sing-up-button">Create Account</button>
+          <div class="container">
+            <h2 class="welcome-label">Welcome</h2>
+            <p class="welcome-description">Enter your credentials to access your account</p>
+            <input class="login-input-field" id="login-input-object" type="text" placeholder="Enter your email" required autofocus autocomplete="email">
+            <input class="password-input-field" id="password-input-object" type="password" placeholder="Enter your password" required autocomplete="current-password">
+            <button class="login-button" id="login-button-object">Sign in</button>
+            <button class="sing-up-button">Create Account</button>
+          </div>
         </div>
     </main>
 

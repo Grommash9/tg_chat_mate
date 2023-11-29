@@ -22,8 +22,12 @@ app.get('/main.css', (req, res) => {
   res.sendFile(path.join(__dirname, 'main.css'));
 });
 
+app.get('/normal.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'normal.css'));
+});
+
 app.get('/login.css', (req, res) => {
-  res.sendFile(path.join(__dirname, 'main.css'));
+  res.sendFile(path.join(__dirname, 'login.css'));
 });
 
 app.get('/', (req, res) => {
