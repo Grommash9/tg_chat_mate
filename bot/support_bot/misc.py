@@ -9,7 +9,7 @@ from aiogram.types import FSInputFile, Message
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import ClientSession, FormData, web
 from bson import Binary
-
+import ssl
 from support_bot import db
 
 ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
@@ -30,6 +30,10 @@ ROOT_PASSWORD = getenv("ROOT_PASSWORD")
 ISSUE_SSL = getenv("ISSUE_SSL")
 WEB_SERVER_PORT = 2005
 
+
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
 
 def set_cors_headers(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
@@ -54,7 +58,7 @@ async def upload_file_to_db_using_file_id(file_id: str, base_file_name: str = No
 
 async def upload_file_to_db(binary, file_name, mime_type):
     headers = {"X-Filename": file_name, "Content-Type": mime_type}
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:
         async with session.post(
             f"https://{DOMAIN}/tg-bot/file_upload", headers=headers, data=binary
         ) as response:
@@ -65,8 +69,7 @@ async def upload_file_to_db(binary, file_name, mime_type):
 async def send_update_to_socket(message: dict):
     message["_id"] = str(message["date"])
     message["date"] = str(message["date"])
-    print(f"send to socker doc {message}")
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:
         async with session.post(
             f"https://{DOMAIN}/send-message",
             json={"message": message},
