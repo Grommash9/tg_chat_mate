@@ -21,7 +21,7 @@ source .env
 set +a
 
 echo "DOMAIN: $DOMAIN"
-
+echo "ISSUE_SSL: $ISSUE_SSL"
 
 if [[ "$ISSUE_SSL" == "true" ]]; then
     if [[ $DOMAIN =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
