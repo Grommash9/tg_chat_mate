@@ -27,32 +27,24 @@ if [[ "$ISSUE_SSL" == "true" ]]; then
     if [[ $DOMAIN =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
         docker exec tg_chat_mate-nginx-service-1 /bin/bash -c "\
         apt-get update && apt-get install -y openssl && \
-        mkdir -p /nginx-certs/$DOMAIN && \
-        mkdir -p /etc/nginx/snippets /etc/ssl/private /nginx-certs && \
         openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt -subj '/C=US/ST=New York/L=New York/O=Bouncy Castles, Inc./OU=Ministry of Water/CN=$DOMAIN/emailAddress=admin@your_domain.com' && \
         openssl dhparam -out /etc/nginx/dhparam.pem 2048 && \
-        sed -i 's/SERVER_IP_PLACEHOLDER/$DOMAIN/g' /home/default.conf && \
         cp /home/self-signed.conf /etc/nginx/snippets/ && \
         cp /home/ssl-params.conf /etc/nginx/snippets/ && \
-        cp /home/default.conf /etc/nginx/conf.d/my-custom-server.conf && \
+        cp /home/self_signed.conf /etc/nginx/conf.d/default.conf && \
         cp /etc/ssl/certs/nginx-selfsigned.crt /nginx-certs/ && \
         cp /etc/ssl/private/nginx-selfsigned.key /nginx-certs/ && \
         nginx -s reload "
+        docker compose restart bot
     else
         docker exec tg_chat_mate-nginx-service-1 /bin/bash -c "apt-get update && apt-get install -y python3 && \
         apt-get install -y certbot python3-certbot-nginx && \
-        sed -i 's/SERVER_IP_PLACEHOLDER/$DOMAIN/g' /home/cert_bot_base.conf && \
-        sed -i 's/SERVER_IP_PLACEHOLDER/$DOMAIN/g' /home/cert_bot_default.conf && \
         cp /home/cert_bot_base.conf /etc/nginx/conf.d/default.conf && \
         certbot --nginx -d $DOMAIN --register-unsafely-without-email --agree-tos --no-eff-email --force-renewal && \
         cp /home/cert_bot_default.conf /etc/nginx/conf.d/default.conf && \
         nginx -s reload"
+        docker compose restart bot
     fi
 else
-    docker exec tg_chat_mate-nginx-service-1 /bin/bash -c "\
-    sed -i 's/SERVER_IP_PLACEHOLDER/$DOMAIN/g' /home/conf_without_ssl.conf && \
-    cp /home/conf_without_ssl.conf /etc/nginx/conf.d/default.conf && \
-    nginx -s reload"
+    echo ""
 fi
-
-docker compose restart bot

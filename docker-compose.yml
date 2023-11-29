@@ -15,6 +15,7 @@ services:
       - "2005:2005"
     restart: always
     environment:
+      MONGO_HOST: ${MONGO_HOST}
       ISSUE_SSL: ${ISSUE_SSL}
       LONG_GOOD_SECRET_KEY: ${LONG_GOOD_SECRET_KEY}
       ROOT_PASSWORD: ${ROOT_PASSWORD}
@@ -52,6 +53,8 @@ services:
     build:
       context: ./typescript-app
       dockerfile: Dockerfile
+      args:
+        DOMAIN: ${DOMAIN}
     environment:
       DOMAIN: ${DOMAIN}
     networks:
