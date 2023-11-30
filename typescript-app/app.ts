@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
   const payload = { "token": token };
 
   const domain = process.env.DOMAIN;
-
+  
 axiosInstance.post(`https://${domain}/tg-bot/check_token`, payload, {
     headers: {
       'Content-Type': 'application/json',
