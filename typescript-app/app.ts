@@ -81,10 +81,15 @@ app.get('/login', (req, res) => {
 
 // Endpoint to send a message to the server and broadcast it to all connected clients via Socket.IO
 app.post('/send-message', (req, res) => {
+  const xRealIP = req.headers['x-real-ip']!;
+  const ip = Array.isArray(xRealIP) ? xRealIP[0] : xRealIP;
+  if (ip.startsWith('192.168.1.')) {
   const { message } = req.body;
-  console.log(req.body);
   io.emit('new_message', { message_text: message["message_text"], chat_id: message["chat_id"], from_user: message["from_user"], unread: message["unread"], attachment: message["attachment"], location: message["location"], manager_name: message["manager_name"] });
-  res.status(200).send('Message sent to all clients');
+  res.status(200).send('Message sent to all clients');}
+  else {
+    return res.status(403).send('Forbidden');
+  }
 });
 
 io.on('connection', (socket) => {

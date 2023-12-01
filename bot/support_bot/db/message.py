@@ -42,9 +42,19 @@ def convert_objects_str(data):
 def mark_as_read(chat_id, message_id):
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
-    filter_condition = {"message_id": message_id, "chat_id": chat_id}
+    filter_condition = {"message_id": int(message_id), "chat_id": int(chat_id)}
     update_result = collection.update_one(
-        filter_condition, {"$unset": {"unread": "False"}}
+        filter_condition, {"$unset": {"unread": ""}}
+    )
+    return update_result.modified_count
+
+
+def mark_chat_as_read(chat_id):
+    db = get_mongo_db()
+    collection = db[MESSAGE_COLLECTION_NAME]
+    filter_condition = {"chat_id": int(chat_id)}
+    update_result = collection.update_many(
+        filter_condition, {"$unset": {"unread": ""}}
     )
     return update_result.modified_count
 
