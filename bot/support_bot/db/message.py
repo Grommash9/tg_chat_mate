@@ -93,6 +93,7 @@ def get_chat_list():
             "$project": {
                 "user_id": "$_id",
                 "last_message_text": 1,
+                "photo_uuid": 1,
                 "unread_count": 1,
                 "last_message_time": {
                     # Convert the datetime to string
@@ -119,6 +120,7 @@ def get_chat_list():
             "$addFields": {
                 "username": "$user_details.username",
                 "name": "$user_details.name",
+                "photo_uuid": "$user_details.photo_uuid"
             }
         },
         # Sort by the last message time in descending order
@@ -130,6 +132,7 @@ def get_chat_list():
                 "last_message_text": 1,
                 "unread_count": 1,
                 "last_message_time": 1,
+                "photo_uuid": 1,
                 "username": 1,
                 "name": 1,
                 "_id": 0,  # Exclude the _id field from the final output
