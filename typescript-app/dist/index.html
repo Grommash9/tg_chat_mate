@@ -20,46 +20,6 @@
         document.getElementById('attachment-send-button').addEventListener('click', FileUpload);
     });
 
-    // function FileUpload () {
-    //     document.getElementById('file-input').click();
-
-    //     document.getElementById('file-input').addEventListener('change', function(event) {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const formData = new FormData();
-    //         formData.append('file', file);
-    //         let headers = {"X-Filename": file.name, "Content-Type": file.type}
-    //         fetch('/tg-bot/file_upload', {
-    //             method: 'POST',
-    //             body: formData,
-    //             headers: headers,
-    //         })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (data.error && data.error === 'file uploaded!') {
-    //                 const fileList = document.getElementById('files-attachment-list');
-    //                 fileList.innerHTML = ''; 
-    //                 const listItem = document.createElement('li');
-    //                 listItem.innerText = file.name;
-    //                 listItem.id = data["file_id"]
-    //                 const removeButton = document.createElement('button');
-    //                 removeButton.innerText = 'Remove';
-    //                 removeButton.onclick = function() {
-    //                     listItem.remove(); 
-    //                 };
-
-    //                 listItem.appendChild(removeButton);
-    //                 fileList.appendChild(listItem);
-    //                 console.log("File uploaded id:", data["file_id"])
-    //             } else {
-    //                 console.error('Failed to upload file:', data.error);
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.error('There has been a problem with your fetch operation:', error);
-    //         });
-    //     }
-    //     });}
     function FileUpload() {
         console.log('file upload?')
         document.getElementById('file-input').click();
@@ -99,6 +59,7 @@
                     fileList.appendChild(listItem);
                     console.log("File uploaded id:", data["file_id"])
                 } else {
+                    alert(`Error: ${data.error}`);
                     console.error('Failed to upload file:', data.error);
                 }
             })
@@ -144,24 +105,20 @@
         body: JSON.stringify(payload) // Stringify your payload and set it in the body property
         })
         .then(response => {
-        if (!response.status === 200) {
-            throw new Error('Network response was not ok');
-        }
-        fileList.innerHTML = ''; 
-        message_text_input.value = ""
-        
-        return response.json(); // Parse the response as JSON if necessary
-        })
-        .then(data => {
-        console.log('Success:', data);
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        });
-    };
+        if (response.status === 200) {
+            return response.json().then(data => {
+            fileList.innerHTML = ''; 
+            message_text_input.value = ""
+            console.log('Success message was sent', data);})
+        } else {
+            return response.json().then(data => {
+                alert(`Error: ${data["result"]}`);
+                console.error('Error:', data["result"]);
+            })
+
+        }});}
 
         
-    
     function loadChatMessages(chat_id) {
         var authToken = getCookie("AUTHToken");
         fetch('/tg-bot/get-messages/' + chat_id, {
