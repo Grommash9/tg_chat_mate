@@ -33,7 +33,6 @@
 
     function FileUpload() {
         document.getElementById('file-input').click();
-
         document.getElementById('file-input').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -45,7 +44,7 @@
                 "X-Filename": file.name,
                 "Content-Type": file.type
                 };
-                // Send the binary blob in the fetch body
+
                 fetch('/tg-bot/file_upload', {
                 method: 'POST',
                 body: binary,
@@ -57,9 +56,11 @@
                     const fileList = document.getElementById('files-attachment-list');
                     fileList.innerHTML = ''; 
                     const listItem = document.createElement('li');
+                    listItem.classList.add('file-attached');
                     listItem.innerText = file.name;
                     listItem.id = data["file_id"]
                     const removeButton = document.createElement('button');
+                    removeButton.classList.add('remove-attachment-button');
                     removeButton.innerText = 'Remove';
                     removeButton.onclick = function() {
                         listItem.remove(); 
@@ -167,6 +168,7 @@
             const attachment_source = '/tg-bot/file?file_uuid=' + message_object.attachment.file_id;
             if (message_object.attachment.mime_type.startsWith('image/')) {
                 const photoObject = document.createElement('img');
+                photoObject.classList.add('message-image');
                 photoObject.src = attachment_source;
                 photoObject.width = 200;
                 photoObject.height = 300;
@@ -174,6 +176,7 @@
             else if (message_object.attachment.mime_type.startsWith('video/')) {
                 // If it's a video, create a video element
                 const videoObject = document.createElement('video');
+                videoObject.classList.add('message-video');
                 videoObject.src = attachment_source;
                 videoObject.width = 400; // Set your desired width
                 videoObject.height = 300; // Set your desired height
@@ -182,21 +185,23 @@
             else if (message_object.attachment.mime_type.startsWith('audio/')) {
                 // If it's a video, create a video element
                 const audioObject = document.createElement('audio');
+                audioObject.classList.add('message-audio');
                 audioObject.src = attachment_source;
                 audioObject.controls = true;
                 messageElement.appendChild(audioObject);}
                 
             else if (message_object.attachment.mime_type.startsWith('application/')) {
-                // Extract the file extension for display, if available
                 const fileExtension = message_object.attachment.file_name.split('.').pop() || 'file';
-                // Create an icon or text to indicate the file type
+                
                 const fileIcon = document.createElement('span');
+                fileIcon.classList.add('message-application-icon');
                 fileIcon.innerText = `${fileExtension.toUpperCase()} File`; // Display the file extension
                 messageElement.appendChild(fileIcon);
                 
                 const EmptyNewLine = document.createElement('p');
-                // Create a download link
                 const downloadLink = document.createElement('a');
+                EmptyNewLine.classList.add('message-application-empty-line');
+                downloadLink.classList.add('message-download-link');
                 downloadLink.href = attachment_source;
                 downloadLink.innerText = `${message_object.attachment.file_name}`;
                 downloadLink.download = message_object.attachment.file_name; // Suggest a default filename for download
@@ -206,13 +211,21 @@
 
         if (message_object.hasOwnProperty('manager_name')) {
             const messageAutor = document.createElement('p');
+            messageAutor.classList.add('message-manager-name');
             messageAutor.innerText = message_object.manager_name;
             messageElement.appendChild(messageAutor);
         }
 
         const messageText = document.createElement('p');
+        messageText.classList.add('message-text');
         messageText.innerText = message_object.message_text;
         messageElement.appendChild(messageText);
+
+        const messageDate = document.createElement('p');
+        messageDate.classList.add('message-date');
+        messageDate.innerText = message_object.date;
+        messageElement.appendChild(messageDate);
+
         messagesList.appendChild(messageElement);
         messageElement.scrollIntoView({behavior: "smooth"});
     }
@@ -287,27 +300,32 @@
         if (chatItem.hasOwnProperty("photo_uuid")) {
             const attachment_source = '/tg-bot/file?file_uuid=' + chatItem.photo_uuid;
             const photoObject = document.createElement('img');
+            photoObject.classList.add('chat-photo');
             photoObject.src = attachment_source;
             photoObject.width = 50;
             photoObject.height = 50;
             ContactItem.appendChild(photoObject);}
 
         const nameParagraph = document.createElement('p');
+        nameParagraph.classList.add('chat-name');
         nameParagraph.textContent = chatItem.name;
         ContactItem.appendChild(nameParagraph);
 
         // Create and append the <p> elements for the last message text
         const messageParagraph = document.createElement('p');
+        messageParagraph.classList.add('chat-last-message');
         messageParagraph.textContent = chatItem.last_message_text;
         ContactItem.appendChild(messageParagraph);
 
         // Create and append the <p> elements for the last message time
         const timeParagraph = document.createElement('p');
+        timeParagraph.classList.add('chat-last-message-date');
         timeParagraph.textContent = chatItem.last_message_time;
         ContactItem.appendChild(timeParagraph);
 
         if (Number(chatItem.unread_count) !== 0) {
             const UnreadMessagesCount = document.createElement('p');
+            UnreadMessagesCount.classList.add('chat-unread-messages');
             UnreadMessagesCount.textContent = chatItem.unread_count;
             ContactItem.appendChild(UnreadMessagesCount);
         }
@@ -342,12 +360,7 @@
     <div class="main-page-container">
         <div class="contants-list">
             <ul id="contacts" class="contacts-list-object">
-                <!-- <li id="contact-item-object_1" class="contact-item">
-                    <p>Takoj-to chel</p>
-                    <p>Privet</p>
-                    <p>17.05</p>
-                    <p>(7)</p>
-                </li> -->
+
             </ul>
         </div>
         <div class="chat-window">
@@ -357,18 +370,15 @@
             </div>
             <div id="messages_list_box" class="messages-list-box">
                 <ul id="messages-list" class="message-list-object">
-                    <!-- <li class="message-from-client">
-                        <p>Privet tu tut</p>
-                        <p>17.02</p>
-                    </li> -->
+
                 </ul>
             </div>
             <div id="input_chat_box" class="input-chat-bot-object">
 
                 <input id="message-input" class="message-input-form" autocomplete="off" />
-                <button id="message-send-button">Send Message</button>
+                <button id="message-send-button" class="send-message-button">Send Message</button>
                 <input type="file" id="file-input" hidden />
-                <button id="attachment-send-button">Send Attachment</button>
+                <button id="attachment-send-button" class="attach-file-button">Add Attachment</button>
 
                 <ul id="files-attachment-list" class="files-attachment-list-object">
                 </ul>
