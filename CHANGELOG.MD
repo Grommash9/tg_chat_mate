@@ -10,3 +10,7 @@
     - Add logic for handling different Telegram media types for sending and receiving.
     - Endpoints for file managing
     - Login page and login endpoints
+    - storing same files without double recording to database
+    - Local run fix nginx conf file change logic
+    - login design added
+    - Possibility to run project locally
