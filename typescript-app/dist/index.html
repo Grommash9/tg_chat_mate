@@ -9,7 +9,6 @@
     let active_chat = 0
     const socket = io();
     socket.on('new_message', function(message) {
-        getChatListFromApi();
         if (message.hasOwnProperty('manager_name')) {
             var audio = new Audio('mixkit-message-pop-alert-2354.mp3');
             audio.play();
@@ -19,8 +18,10 @@
             audio.play();
         }
         if (String(active_chat) === String(message["chat_id"])) {
+            markChatAsRead(active_chat);
             DisplayMessage(message);
         }
+        getChatListFromApi();
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -31,7 +32,6 @@
     });
 
     function FileUpload() {
-        console.log('file upload?')
         document.getElementById('file-input').click();
 
         document.getElementById('file-input').addEventListener('change', function(event) {
@@ -89,16 +89,12 @@
 
         const fileList = document.getElementById('files-attachment-list');
         const fileAttachedList = fileList.querySelectorAll('li');
-
         fileAttachedList.forEach(fileAttached => {
             file_attachment_id = fileAttached.id
         })
 
-
         let message_text_input = document.getElementById('message-input');
-
         let message_text = message_text_input.value;
-        console.log(message_text, active_chat)
         const payload = {
         "chat_id": active_chat,
         "text": message_text,
@@ -130,12 +126,8 @@
 
         
     function loadChatMessages(chat_id) {
-        var authToken = getCookie("AUTHToken");
         fetch('/tg-bot/get-messages/' + chat_id, {
             method: 'GET',
-            headers: {
-            'AuthorizationToken': authToken,
-        }
         }
         )
                 .then(response => {
@@ -146,7 +138,6 @@
                             return response.json(); // Parse JSON response
                         })
                         .then(data => {
-                            // Display the data
                             console.log('Data received:', data);
                             displayChatHistory(data); // Function to handle the display of data
                         })
@@ -198,7 +189,6 @@
             else if (message_object.attachment.mime_type.startsWith('application/')) {
                 // Extract the file extension for display, if available
                 const fileExtension = message_object.attachment.file_name.split('.').pop() || 'file';
-                console.log(fileExtension)
                 // Create an icon or text to indicate the file type
                 const fileIcon = document.createElement('span');
                 fileIcon.innerText = `${fileExtension.toUpperCase()} File`; // Display the file extension
@@ -221,7 +211,6 @@
         }
 
         const messageText = document.createElement('p');
-        console.log(message_object)
         messageText.innerText = message_object.message_text;
         messageElement.appendChild(messageText);
         messagesList.appendChild(messageElement);
@@ -241,14 +230,8 @@
     }
 
     function getChatListFromApi() {
-        var authToken = getCookie("AUTHToken");
-        console.log(authToken)
-
         fetch('/tg-bot/chat-list', {
             method: 'GET',
-            headers: {
-            'AuthorizationToken': authToken,
-        }
         })
                 .then(response => {
                     if (!response.status === 200) {
@@ -258,7 +241,6 @@
                     return response.json(); // Parse JSON response
                 })
                 .then(data => {
-                    // Display the data
                     console.log('Data received:', data);
                     displayDialogList(data); // Function to handle the display of data
                 })
@@ -266,6 +248,27 @@
                     console.error('There has been a problem with your fetch operation:', error);
                 });
     }
+
+    function markChatAsRead(chat_id) {
+        const payload = {"chat_id": chat_id}
+        fetch(`/tg-bot/mark-chat-as-read`, {
+        method: 'POST', // Set the method to POST
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+        })
+        .then(response => {
+        if (response.status === 200) {
+            return response.json().then(data => {
+            console.log('Mark as read', data);})
+        } else {
+            return response.json().then(data => {
+                alert(`Error: ${data["result"]}`);
+                console.error('Error:', data["result"]);
+            })
+        }});}
+    
 
     function displayDialogList(chat_list) {
         const contacList = document.getElementById('contacts');
@@ -302,13 +305,14 @@
         const timeParagraph = document.createElement('p');
         timeParagraph.textContent = chatItem.last_message_time;
         ContactItem.appendChild(timeParagraph);
-        
-        const UnreadMessagesCount = document.createElement('p');
-        UnreadMessagesCount.textContent = chatItem.unread_count;
-        ContactItem.appendChild(UnreadMessagesCount);
+
+        if (Number(chatItem.unread_count) !== 0) {
+            const UnreadMessagesCount = document.createElement('p');
+            UnreadMessagesCount.textContent = chatItem.unread_count;
+            ContactItem.appendChild(UnreadMessagesCount);
+        }
         contacList.appendChild(ContactItem);
 
-        
         });
         let contactListItems = document.querySelectorAll('#contacts li');
 
@@ -318,11 +322,13 @@
                 contactListItems.forEach((item) => {
                 item.classList.remove('active-contact');
                 });
-            console.log('Item clicked:', this.textContent);
             let uniqueNumber = this.id.split('_')[1];
             console.log("Unique chat ID:", uniqueNumber);
             loadChatMessages(uniqueNumber);
-
+            console.log("Messages loaded!", uniqueNumber);
+            markChatAsRead(uniqueNumber);
+            getChatListFromApi();
+            console.log("Chats updated!", uniqueNumber);
             this.classList.add('active-contact');
             active_chat = uniqueNumber
             });
