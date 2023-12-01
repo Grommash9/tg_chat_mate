@@ -10,7 +10,9 @@
     const socket = io();
     socket.on('new_message', function(message) {
         getChatListFromApi();
-        DisplayMessage(message);
+        if (String(active_chat) === String(message["chat_id"])) {
+            DisplayMessage(message);
+        }
     });
 
     document.addEventListener('DOMContentLoaded', function() {
