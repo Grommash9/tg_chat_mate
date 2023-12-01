@@ -9,7 +9,7 @@ from support_bot.db.collection_names import (
 
 
 def new_message(
-    message: Message, unread=False, attachment: dict = False, location: dict = False
+    message: Message, unread=False, attachment: dict = False, location: dict = False, manager_name: str = None
 ):
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
@@ -26,6 +26,8 @@ def new_message(
         post["attachment"] = attachment
     if location:
         post["location"] = location
+    if manager_name:
+        post["manager_name"] = manager_name
     collection.insert_one(post).inserted_id
     return post
 

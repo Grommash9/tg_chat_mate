@@ -27,6 +27,15 @@ app.get('/main.css', (req, res) => {
   res.sendFile(path.join(__dirname, 'main.css'));
 });
 
+
+app.get('/mixkit-correct-answer-tone-2870.wav', (req, res) => {
+  res.sendFile(path.join(__dirname, 'mixkit-correct-answer-tone-2870.wav'));
+});
+
+app.get('/mixkit-message-pop-alert-2354.mp3', (req, res) => {
+  res.sendFile(path.join(__dirname, 'mixkit-message-pop-alert-2354.mp3'));
+});
+
 app.get('/normal.css', (req, res) => {
   res.sendFile(path.join(__dirname, 'normal.css'));
 });
@@ -74,7 +83,7 @@ app.get('/login', (req, res) => {
 app.post('/send-message', (req, res) => {
   const { message } = req.body;
   console.log(req.body);
-  io.emit('new_message', { message_text: message["message_text"], chat_id: message["chat_id"], from_user: message["from_user"], unread: message["unread"], attachment: message["attachment"], location: message["location"] });
+  io.emit('new_message', { message_text: message["message_text"], chat_id: message["chat_id"], from_user: message["from_user"], unread: message["unread"], attachment: message["attachment"], location: message["location"], manager_name: message["manager_name"] });
   res.status(200).send('Message sent to all clients');
 });
 
