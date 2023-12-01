@@ -4,7 +4,7 @@ import uuid
 from aiohttp import web
 from aiohttp.web_request import Request
 from pymongo import DESCENDING, MongoClient
-
+import hashlib
 from support_bot import db
 from support_bot.misc import set_cors_headers, web_routes, DOMAIN, bot
 
@@ -23,11 +23,21 @@ async def file_uploading(request: Request):
             return set_cors_headers(response)
     
     data = await request.read()
+    file_hash = hashlib.sha256(data).hexdigest()
+
+    existing_file = db.files.find_file_by_hash(file_hash)
+    if existing_file:
+        response = web.json_response(
+            {"error": "file already exists!", "file_id": existing_file["_id"]}, status=201
+        )
+        return set_cors_headers(response)
+    
     file_uuid = str(uuid.uuid4())
     filename = request.headers.get("X-Filename")
     content_type = request.headers.get("Content-Type", "application/octet-stream")
     file_document = {
         "_id": file_uuid,
+        "hash": file_hash,
         "filename": filename,
         "content_type": content_type,
         "binary_data": data,

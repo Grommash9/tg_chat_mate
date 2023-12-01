@@ -16,3 +16,9 @@ def get_file(uuid):
     collection = db[FILES_COLLECTION]
     file_document = collection.find_one({"_id": uuid})
     return file_document
+
+def find_file_by_hash(hash):
+    db = get_mongo_db()
+    collection = db[FILES_COLLECTION]
+    file_document = collection.find_one({"hash": hash})
+    return file_document

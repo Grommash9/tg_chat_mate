@@ -83,7 +83,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                if (data.error && data.error === 'file uploaded!') {
+                if (data.error && data.error === 'file uploaded!' || data.error === 'file already exists!') {
                     const fileList = document.getElementById('files-attachment-list');
                     fileList.innerHTML = ''; 
                     const listItem = document.createElement('li');
