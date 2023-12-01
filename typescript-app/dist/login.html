@@ -19,53 +19,43 @@
           function SignIn () {
             let email_input = document.getElementById("login-input-object")
             let password_input = document.getElementById("password-input-object")
-            if (email_input.value.length > 5  || password_input.value.length > 5) {
-              console.log(email_input.value)
-              console.log(password_input.value)
-              let payload = {"user_name": email_input.value, "password": password_input.value}
-              fetch(`/tg-bot/login`, {
-              method: 'POST', // Set the method to POST
-              headers: {
-                  'Content-Type': 'application/json' // Set the headers to inform the server that you're sending JSON
-              },
-              body: JSON.stringify(payload) // Stringify your payload and set it in the body property
-              })
-              .then(response => {
-              if (!response.status === 200) {
-                  password_input.value = ""
-                  throw new Error('Network response was not ok');
-              }
-              
-              return response.json(); // Parse the response as JSON if necessary
-              })
-              .then(data => {
-              password_input.value = ""
-              setCookie("AUTHToken", data["token"], 7)
-              console.log('Success:', data);
-              window.location.replace("/");
-              })
-              .catch((error) => {
-              password_input.value = ""
-              console.error('Error:', error);
-              });
+            let payload = {"user_name": email_input.value, "password": password_input.value}
+            fetch(`/tg-bot/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+            }).then(response => {
+              if (response.status === 200) {
+                  return response.json().then(data => {
+                    password_input.value = ""
+                    setCookie("AUTHToken", data["token"], 7)
+                    console.log('Success:', data);
+                    window.location.replace("/");})
+                  }
+              else {
+                return response.json().then(data => {
+                password_input.value = ""
+                alert(`Error: ${data["error"]}`);
+                console.error('Error:', data["error"]);})
+              }})
 
-              function setCookie(name, value, daysToLive) {
-                var cookieValue = encodeURIComponent(value);
-                var cookie = name + "=" + cookieValue;
+          function setCookie(name, value, daysToLive) {
+            var cookieValue = encodeURIComponent(value);
+            var cookie = name + "=" + cookieValue;
 
-                if (typeof daysToLive === "number") {
-                    cookie += "; max-age=" + (daysToLive*24*60*60);
-                    cookie += "; path=/";
-                }
-
-                // Set the cookie
-                document.cookie = cookie;
+            if (typeof daysToLive === "number") {
+                cookie += "; max-age=" + (daysToLive*24*60*60);
+                cookie += "; path=/";
             }
 
-            }
-              
-
+            // Set the cookie
+            document.cookie = cookie;}
           }
+              
+
+          
     </script>
   </head>
   <body>
