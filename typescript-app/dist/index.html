@@ -10,7 +10,6 @@
     const socket = io();
     socket.on('new_message', function(message) {
         getChatListFromApi();
-
         if (message.hasOwnProperty('manager_name')) {
             var audio = new Audio('mixkit-message-pop-alert-2354.mp3');
             audio.play();
@@ -19,7 +18,6 @@
             var audio = new Audio('mixkit-correct-answer-tone-2870.wav');
             audio.play();
         }
-        
         if (String(active_chat) === String(message["chat_id"])) {
             DisplayMessage(message);
         }
