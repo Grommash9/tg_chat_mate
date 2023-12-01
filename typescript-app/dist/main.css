@@ -4,6 +4,11 @@ html, body {
   padding: 0;
 }
 
+/* hide scroll bar */
+::-webkit-scrollbar {
+  display: none;
+}
+
 .main-page-container {
     display: flex;
     height: 100%;
@@ -21,7 +26,8 @@ html, body {
     min-width: 200px;
     border: 2px solid gray;
     overflow-y: scroll;
-    /* your styles for sidebar */
+    -ms-overflow-style: none; /* hide scroll bar for some browsers */
+    scrollbar-width: none; /* hide scroll bar for some browsers */
   }
   
   .chat-window {
@@ -29,6 +35,8 @@ html, body {
     border: 2px solid gray;
     display: flex;
     flex-direction: column;
+    -ms-overflow-style: none; /* hide scroll bar for some browsers */
+    scrollbar-width: none; /* hide scroll bar for some browsers */
     
     
     
