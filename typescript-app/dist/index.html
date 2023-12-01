@@ -280,6 +280,14 @@
         if (String(active_chat) === String(chatItem.user_id)) {
             ContactItem.classList.add('active-contact');
         }
+        
+        if (chatItem.hasOwnProperty("photo_uuid")) {
+            const attachment_source = '/tg-bot/file?file_uuid=' + chatItem.photo_uuid;
+            const photoObject = document.createElement('img');
+            photoObject.src = attachment_source;
+            photoObject.width = 50;
+            photoObject.height = 50;
+            ContactItem.appendChild(photoObject);}
 
         const nameParagraph = document.createElement('p');
         nameParagraph.textContent = chatItem.name;
