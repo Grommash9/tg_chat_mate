@@ -323,12 +323,15 @@
         timeParagraph.textContent = chatItem.last_message_time;
         ContactItem.appendChild(timeParagraph);
 
-        if (Number(chatItem.unread_count) !== 0) {
+        if (Number(active_chat) !== Number(chatItem.user_id)) {
+            if (Number(chatItem.unread_count) !== 0) {
             const UnreadMessagesCount = document.createElement('p');
             UnreadMessagesCount.classList.add('chat-unread-messages');
             UnreadMessagesCount.textContent = chatItem.unread_count;
             ContactItem.appendChild(UnreadMessagesCount);
         }
+        }
+
         contacList.appendChild(ContactItem);
 
         });
