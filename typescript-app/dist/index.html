@@ -202,6 +202,8 @@
                 audioObject.src = attachment_source;
                 audioObject.controls = true;
                 messageElement.appendChild(audioObject);}
+            
+            
                 
             else if (message_object.attachment.mime_type.startsWith('application/')) {
                 const fileExtension = message_object.attachment.file_name.split('.').pop() || 'file';
@@ -220,6 +222,24 @@
                 downloadLink.download = message_object.attachment.file_name; // Suggest a default filename for download
                 messageElement.appendChild(EmptyNewLine)
                 messageElement.appendChild(downloadLink);}
+        }
+
+        if (message_object.hasOwnProperty("location")) {
+            var url = "https://www.google.com/maps?q=" + message_object.location.latitude + "," + message_object.location.longitude;
+            var embedUrl = "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12090.442629191114!2d" + message_object.location.longitude + "!3d" + message_object.location.latitude + "!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1651254363314!5m2!1sen!2s";
+            const mapLinkeble = document.createElement('a');
+            mapLinkeble.href = url
+            const mapIframe = document.createElement('iframe');
+            mapIframe.id = "mapPreview"
+            mapIframe.classList.add('map-preview');
+            mapIframe.src = embedUrl;
+            mapLinkeble.appendChild(mapIframe);
+            messageElement.appendChild(mapLinkeble);
+
+            const locationCoordinatesText = document.createElement('p');
+            locationCoordinatesText.classList.add('location-coordinates');
+            locationCoordinatesText.innerText = message_object.location.latitude + "," + message_object.location.longitude;
+            messageElement.appendChild(locationCoordinatesText);
         }
 
         if (message_object.hasOwnProperty('manager_name')) {
@@ -243,6 +263,7 @@
         messageElement.scrollIntoView({behavior: "smooth"});
     }
 
+    
 
     function getCookie(name) {
     var cookieArr = document.cookie.split(";");
