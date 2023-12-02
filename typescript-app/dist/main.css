@@ -147,8 +147,8 @@ html, body {
   }
 
   .chat-unread-messages {
-    background-color: blue;
-    padding: 8px;
+    background-color: gray;
+    padding: 5px;
     border-radius: 100%;
   }
 
