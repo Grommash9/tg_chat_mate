@@ -3,7 +3,7 @@ from aiogram.types import Message
 from aiogram.utils.markdown import hbold
 
 from support_bot import db
-from support_bot.misc import router, upload_file_to_db_using_file_id
+from support_bot.misc import router, upload_file_to_db_using_file_id, send_update_to_socket
 
 
 @router.message(CommandStart())
@@ -11,8 +11,13 @@ async def command_start_handler(message: Message) -> None:
     if message.chat.type != "private":
         return
     db.user.new_user(message.from_user)
-    db.message.new_message(message, unread=True)
+    message_document = db.message.new_message(message, unread=True)
     await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
+
+    try:
+        await send_update_to_socket(message_document)
+    except Exception as e:
+        await message.answer(f"Manager delivery error! {str(e)}")
 
     try:
         profile_photos = await message.from_user.get_profile_photos(0, 1)
