@@ -25,6 +25,7 @@ html, body {
   }
   .contants-list {
     width: 20%;
+    min-width: 350px;
     border: 2px solid gray;
     overflow-y: scroll;
     -ms-overflow-style: none; /* hide scroll bar for some browsers */
@@ -121,7 +122,8 @@ html, body {
 
   .chat-name {
     font-weight: bold;
-    /* display: inline; */
+    display: inline;
+    margin-right: 10px;
   }
 
   .chat-last-message {
@@ -132,12 +134,22 @@ html, body {
   .chat-last-message-date {
     font-size: 8px;
     color: gray;
-    /* display: inline; */
+    display: inline;
   }
 
   .message-text{
     overflow-wrap: break-word;
     max-width: 600px;
+  }
+
+  .unread-messages-container {
+    margin-top: 10px;
+  }
+
+  .chat-unread-messages {
+    background-color: blue;
+    padding: 8px;
+    border-radius: 100%;
   }
 
   .location-coordinates {
@@ -150,9 +162,10 @@ html, body {
 
   }
 
-  .chat-name-and-date-container {
+  .name-date-message-container {
     display: inline;
     flex-direction: row;
+    margin-top: 10px;
   }
 
   .chat-last-message-text-container {

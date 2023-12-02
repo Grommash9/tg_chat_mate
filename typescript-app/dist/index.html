@@ -347,41 +347,39 @@
 
         ContactItem.appendChild(chatPhotoContainer);
 
-        const nameAndDateDiv = document.createElement('div');
-        nameAndDateDiv.classList.add('chat-name-and-date-container');
+        const nameAndDateAndLastMessageDiv = document.createElement('div');
+        nameAndDateAndLastMessageDiv.classList.add('name-date-message-container');
 
         const nameParagraph = document.createElement('p');
         nameParagraph.classList.add('chat-name');
         nameParagraph.textContent = chatItem.name;
-        nameAndDateDiv.appendChild(nameParagraph);
+        nameAndDateAndLastMessageDiv.appendChild(nameParagraph);
         
         const timeParagraph = document.createElement('p');
         timeParagraph.classList.add('chat-last-message-date');
         timeParagraph.textContent = chatItem.last_message_time;
-        nameAndDateDiv.appendChild(timeParagraph);
-
-        ContactItem.appendChild(nameAndDateDiv);
-
-        // Create and append the <p> elements for the last message text
-        const messageTextContainer = document.createElement('div');
-        messageTextContainer.classList.add('chat-last-message-text-container');
-
+        nameAndDateAndLastMessageDiv.appendChild(timeParagraph);
+        
         const messageParagraph = document.createElement('p');
         messageParagraph.classList.add('chat-last-message');
         messageParagraph.textContent = chatItem.last_message_text;
 
-        messageTextContainer.appendChild(messageParagraph);
-        ContactItem.appendChild(messageTextContainer);
+        nameAndDateAndLastMessageDiv.appendChild(messageParagraph);
+        ContactItem.appendChild(nameAndDateAndLastMessageDiv);
 
         // Create and append the <p> elements for the last message time
-        
+       
 
         if (Number(active_chat) !== Number(chatItem.user_id)) {
+            
             if (Number(chatItem.unread_count) !== 0) {
+            const unreadMessagesContainer = document.createElement('div');
+            unreadMessagesContainer.classList.add('unread-messages-container');
             const UnreadMessagesCount = document.createElement('p');
             UnreadMessagesCount.classList.add('chat-unread-messages');
             UnreadMessagesCount.textContent = chatItem.unread_count;
-            ContactItem.appendChild(UnreadMessagesCount);
+            unreadMessagesContainer.appendChild(UnreadMessagesCount);
+            ContactItem.appendChild(unreadMessagesContainer);
         }
         }
 
@@ -393,21 +391,24 @@
         contactListItems.forEach((li) => {
 
             li.addEventListener('click', function() {
-                contactListItems.forEach((item) => {
-                item.classList.remove('active-contact');
-                });
-            let uniqueNumber = this.id.split('_')[1];
-            console.log("Unique chat ID:", uniqueNumber);
-            loadChatMessages(uniqueNumber);
-            console.log("Messages loaded!", uniqueNumber);
-            markChatAsRead(uniqueNumber);
-            getChatListFromApi();
-            console.log("Chats updated!", uniqueNumber);
-            this.classList.add('active-contact');
+                let uniqueNumber = this.id.split('_')[1];
 
-            var inputPanel = document.getElementById('input_chat_box');
-            inputPanel.style.display = "flex";
-            active_chat = uniqueNumber
+                if (Number(active_chat) !== Number(uniqueNumber)) {
+                    contactListItems.forEach((item) => {
+                    item.classList.remove('active-contact');
+                    });
+                
+                    console.log("Unique chat ID:", uniqueNumber);
+                    loadChatMessages(uniqueNumber);
+                    console.log("Messages loaded!", uniqueNumber);
+                    markChatAsRead(uniqueNumber);
+                    console.log("Chats updated!", uniqueNumber);
+                    this.classList.add('active-contact');
+
+                    var inputPanel = document.getElementById('input_chat_box');
+                    inputPanel.style.display = "flex";
+                    active_chat = uniqueNumber
+                    }
             });
         });
     }

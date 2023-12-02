@@ -29,6 +29,7 @@ async def mark_message_as_read(request: Request):
 
 @web_routes.post(f"/tg-bot/mark-chat-as-read")
 async def mark_chat_as_read(request: Request):
+    payload = await request.json()
     token = request.cookies.get("AUTHToken")
     if not token:
         token = request.headers.get("AuthorizationToken")
