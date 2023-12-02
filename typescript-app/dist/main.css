@@ -135,6 +135,11 @@ html, body {
     /* display: inline; */
   }
 
+  .location-coordinates {
+    font-size: 8px;
+    color: gray;
+  }
+
   .chat-photo-container {
     padding: 13px;
 
