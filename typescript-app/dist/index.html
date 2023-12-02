@@ -29,6 +29,15 @@
         let message_send_button = document.getElementById('message-send-button');
         message_send_button.addEventListener("click", sendMessageToCustomer);
         document.getElementById('attachment-send-button').addEventListener('click', FileUpload);
+
+
+        let message_input = document.getElementById("message-input")
+            message_input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    sendMessageToCustomer();
+                }
+            });
     });
 
     function FileUpload() {

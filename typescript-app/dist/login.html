@@ -14,6 +14,23 @@
       document.addEventListener('DOMContentLoaded', function() {
               let login_button = document.getElementById('login-button-object');
               login_button.addEventListener("click", SignIn);
+
+              let email_input = document.getElementById("login-input-object")
+              let password_input = document.getElementById("password-input-object")
+
+              email_input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    SignIn();
+                }
+            });
+              password_input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    SignIn();
+                }
+            });
+                
           });
       
           function SignIn () {
