@@ -27,7 +27,7 @@ async def new_message_from_manager(request: Request):
                 message = await bot.send_video(chat_id, caption=message_text, video=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
             if file_attachment["content_type"].startswith("audio/"):
                 message = await bot.send_audio(chat_id, caption=message_text, audio=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
-            if file_attachment["content_type"].startswith("application/") or file_attachment["content_type"].startswith("text/") or file_attachment["image/svg+xml"] == "image/svg+xml":
+            if file_attachment["content_type"].startswith("application/") or file_attachment["content_type"].startswith("text/") or file_attachment["content_type"] == "image/svg+xml":
                 message = await bot.send_document(chat_id, caption=message_text, document=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
             if file_attachment["content_type"].startswith("image/"):
                 message = await bot.send_photo(chat_id, caption=message_text, photo=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
