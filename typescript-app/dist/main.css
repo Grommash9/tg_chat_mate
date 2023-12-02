@@ -91,6 +91,7 @@ html, body {
       margin-right: 10px;
       margin-top: 10px;
       height: 40px;
+      border-radius: 20%;
   }
 
   .send-message-button{
@@ -103,6 +104,7 @@ html, body {
     margin-right: 10px;
     margin-top: 10px;
     height: 40px;
+    border-radius: 20%;
   }
 
   /* CONTACT */
