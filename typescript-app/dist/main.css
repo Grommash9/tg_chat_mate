@@ -24,7 +24,7 @@ html, body {
     padding: 0;
   }
   .contants-list {
-    min-width: 200px;
+    width: 20%;
     border: 2px solid gray;
     overflow-y: scroll;
     -ms-overflow-style: none; /* hide scroll bar for some browsers */
@@ -32,7 +32,7 @@ html, body {
   }
   
   .chat-window {
-    width: 70%;
+    width: 80%;
     border: 2px solid gray;
     display: flex;
     flex-direction: column;
