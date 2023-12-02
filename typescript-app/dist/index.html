@@ -177,11 +177,15 @@
             const attachment_source = '/tg-bot/file?file_uuid=' + message_object.attachment.file_id;
             if (message_object.attachment.mime_type.startsWith('image/')) {
                 const photoObject = document.createElement('img');
+                const photoObjectUrl = document.createElement('a');
+                photoObjectUrl.href = attachment_source
                 photoObject.classList.add('message-image');
                 photoObject.src = attachment_source;
                 photoObject.width = 200;
                 photoObject.height = 300;
-                messageElement.appendChild(photoObject);}
+                photoObjectUrl.appendChild(photoObject)
+                messageElement.appendChild(photoObjectUrl)
+                ;}
             else if (message_object.attachment.mime_type.startsWith('video/')) {
                 // If it's a video, create a video element
                 const videoObject = document.createElement('video');
