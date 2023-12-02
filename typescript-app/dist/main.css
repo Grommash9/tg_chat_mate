@@ -2,12 +2,14 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: #FFFFFF;
 }
 
 /* hide scroll bar */
 ::-webkit-scrollbar {
   display: none;
 }
+
 
 .main-page-container {
     display: flex;
@@ -44,8 +46,7 @@ html, body {
   }
 
   .active-contact {
-    background-color: gray;
-    color: black;
+    background-color: #F7F7F7;
   }
 
   
@@ -60,17 +61,94 @@ html, body {
   }
   .input-chat-bot-object{
     width: 100%;
-    display: block;
+    display: none;
+    background-color: aliceblue;
+    border-style: ridge;
+    margin-top: 10px;
   }
+  
   .message-input-form{
-    width: 100%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    background-color: #F7F7F7;
+    padding: 10px;
   }
+
+  .attach-file-button svg {
+    margin-right: 5px; /* Adds space to the right of the SVG icon */
+  }
+
+  .attach-file-button {
+      display: inline;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background-color: #CECECE;
+      width: 30px;
+      margin-right: 10px;
+      margin-top: 10px;
+      height: 40px;
+  }
+
+  .send-message-button{
+    display: inline;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: #CECECE;
+    width: 30px;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 40px;
+  }
+
+  /* CONTACT */
   .contact-item {
     border: 0.5px solid blue;
     list-style-type: none;
-    
-    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
   }
+
+  .chat-photo {
+    border-radius: 50%;
+  }
+
+  .chat-name {
+    font-weight: bold;
+    /* display: inline; */
+  }
+
+  .chat-last-message {
+    font-style: italic;
+    /* display: inline; */
+  }
+
+  .chat-last-message-date {
+    font-size: 8px;
+    color: gray;
+    /* display: inline; */
+  }
+
+  .chat-photo-container {
+    padding: 13px;
+
+  }
+
+  .chat-name-and-date-container {
+    display: inline;
+    flex-direction: row;
+  }
+
+  .chat-last-message-text-container {
+    /* display: inline; */
+  }
+
+
   .message-from-client {
     list-style-type: none;
     float: left;
