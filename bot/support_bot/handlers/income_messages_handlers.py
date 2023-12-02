@@ -10,6 +10,9 @@ from support_bot.misc import (
 
 @router.message(F.video)
 async def video_message_from_user(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+        
     attachment = await upload_file_to_db_using_file_id(message.video.file_id)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
@@ -20,6 +23,9 @@ async def video_message_from_user(message: types.Message) -> None:
 
 @router.message(F.video_note)
 async def video_note_message_from_user(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+    
     attachment = await upload_file_to_db_using_file_id(
         message.video_note.file_id
     )
@@ -32,6 +38,9 @@ async def video_note_message_from_user(message: types.Message) -> None:
 
 @router.message(F.animation)
 async def animation_message_from_user(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+    
     attachment = await upload_file_to_db_using_file_id(
         message.animation.file_id
     )
@@ -44,6 +53,9 @@ async def animation_message_from_user(message: types.Message) -> None:
 
 @router.message(F.location)
 async def location_message_from_user(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+    
     message_document= db.message.new_message(
         message,
         unread=True,
@@ -60,6 +72,9 @@ async def location_message_from_user(message: types.Message) -> None:
 
 @router.message(F.voice)
 async def voice_message_from_user(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+    
     attachment = await upload_file_to_db_using_file_id(message.voice.file_id)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
@@ -70,6 +85,9 @@ async def voice_message_from_user(message: types.Message) -> None:
 
 @router.message(F.sticker)
 async def sticker_message_from_user(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+    
     attachment = await upload_file_to_db_using_file_id(message.sticker.file_id)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
@@ -80,6 +98,9 @@ async def sticker_message_from_user(message: types.Message) -> None:
 
 @router.message(F.document)
 async def document_message_from_user(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+    
     attachment = await upload_file_to_db_using_file_id(message.document.file_id, message.document.file_name)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
@@ -90,6 +111,9 @@ async def document_message_from_user(message: types.Message) -> None:
 
 @router.message(F.photo)
 async def photo_message_from_user(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+    
     attachment = await upload_file_to_db_using_file_id(
         message.photo[-1].file_id,
     )
@@ -102,6 +126,9 @@ async def photo_message_from_user(message: types.Message) -> None:
 
 @router.message()
 async def echo_handler(message: types.Message) -> None:
+    if message.chat.type != "private":
+        return
+    
     message_document = db.message.new_message(message, unread=True)
     try:
         await send_update_to_socket(message_document)
