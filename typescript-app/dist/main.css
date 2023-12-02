@@ -135,6 +135,11 @@ html, body {
     /* display: inline; */
   }
 
+  .message-text{
+    overflow-wrap: break-word;
+    max-width: 600px;
+  }
+
   .location-coordinates {
     font-size: 8px;
     color: gray;
