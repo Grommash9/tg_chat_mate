@@ -1,10 +1,19 @@
-/* Base layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+}
+
+/* hide scroll bar */
+::-webkit-scrollbar {
+  display: none;
+}
+
+
 .main-page-container {
     display: flex;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 5%;
-    height: 600px;
+    height: 100%;
   }
   .contacts-list-object {
     margin: 0;
@@ -15,12 +24,11 @@
     padding: 0;
   }
   .contants-list {
-    width: 30%;
     min-width: 200px;
     border: 2px solid gray;
     overflow-y: scroll;
-    height: 600px;
-    /* your styles for sidebar */
+    -ms-overflow-style: none; /* hide scroll bar for some browsers */
+    scrollbar-width: none; /* hide scroll bar for some browsers */
   }
   
   .chat-window {
@@ -28,6 +36,8 @@
     border: 2px solid gray;
     display: flex;
     flex-direction: column;
+    -ms-overflow-style: none; /* hide scroll bar for some browsers */
+    scrollbar-width: none; /* hide scroll bar for some browsers */
     
     
     
@@ -35,8 +45,7 @@
   }
 
   .active-contact {
-    background-color: gray;
-    color: black;
+    background-color: #F7F7F7;
   }
 
   
@@ -51,25 +60,116 @@
   }
   .input-chat-bot-object{
     width: 100%;
-    display: block;
+    display: none;
+    background-color: aliceblue;
+    border-style: ridge;
+    margin-top: 10px;
   }
+  
   .message-input-form{
-    width: 100%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    background-color: #F7F7F7;
+    padding: 10px;
   }
+
+  .attach-file-button svg {
+    margin-right: 5px; /* Adds space to the right of the SVG icon */
+  }
+
+  .attach-file-button {
+      display: inline;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background-color: #CECECE;
+      width: 30px;
+      margin-right: 10px;
+      margin-top: 10px;
+      height: 40px;
+      border-radius: 20%;
+  }
+
+  .send-message-button{
+    display: inline;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: #CECECE;
+    width: 30px;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 40px;
+    border-radius: 20%;
+  }
+
+  /* CONTACT */
   .contact-item {
     border: 0.5px solid blue;
     list-style-type: none;
-    
-    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
   }
+
+  .chat-photo {
+    border-radius: 50%;
+  }
+
+  .chat-name {
+    font-weight: bold;
+    /* display: inline; */
+  }
+
+  .chat-last-message {
+    font-style: italic;
+    /* display: inline; */
+  }
+
+  .chat-last-message-date {
+    font-size: 8px;
+    color: gray;
+    /* display: inline; */
+  }
+
+  .chat-photo-container {
+    padding: 13px;
+
+  }
+
+  .chat-name-and-date-container {
+    display: inline;
+    flex-direction: row;
+  }
+
+  .chat-last-message-text-container {
+    /* display: inline; */
+  }
+
+
   .message-from-client {
     list-style-type: none;
     float: left;
     display: block;
     clear: both; /* Ensures that each message is on a new line */
-    border: 0.5px solid yellow;
+    border: 0.5px solid #C8E0FD;
     border-radius: 20px;
-    
+    background: #C8E0FD;
+    padding: 10px;
+    margin: 5px;
+  }
+
+  .message-date {
+    font-size: 10px;
+    color: gray;
+  }
+
+  .message-manager-name {
+    font-size: 10px;
+    color: gray;
   }
   
   .message-from-manager {
@@ -77,29 +177,13 @@
     float: right;
     display: block;
     clear: both; /* Ensures that each message is on a new line */
-    border: 0.5px solid purple;
+    border: 0.5px solid #F5F5F5;
     border-radius: 20px;
+    padding: 10px;
+    margin: 5px;
+    background:  #F5F5F5;
   }
   .back-button {
     display: none; /* show back button on mobile */
-  }
-  
-
-  @media (max-width: 768px) {
-    .main-page-container {
-        min-width: 768px;
-    }
-    .contants-list {
-        width: 80%;
-      }
-  
-    .chat-window {
-      display: none; /* hide sidebar on mobile */
-      width: 100%;
-    }
-  
-    .back-button {
-      display: block; /* show back button on mobile */
-    }
   }
   
