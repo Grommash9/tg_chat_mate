@@ -408,7 +408,11 @@
                     this.classList.add('active-contact');
 
                     var unreadMessagesContainer = document.getElementById(`unread-message-container_${uniqueNumber}`);
-                    unreadMessagesContainer.style.display = "none";
+                    if (unreadMessagesContainer) {
+                        unreadMessagesContainer.style.display = "none";
+                    } else {
+                        console.log("Element not found");
+                    }
 
                     var inputPanel = document.getElementById('input_chat_box');
                     inputPanel.style.display = "flex";
