@@ -343,8 +343,8 @@
             photoObject.width = 50;
             photoObject.height = 50;
             chatPhotoContainer.appendChild(photoObject);
-        
         }
+    
 
         ContactItem.appendChild(chatPhotoContainer);
 
@@ -376,6 +376,7 @@
             if (Number(chatItem.unread_count) !== 0) {
             const unreadMessagesContainer = document.createElement('div');
             unreadMessagesContainer.classList.add('unread-messages-container');
+            unreadMessagesContainer.id = `unread-message-container_${chatItem.user_id}`;
             const UnreadMessagesCount = document.createElement('p');
             UnreadMessagesCount.classList.add('chat-unread-messages');
             UnreadMessagesCount.textContent = chatItem.unread_count;
@@ -405,6 +406,9 @@
                     markChatAsRead(uniqueNumber);
                     console.log("Chats updated!", uniqueNumber);
                     this.classList.add('active-contact');
+
+                    var unreadMessagesContainer = document.getElementById(`unread-message-container_${chatItem.user_id}`);
+                    unreadMessagesContainer.style.display = "none";
 
                     var inputPanel = document.getElementById('input_chat_box');
                     inputPanel.style.display = "flex";
