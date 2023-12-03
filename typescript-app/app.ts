@@ -36,6 +36,10 @@ app.get('/user_empty_photo.png', (req, res) => {
   res.sendFile(path.join(__dirname, 'user_empty_photo.png'));
 });
 
+app.get('/manager_empty_photo.png', (req, res) => {
+  res.sendFile(path.join(__dirname, 'manager_empty_photo.png'));
+});
+
 app.get('/mixkit-message-pop-alert-2354.mp3', (req, res) => {
   res.sendFile(path.join(__dirname, 'mixkit-message-pop-alert-2354.mp3'));
 });
