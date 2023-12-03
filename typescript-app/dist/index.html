@@ -407,7 +407,7 @@
                     console.log("Chats updated!", uniqueNumber);
                     this.classList.add('active-contact');
 
-                    var unreadMessagesContainer = document.getElementById(`unread-message-container_${chatItem.user_id}`);
+                    var unreadMessagesContainer = document.getElementById(`unread-message-container_${uniqueNumber}`);
                     unreadMessagesContainer.style.display = "none";
 
                     var inputPanel = document.getElementById('input_chat_box');
