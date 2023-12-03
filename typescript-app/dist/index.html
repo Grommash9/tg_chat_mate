@@ -343,6 +343,14 @@
             photoObject.width = 50;
             photoObject.height = 50;
             chatPhotoContainer.appendChild(photoObject);
+        } else {
+            const attachment_source = "user_empty_photo.png";
+            const photoObject = document.createElement('img');
+            photoObject.classList.add('chat-photo');
+            photoObject.src = attachment_source;
+            photoObject.width = 50;
+            photoObject.height = 50;
+            chatPhotoContainer.appendChild(photoObject);
         }
     
 

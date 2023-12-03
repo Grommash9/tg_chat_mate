@@ -32,6 +32,10 @@ app.get('/mixkit-correct-answer-tone-2870.wav', (req, res) => {
   res.sendFile(path.join(__dirname, 'mixkit-correct-answer-tone-2870.wav'));
 });
 
+app.get('/user_empty_photo.png', (req, res) => {
+  res.sendFile(path.join(__dirname, 'user_empty_photo.png'));
+});
+
 app.get('/mixkit-message-pop-alert-2354.mp3', (req, res) => {
   res.sendFile(path.join(__dirname, 'mixkit-message-pop-alert-2354.mp3'));
 });
