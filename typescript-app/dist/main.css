@@ -4,6 +4,7 @@ html, body {
   padding: 0;
   background-color: #FFFFFF;
   font-family: 'Inter', sans-serif;
+  color: rgba(34, 42, 50, 1);
 }
 p {
   margin: 0;
@@ -41,7 +42,9 @@ img {
   }
   .manager-account-view {
     display: flex;
-    margin: 23px 15px 23px 20px;
+    padding: 15px 15px 15px 15px;
+    margin-bottom: 1rem;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
   }
   .manager-account-photo {
     border-radius: 50%;
@@ -56,8 +59,7 @@ img {
   .contants-list {
     width: 20%;
     min-width: 350px;
-    border-style: none;
-    border-right: 2px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
     overflow-y: scroll;
     -ms-overflow-style: none; /* hide scroll bar for some browsers */
     scrollbar-width: none; /* hide scroll bar for some browsers */
@@ -92,21 +94,24 @@ img {
     height: 600px;
   }
   .input-chat-bot-object{
-    width: 100%;
+    width: 95%;
     display: none;
-    background-color: aliceblue;
-    border-style: ridge;
-    margin-top: 10px;
+    background-color: rgba(249, 249, 249, 1);
+    border-radius: 10px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    margin-top: 2%;
   }
   
   .message-input-form{
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-bottom: 2%;
-    margin-top: 2%;
-    background-color: #F7F7F7;
+    width: 90%;
+    background-color: rgba(249, 249, 249, 1);
+    border-style: none;
+    border-radius: 10px;
     padding: 10px;
+    color: rgba(152, 157, 163, 1);
+    font-size: 12px;
   }
 
   .attach-file-button svg {
@@ -145,6 +150,7 @@ img {
     
     list-style-type: none;
     display: flex;
+    align-items: center;
     flex-direction: row;
     flex-wrap: nowrap;
   }
@@ -158,7 +164,7 @@ img {
     font-size: 12px;
     font-weight: 800;
     display: inline;
-    margin-right: 8px;
+    margin-right: 2px;
   }
 
   .chat-last-message {
@@ -176,9 +182,17 @@ img {
   }
 
   .chat-unread-messages {
-    background-color: gray;
-    padding: 5px;
-    border-radius: 100%;
+    background-color: rgba(200, 224, 253, 1);
+   
+    font-size: 8px;
+    border-radius: 50%;
+    display: block;
+    justify-content: center;
+    text-align: center;
+  }
+  .unread-messages-container {
+    line-height: 20px;
+    width: 20px;
   }
 
   .chat-photo-container {
@@ -188,21 +202,18 @@ img {
   .chat-last-message-text-container {
     /* display: inline; */
   }
-
+  .message-name {
+    font-size: 14px;
+    font-weight: 700;
+  }
   .message-text{
     overflow-wrap: break-word;
+    font-size: 14px;
     max-width: 600px;
   }
-
-  .unread-messages-container {
-    margin-top: 10px;
-  }
-
-
-
   .location-coordinates {
-    font-size: 8px;
-    color: gray;
+    font-size: 10px;
+    color: rgba(34, 42, 50, 0.5);
   }
 
 
@@ -211,7 +222,7 @@ img {
     /* display: inline;
     flex-direction: row;
      */
-    margin-top: 1rem;
+    
   }
 
 
@@ -222,10 +233,11 @@ img {
     display: block;
     clear: both; /* Ensures that each message is on a new line */
     border: 0.5px solid #C8E0FD;
-    border-radius: 20px;
+    border-radius: 10px;
     background: #C8E0FD;
     padding: 10px;
     margin: 5px;
+    margin-left: 2%;
   }
 
   .message-date {
@@ -234,8 +246,8 @@ img {
   }
 
   .message-manager-name {
-    font-size: 10px;
-    color: gray;
+    font-size: 14px;
+    font-weight: 700;
   }
   
   .message-from-manager {
@@ -247,6 +259,7 @@ img {
     border-radius: 20px;
     padding: 10px;
     margin: 5px;
+    margin-right: 3.5%;
     background:  #F5F5F5;
   }
   .back-button {
