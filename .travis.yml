@@ -8,7 +8,7 @@ jobs:
     - stage: ssh_remote_operations
       script:
         - echo "Installing SSH client..."
-        - sudo apt-get install -y ssh
+        - sudo apt-get install -y ssh sshpass
         - echo "Starting SSH operations..."
         - |
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no user@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
