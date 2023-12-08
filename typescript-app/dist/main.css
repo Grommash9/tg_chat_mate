@@ -64,17 +64,17 @@ img {
     -ms-overflow-style: none; /* hide scroll bar for some browsers */
     scrollbar-width: none; /* hide scroll bar for some browsers */
   }
-  
+
   .chat-window {
     width: 80%;
-   
+
     display: flex;
     flex-direction: column;
     -ms-overflow-style: none; /* hide scroll bar for some browsers */
     scrollbar-width: none; /* hide scroll bar for some browsers */
-    
-    
-    
+
+
+
     /* your styles for chat area */
   }
 
@@ -83,7 +83,7 @@ img {
     border-radius: 20px;
   }
 
-  
+
   .top_chat_setting_panel{
     display: block;
   }
@@ -103,15 +103,26 @@ img {
     margin-bottom: 2%;
     margin-top: 2%;
   }
-  
+
   .message-input-form{
     width: 90%;
+    height: 110px;
     background-color: rgba(249, 249, 249, 1);
     border-style: none;
     border-radius: 10px;
     padding: 10px;
     color: rgba(152, 157, 163, 1);
     font-size: 12px;
+
+    /* width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: vertical; */
+
   }
 
   .attach-file-button svg {
@@ -119,7 +130,7 @@ img {
   }
 
   .attach-file-button {
-      display: inline;
+      /* display: inline;
       align-items: center;
       justify-content: center;
       border: none;
@@ -127,8 +138,13 @@ img {
       width: 30px;
       margin-right: 10px;
       margin-top: 10px;
-      height: 40px;
-      border-radius: 20%;
+      height: 40px; */
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    
   }
 
   .send-message-button{
@@ -147,7 +163,7 @@ img {
   /* CONTACT */
   .contact-item {
     margin: 5px;
-    
+
     list-style-type: none;
     display: flex;
     align-items: center;
@@ -157,7 +173,7 @@ img {
 
   .chat-photo {
     border-radius: 50%;
-    
+
   }
 
   .chat-name {
@@ -183,7 +199,7 @@ img {
 
   .chat-unread-messages {
     background-color: rgba(200, 224, 253, 1);
-   
+
     font-size: 8px;
     border-radius: 50%;
     display: block;
@@ -222,7 +238,7 @@ img {
     /* display: inline;
     flex-direction: row;
      */
-    
+
   }
 
 
@@ -249,7 +265,7 @@ img {
     font-size: 14px;
     font-weight: 700;
   }
-  
+
   .message-from-manager {
     list-style-type: none;
     float: right;
@@ -265,4 +281,23 @@ img {
   .back-button {
     display: none; /* show back button on mobile */
   }
-  
+
+.chat-setting {
+  display: flex;
+  padding: 15px 15px 15px 15px;
+  /* margin-bottom: 1rem; */
+  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25); */
+}
+.client-account-photo {
+  border-radius: 50%;
+  margin-right: 15px;
+}
+.client-account-name{
+  font-size: 20px;
+  font-weight: 900;
+  height: 1rem;
+  line-height: 2.5em;
+}
+input[type=text]:focus {
+  outline: none;
+}
