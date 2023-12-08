@@ -11,7 +11,7 @@ jobs:
         - sudo apt-get install -y ssh sshpass
         - echo "Starting SSH operations..."
         - |
-          sshpass -p '$PIPELINE_SERVER_PASSWORD' ssh -o StrictHostKeyChecking=root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+          sshpass -p '$PIPELINE_SERVER_PASSWORD' ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
           echo "Running echo command on remote server..."
           echo "Your command here"
           ENDSSH
