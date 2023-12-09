@@ -1,6 +1,6 @@
 language: python
 
-if: type = push
+if: type = push OR type = pull_request
 
 stages:
   - name: deploy
