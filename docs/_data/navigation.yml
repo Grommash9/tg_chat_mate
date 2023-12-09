@@ -1,0 +1,8 @@
+- title: Home
+  url: /index.md
+- title: Getting Started
+  url: /getting-started.md
+- title: API Reference
+  url: /api-reference.md
+- title: FAQ
+  url: /faq.md
