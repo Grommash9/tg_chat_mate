@@ -5,7 +5,6 @@ if: type = push
 stages:
   - name: deploy
   - name: test
-  - name: cleanup
 
 before_script:
   - sudo apt-get update
@@ -35,23 +34,7 @@ jobs:
           chmod +x install.sh
           ./install.sh
           ENDSSH
-        - sleep 30
-    - stage: test
-      script:
-        - echo "Running tests"
-        - |
-          response=$(curl -k -o /dev/null -s -w "%{http_code}\n" https://$PIPELINE_SERVER_IP_ADDRESS)
-          if [ "$response" -eq 200 ]; then
-            echo "Test Passed: HTTP Status 200 OK"
-          else
-            echo "Test Failed: HTTP Status $response"
-            exit 1
-          fi
-        
-    - stage: cleanup
-      when: always
-      script: skip
-      after_script:
+      after_failure:
         - |
           echo "Removing from test server"
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
@@ -59,4 +42,16 @@ jobs:
           docker compose down
           docker system prune --volumes -a -f
           rm -r /home/tg_chat_mate
-      
+    - stage: test
+      script:
+        - echo "Running tests"
+        - docker exec tg_chat_mate-bot-1 pipenv run python tests/healf_check.py
+      after_failure:
+        - |
+          echo "Removing from test server"
+          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+          cd /home/tg_chat_mate
+          docker compose down
+          docker system prune --volumes -a -f
+          rm -r /home/tg_chat_mate
+            
