@@ -1,0 +1,5 @@
+title: Tg Chat Mate
+
+# Build settings
+theme: minima # or any other theme
+markdown: kramdown

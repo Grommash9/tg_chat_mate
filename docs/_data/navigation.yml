@@ -1,9 +1,9 @@
 - title: Home
-  url: /index.md
+  url: /index
 - title: Getting Started
-  url: /getting-started.md
+  url: /getting-started
 - title: API Reference
-  url: /api-reference.md
+  url: /api-reference
 - title: FAQ
-  url: /faq.md
+  url: /faq
 
