@@ -17,10 +17,6 @@ You should run it like
 ngrok http 80
 ```
 Put the domain from ngrok into `DOMAIN` variable.
-After ngrok reloading url could be changed and you should change `DOMAIN` variable and rebuild nginx container
-```
-docker compose up --build nginx -d
-```
 2. Fill `.env` variables from `.sample.env` example
 3. Run it 
 ```
@@ -34,4 +30,8 @@ docker compose up --build --no-deps -d bot
 or
 ```
 docker compose up --build --no-deps -d typescript-app
+```
+After ngrok reloading url could be changed and you should change `DOMAIN` variable and rebuild nginx container
+```
+docker compose up --build nginx -d
 ```
