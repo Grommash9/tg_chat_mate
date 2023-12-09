@@ -1,7 +1,4 @@
-language: ruby
-rvm:
-  - 2.2
-  - jruby
+language: python
 
 jobs:
   include:
@@ -23,6 +20,11 @@ jobs:
           export MONGO_DATABASE=bot_support_db
           export MONGO_PORT=27017
           export MONGO_HOST=192.168.1.50
+          export BOT_TOKEN=$BOT_TOKEN
+          export MONGO_PASSWORD=$MONGO_PASSWORD
+          export LONG_GOOD_SECRET_KEY=$LONG_GOOD_SECRET_KEY
+          export ROOT_PASSWORD=$ROOT_PASSWORD
+          export BOT_TOKEN=$BOT_TOKEN
           chmod +x install.sh
           ./install.sh
           docker compose down
