@@ -2,15 +2,12 @@ language: python
 
 jobs:
   include:
-    - stage: ssh_remote_operations
+    - stage: deploy_on_test_server
       script:
-        - echo "Installing SSH client..."
         - sudo apt-get install -y ssh sshpass
-        - echo "Starting SSH operations..."
         - |
+          echo "Deploying service on test server"
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
-          echo "Running echo command on remote server..."
-          echo "Your command here"
           cd /home
           git clone https://github.com/Grommash9/tg_chat_mate
           cd tg_chat_mate
@@ -27,12 +24,15 @@ jobs:
           export BOT_TOKEN=$BOT_TOKEN
           chmod +x install.sh
           ./install.sh
-          docker compose down
-          docker compose system prune -a -f
-          cd ..
-          rm -r /home/tg_chat_mate
+          
           ENDSSH
-
+        - sleep 30
+        - |
+          echo "Removing from test server"
+          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+          docker compose down
+          docker system prune -a -f
+          rm -r /home/tg_chat_mate
 stages:
-  - name: ssh_remote_operations
+  - name: deploy_on_test_server
     if: type = push
