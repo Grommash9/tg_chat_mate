@@ -1,6 +1,6 @@
 ## Anonymous Support Bot
 
-<a href="https://wakatime.com/badge/github/Grommash9/anonymous_support_bot"><img src="https://wakatime.com/badge/github/Grommash9/anonymous_support_bot.svg" alt="wakatime"></a>
+[![Build Status](https://app.travis-ci.com/Grommash9/tg_chat_mate.svg?branch=master)](https://app.travis-ci.com/Grommash9/tg_chat_mate)
 
 ## Project Description
 

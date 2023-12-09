@@ -36,8 +36,12 @@ jobs:
           ENDSSH
       after_failure:
         - |
+          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
           echo "Removing from test server"
-          ./clean_up.sh
+          cd /home/tg_chat_mate
+          docker compose down
+          docker system prune --volumes -a -f
+          rm -r /home/tg_chat_mate
           ENDSSH
     - stage: test
       script:
@@ -50,12 +54,18 @@ jobs:
         - |
           echo "Removing from test server"
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
-          ./clean_up.sh
+          cd /home/tg_chat_mate
+          docker compose down
+          docker system prune --volumes -a -f
+          rm -r /home/tg_chat_mate
           ENDSSH
       after_success:
         - |
           echo "Removing from test server"
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
-          ./clean_up.sh
+          cd /home/tg_chat_mate
+          docker compose down
+          docker system prune --volumes -a -f
+          rm -r /home/tg_chat_mate
           ENDSSH
             
