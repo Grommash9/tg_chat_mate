@@ -40,7 +40,7 @@ jobs:
       script:
         - echo "Running tests"
         - |
-          response=$(curl -o /dev/null -s -w "%{http_code}\n" https://$DOMAIN)
+          response=$(curl -o /dev/null -s -w "%{http_code}\n" https://$PIPELINE_SERVER_IP_ADDRESS)
           if [ "$response" -eq 200 ]; then
             echo "Test Passed: HTTP Status 200 OK"
           else
@@ -49,6 +49,7 @@ jobs:
           fi
         
     - stage: cleanup
+      when: always
       script:
         - |
           echo "Removing from test server"
@@ -57,4 +58,4 @@ jobs:
           docker compose down
           docker system prune -a -f
           rm -r /home/tg_chat_mate
-
+      
