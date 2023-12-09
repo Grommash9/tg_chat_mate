@@ -11,17 +11,17 @@ jobs:
           cd /home
           git clone https://github.com/Grommash9/tg_chat_mate
           cd tg_chat_mate
-          export DOMAIN=$PIPELINE_SERVER_IP_ADDRESS
-          export ISSUE_SSL=true
-          export MONGO_USERNAME=root
-          export MONGO_DATABASE=bot_support_db
-          export MONGO_PORT=27017
-          export MONGO_HOST=192.168.1.50
-          export BOT_TOKEN=$BOT_TOKEN
-          export MONGO_PASSWORD=$MONGO_PASSWORD
-          export LONG_GOOD_SECRET_KEY=$LONG_GOOD_SECRET_KEY
-          export ROOT_PASSWORD=$ROOT_PASSWORD
-          export BOT_TOKEN=$BOT_TOKEN
+          echo "DOMAIN=$PIPELINE_SERVER_IP_ADDRESS" >> .env
+          echo "ISSUE_SSL=true" >> .env
+          echo "MONGO_USERNAME=root" >> .env
+          echo "MONGO_DATABASE=bot_support_db" >> .env
+          echo "MONGO_PORT=27017" >> .env
+          echo "MONGO_HOST=192.168.1.50" >> .env
+          echo "BOT_TOKEN=$BOT_TOKEN" >> .env
+          echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
+          echo "LONG_GOOD_SECRET_KEY=$LONG_GOOD_SECRET_KEY" >> .env
+          echo "ROOT_PASSWORD=$ROOT_PASSWORD" >> .env
+          echo "BOT_TOKEN=$BOT_TOKEN" >> .env
           chmod +x install.sh
           ./install.sh
           
