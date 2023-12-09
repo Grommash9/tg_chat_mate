@@ -11,6 +11,7 @@ jobs:
           cd /home
           git clone https://github.com/Grommash9/tg_chat_mate
           cd tg_chat_mate
+          export DOMAIN=$PIPELINE_SERVER_IP_ADDRESS
           echo "DOMAIN=$PIPELINE_SERVER_IP_ADDRESS" >> .env
           echo "ISSUE_SSL=true" >> .env
           echo "MONGO_USERNAME=root" >> .env
@@ -21,7 +22,6 @@ jobs:
           echo "MONGO_PASSWORD=$MONGO_PASSWORD" >> .env
           echo "LONG_GOOD_SECRET_KEY=$LONG_GOOD_SECRET_KEY" >> .env
           echo "ROOT_PASSWORD=$ROOT_PASSWORD" >> .env
-          echo "BOT_TOKEN=$BOT_TOKEN" >> .env
           chmod +x install.sh
           ./install.sh
           
