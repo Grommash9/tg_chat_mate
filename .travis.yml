@@ -30,6 +30,7 @@ jobs:
         - |
           echo "Removing from test server"
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+          cd /home/tg_chat_mate
           docker compose down
           docker system prune -a -f
           rm -r /home/tg_chat_mate
