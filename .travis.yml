@@ -5,7 +5,6 @@ if: type = push
 stages:
   - name: deploy
   - name: test
-  - name: cleanup
 
 before_script:
   - sudo apt-get update
@@ -40,22 +39,29 @@ jobs:
       script:
         - echo "Running tests"
         - |
-          response=$(curl -o /dev/null -s -w "%{http_code}\n" https://$PIPELINE_SERVER_IP_ADDRESS)
+          response=$(curl -k -o /dev/null -s -w "%{http_code}\n" https://$PIPELINE_SERVER_IP_ADDRESS)
           if [ "$response" -eq 200 ]; then
             echo "Test Passed: HTTP Status 200 OK"
           else
             echo "Test Failed: HTTP Status $response"
             exit 1
           fi
-        
-    - stage: cleanup
-      when: always
-      script:
-        - |
-          echo "Removing from test server"
-          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
-          cd /home/tg_chat_mate
-          docker compose down
-          docker system prune -a -f
-          rm -r /home/tg_chat_mate
-      
+
+
+after_success:
+  - echo "All stages completed successfully, initiating cleanup."
+  - |
+    sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+    cd /home/tg_chat_mate
+    docker compose down
+    docker system prune -a -f
+    rm -r /home/tg_chat_mate
+
+after_failure:
+  - echo "A stage has failed, initiating cleanup."
+  - |
+    sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+    cd /home/tg_chat_mate
+    docker compose down
+    docker system prune -a -f
+    rm -r /home/tg_chat_mate
