@@ -1,10 +1,20 @@
 language: python
 
+if: type = push
+
+stages:
+  - name: deploy
+  - name: test
+  - name: cleanup
+
+before_script:
+  - sudo apt-get update
+  - sudo apt-get install -y ssh sshpass curl
+
 jobs:
   include:
-    - stage: deploy_on_test_server
+    - stage: deploy
       script:
-        - sudo apt-get install -y ssh sshpass
         - |
           echo "Deploying service on test server"
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << ENDSSH
@@ -24,9 +34,22 @@ jobs:
           echo "ROOT_PASSWORD=$ROOT_PASSWORD" >> .env
           chmod +x install.sh
           ./install.sh
-          
           ENDSSH
         - sleep 30
+    - stage: test
+      script:
+        - echo "Running tests"
+        - |
+          response=$(curl -o /dev/null -s -w "%{http_code}\n" https://$DOMAIN)
+          if [ "$response" -eq 200 ]; then
+            echo "Test Passed: HTTP Status 200 OK"
+          else
+            echo "Test Failed: HTTP Status $response"
+            exit 1
+          fi
+        
+    - stage: cleanup
+      script:
         - |
           echo "Removing from test server"
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
@@ -34,6 +57,4 @@ jobs:
           docker compose down
           docker system prune -a -f
           rm -r /home/tg_chat_mate
-stages:
-  - name: deploy_on_test_server
-    if: type = push
+
