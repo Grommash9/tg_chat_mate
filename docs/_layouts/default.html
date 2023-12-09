@@ -1,5 +1,57 @@
 <!DOCTYPE html>
 <html>
+    <meta charset="UTF-8">
+  <title>{{ page.title }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background: #eaeaea; /* Light gray background */
+      color: #333;
+    }
+
+    header {
+      background: #333;
+      color: #fff;
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    nav ul {
+      padding: 0;
+      list-style: none;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 20px;
+      background: #fff; /* White background for the main content */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adding a subtle shadow */
+      margin: 20px;
+      border-radius: 5px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      background: #333;
+      color: #fff;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 <head>
   <meta charset="UTF-8">
   <title>{{ page.title }}</title>
@@ -20,7 +72,7 @@
   </main>
 
   <footer>
-    <p>© {{ site.time | date: '%Y' }} Your Site Name</p>
+    <p>© {{ site.time | date: '%Y' }} Tg Chat Mate</p>
   </footer>
 </body>
 </html>

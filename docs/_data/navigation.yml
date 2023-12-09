@@ -1,9 +1,12 @@
 - title: Home
-  url: /index
+  url: /tg_chat_mate/index
 - title: Getting Started
-  url: /getting-started
+  url: /tg_chat_mate/getting-started
 - title: API Reference
-  url: /api-reference
+  url: /tg_chat_mate/api-reference
 - title: FAQ
-  url: /faq
-
+  url: /tg_chat_mate/faq
+- title: Deploy
+  url: /tg_chat_mate/deploy
+- title: Running Locally
+  url: /tg_chat_mate/running-locally
