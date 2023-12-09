@@ -14,6 +14,21 @@ jobs:
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
           echo "Running echo command on remote server..."
           echo "Your command here"
+          cd /home
+          git clone https://github.com/Grommash9/tg_chat_mate
+          cd tg_chat_mate
+          export DOMAIN=$PIPELINE_SERVER_IP_ADDRESS
+          export ISSUE_SSL=true
+          export MONGO_USERNAME=root
+          export MONGO_DATABASE=bot_support_db
+          export MONGO_PORT=27017
+          export MONGO_HOST=192.168.1.50
+          chmod +x install.sh
+          ./install.sh
+          docker compose down
+          docker compose system prune -a -f
+          cd ..
+          rm -r /home/tg_chat_mate
           ENDSSH
 
 stages:
