@@ -7,7 +7,7 @@ jobs:
         - sudo apt-get install -y ssh sshpass
         - |
           echo "Deploying service on test server"
-          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << ENDSSH
           cd /home
           git clone https://github.com/Grommash9/tg_chat_mate
           cd tg_chat_mate
