@@ -1,1 +1,1 @@
-from . import start, income_messages_handlers
+from . import start, income_messages_handlers # noqa
