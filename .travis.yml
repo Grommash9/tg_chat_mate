@@ -26,7 +26,7 @@ jobs:
         - pipenv run black --version
         - pipenv run isort --version
         - echo "Running autoflake on support_bot and tests files"
-        - pipenv run autoflake --recursive --remove-unused-variables --remove-all-unused-imports support_bot tests
+        - pipenv run autoflake --recursive --check --remove-unused-variables --remove-all-unused-imports support_bot tests
         - echo "Running mypy, black, and isort checks"
         - pipenv run mypy .
         - pipenv run black --check support_bot tests
