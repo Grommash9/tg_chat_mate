@@ -15,7 +15,7 @@ jobs:
   include:
     - stage: pre-deploy  # New pre-deploy stage for running python_check.sh
       script:
-        - cd /bot
+        - cd bot
         - pip install pipenv
         - pipenv install --dev --skip-lock
         - pipenv shell
