@@ -1,5 +1,5 @@
 language: python
-python: 3.10-dev
+python: 3.10.13-dev
 if: type = push OR type = pull_request
 
 stages:
