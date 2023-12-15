@@ -14,7 +14,7 @@ before_script:
 
 jobs:
   include:
-    - stage: pre-deploy  # New pre-deploy stage for running python_check.sh
+    - stage: pre-deploy
       script:
         - export PIPENV_VERBOSITY=-1
         - cd bot
