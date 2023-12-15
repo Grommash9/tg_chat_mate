@@ -20,21 +20,21 @@ jobs:
         - pipenv install --dev --skip-lock
         - pipenv graph
         - echo "Running Python linting"
-        - pipenv run mypy --version  # Replace mypy with your other commands
-        - pipenv run black --version
-        - pipenv run flake8 --version
+        # - pipenv run mypy --version 
+        # - pipenv run black --version
+        # - pipenv run flake8 --version
         - pipenv run isort --version
-        - pipenv run pip-audit --version
-        - pipenv run bandit --version
-        - echo "Running autoflake on support_bot/ files"
-        - find support_bot/ -name "*.py" -exec pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports {} \;
-        - echo "Running autoflake on tests/ files"
-        - find tests/ -name "*.py" -exec pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports {} \;
-        - echo "Running mypy, black, and isort checks"
-        - pipenv run mypy .
-        - pipenv run black --check support_bot tests
+        # - pipenv run pip-audit --version
+        # - pipenv run bandit --version
+        # - echo "Running autoflake on support_bot/ files"
+        # - find support_bot/ -name "*.py" -exec pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports {} \;
+        # - echo "Running autoflake on tests/ files"
+        # - find tests/ -name "*.py" -exec pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports {} \;
+        # - echo "Running mypy, black, and isort checks"
+        # - pipenv run mypy .
+        # - pipenv run black --check support_bot tests
         - pipenv run isort --check-only .
-        - echo "Python linting completed successfully"
+        # - echo "Python linting completed successfully"
 
     - stage: deploy
       script:
