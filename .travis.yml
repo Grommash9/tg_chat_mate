@@ -25,9 +25,9 @@ jobs:
         - pipenv run black --version
         - pipenv run isort --version
         - echo "Running autoflake on support_bot/ files"
-        - find support_bot/ -name "*.py" -exec pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports {} \;
+        - find support_bot/ -name "*.py" -exec sh -c 'if pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports "$1"; then exit 1; else exit 0; fi' {} \;
         - echo "Running autoflake on tests/ files"
-        - find tests/ -name "*.py" -exec pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports {} \;
+        - find tests/ -name "*.py" -exec sh -c 'if pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports "$1"; then exit 1; else exit 0; fi' {} \;
         - echo "Running mypy, black, and isort checks"
         - pipenv run mypy .
         - pipenv run black --check support_bot tests
