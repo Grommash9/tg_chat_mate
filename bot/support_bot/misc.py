@@ -45,12 +45,12 @@ def set_cors_headers(response):
 
 
 async def upload_file_to_db_using_file_id(file_id: str, base_file_name: str | None = None):
-    file_info = await bot.get_file(file_id) # type: ignore[union-attr]
-    photo_binary = await bot.download_file(file_info.file_path) # type: ignore[arg-type]
-    photo_bytes = photo_binary.getvalue() # type: ignore[union-attr]
-    mime_type = magic.from_buffer(photo_bytes, mime=True) # type: ignore[union-attr]
-    file_name = file_info.file_path.split("/")[-1] # type: ignore[union-attr]
-    file_data = await upload_file_to_db(Binary(photo_binary.getvalue()), file_name, mime_type) # type: ignore[union-attr]
+    file_info = await bot.get_file(file_id)  # type: ignore[union-attr]
+    photo_binary = await bot.download_file(file_info.file_path)  # type: ignore[arg-type]
+    photo_bytes = photo_binary.getvalue()  # type: ignore[union-attr]
+    mime_type = magic.from_buffer(photo_bytes, mime=True)  # type: ignore[union-attr]
+    file_name = file_info.file_path.split("/")[-1]  # type: ignore[union-attr]
+    file_data = await upload_file_to_db(Binary(photo_binary.getvalue()), file_name, mime_type)  # type: ignore[union-attr]
     return {"file_id": file_data["file_id"], "mime_type": mime_type, "file_name": base_file_name}
 
 

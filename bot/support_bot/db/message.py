@@ -22,7 +22,7 @@ def new_message(
         "chat_id": message.chat.id,
         "message_text": message.text if message.text is not None else message.caption,
         "date": message.date,
-        "from_user": message.from_user.id, # type: ignore[union-attr]
+        "from_user": message.from_user.id,  # type: ignore[union-attr]
     }
     if unread:
         post["unread"] = unread
@@ -149,5 +149,5 @@ def get_chat_list():
     ]
 
     # Execute the aggregation pipeline
-    results = list(messages_collection.aggregate(pipeline)) # type: ignore[arg-type]
+    results = list(messages_collection.aggregate(pipeline))  # type: ignore[arg-type]
     return results
