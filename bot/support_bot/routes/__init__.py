@@ -1,4 +1,4 @@
-from . import (
+from . import (  # noqa
     chat_list,
     file_routes,
     get_message,

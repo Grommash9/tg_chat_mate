@@ -1,1 +1,1 @@
-from . import db, handlers, misc, routes
+from . import db, handlers, misc, routes  # noqa

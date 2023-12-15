@@ -1,1 +1,1 @@
-from . import client, collection_names, files, manager, message, user
+from . import client, collection_names, files, manager, message, user  # noqa

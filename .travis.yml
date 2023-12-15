@@ -1,8 +1,10 @@
 language: python
-
+dist: jammy
+python: 3.10.13
 if: type = push OR type = pull_request
 
 stages:
+  - name: pre-deploy
   - name: deploy
   - name: test
 
@@ -12,6 +14,25 @@ before_script:
 
 jobs:
   include:
+    - stage: pre-deploy
+      script:
+        - export PIPENV_VERBOSITY=-1
+        - cd bot
+        - pip install pipenv
+        - pipenv install --dev --skip-lock
+        - pipenv graph
+        - echo "Running Python linting"
+        - pipenv run mypy --version 
+        - pipenv run black --version
+        - pipenv run isort --version
+        - echo "Running autoflake on support_bot and tests files"
+        - pipenv run autoflake --recursive --check --ignore-init-module-imports --remove-unused-variables --remove-all-unused-imports support_bot tests
+        - echo "Running mypy, black, and isort checks"
+        - pipenv run mypy .
+        - pipenv run black --check support_bot tests
+        - pipenv run isort --check-only .
+        - echo "Python linting completed successfully"
+
     - stage: deploy
       script:
         - |
@@ -69,3 +90,7 @@ jobs:
           rm -r /home/tg_chat_mate
           ENDSSH
             
+cache:
+  directories:
+    - /bot/.venv  # Cache the virtual environment created by Pipenv
+    - $HOME/.cache/pip  # Cache Pipenv packages

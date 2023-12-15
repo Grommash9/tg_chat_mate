@@ -9,7 +9,11 @@ from support_bot.db.collection_names import (
 
 
 def new_message(
-    message: Message, unread=False, attachment: dict = False, location: dict = False, manager_name: str = None
+    message: Message,
+    unread=False,
+    attachment: dict | None = None,
+    location: dict | None = None,
+    manager_name: str | None = None,
 ):
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
@@ -18,7 +22,7 @@ def new_message(
         "chat_id": message.chat.id,
         "message_text": message.text if message.text is not None else message.caption,
         "date": message.date,
-        "from_user": message.from_user.id,
+        "from_user": message.from_user.id,  # type: ignore[union-attr]
     }
     if unread:
         post["unread"] = unread
@@ -43,9 +47,7 @@ def mark_as_read(chat_id, message_id):
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
     filter_condition = {"message_id": int(message_id), "chat_id": int(chat_id)}
-    update_result = collection.update_one(
-        filter_condition, {"$unset": {"unread": ""}}
-    )
+    update_result = collection.update_one(filter_condition, {"$unset": {"unread": ""}})
     return update_result.modified_count
 
 
@@ -53,9 +55,7 @@ def mark_chat_as_read(chat_id):
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
     filter_condition = {"chat_id": int(chat_id)}
-    update_result = collection.update_many(
-        filter_condition, {"$unset": {"unread": ""}}
-    )
+    update_result = collection.update_many(filter_condition, {"$unset": {"unread": ""}})
     return update_result.modified_count
 
 
@@ -79,9 +79,7 @@ def get_chat_list():
                 "last_message_text": {"$first": "$message_text"},
                 "last_message_time": {"$first": "$date"},
                 # Add all messages to an array to calculate unread count later
-                "messages": {
-                    "$push": {"unread": "$unread", "message_text": "$message_text"}
-                },
+                "messages": {"$push": {"unread": "$unread", "message_text": "$message_text"}},
             }
         },
         # Add a field to count unread messages
@@ -130,7 +128,7 @@ def get_chat_list():
             "$addFields": {
                 "username": "$user_details.username",
                 "name": "$user_details.name",
-                "photo_uuid": "$user_details.photo_uuid"
+                "photo_uuid": "$user_details.photo_uuid",
             }
         },
         # Sort by the last message time in descending order
@@ -151,5 +149,5 @@ def get_chat_list():
     ]
 
     # Execute the aggregation pipeline
-    results = list(messages_collection.aggregate(pipeline))
+    results = list(messages_collection.aggregate(pipeline))  # type: ignore[arg-type]
     return results
