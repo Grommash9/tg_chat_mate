@@ -3,7 +3,11 @@ from aiogram.types import Message
 from aiogram.utils.markdown import hbold
 
 from support_bot import db
-from support_bot.misc import router, upload_file_to_db_using_file_id, send_update_to_socket
+from support_bot.misc import (
+    router,
+    send_update_to_socket,
+    upload_file_to_db_using_file_id,
+)
 
 
 @router.message(CommandStart())
@@ -26,4 +30,3 @@ async def command_start_handler(message: Message) -> None:
         db.user.add_photo(message.from_user, photo_file_db_uuid["file_id"])
     except Exception as e:
         print(f"Error on getting photo for user {message.from_user.id}: {str(e)}")
-    

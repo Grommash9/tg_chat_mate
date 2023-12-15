@@ -1,9 +1,9 @@
+from aiogram.types import BufferedInputFile
 from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
 from support_bot.misc import bot, send_update_to_socket, set_cors_headers, web_routes
-from aiogram.types import BufferedInputFile
 
 
 @web_routes.post(f"/tg-bot/new-message")
@@ -15,7 +15,7 @@ async def new_message_from_manager(request: Request):
     if manager is None:
         response = web.json_response({"result": "AuthorizationToken"}, status=401)
         return set_cors_headers(response)
-    
+
     payload = await request.json()
     chat_id = payload.get("chat_id")
     message_text = payload.get("text")
@@ -24,16 +24,47 @@ async def new_message_from_manager(request: Request):
         if file_attachment_id is not None:
             file_attachment = db.files.get_file(file_attachment_id)
             if file_attachment["content_type"].startswith("video/"):
-                message = await bot.send_video(chat_id, caption=message_text, video=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
+                message = await bot.send_video(
+                    chat_id,
+                    caption=message_text,
+                    video=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]),
+                )
             elif file_attachment["content_type"].startswith("audio/"):
-                message = await bot.send_audio(chat_id, caption=message_text, audio=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
-            elif file_attachment["content_type"].startswith("application/") or file_attachment["content_type"].startswith("text/") or file_attachment["content_type"] == "image/svg+xml":
-                message = await bot.send_document(chat_id, caption=message_text, document=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
+                message = await bot.send_audio(
+                    chat_id,
+                    caption=message_text,
+                    audio=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]),
+                )
+            elif (
+                file_attachment["content_type"].startswith("application/")
+                or file_attachment["content_type"].startswith("text/")
+                or file_attachment["content_type"] == "image/svg+xml"
+            ):
+                message = await bot.send_document(
+                    chat_id,
+                    caption=message_text,
+                    document=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]),
+                )
             elif file_attachment["content_type"].startswith("image/"):
-                message = await bot.send_photo(chat_id, caption=message_text, photo=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]))
+                message = await bot.send_photo(
+                    chat_id,
+                    caption=message_text,
+                    photo=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]),
+                )
             else:
-                raise FileNotFoundError(f"Can't process {file_attachment['content_type']} file type with telegram, please contact administrator")
-            message_document = db.message.new_message(message, unread=False, attachment={"file_id": file_attachment_id, "mime_type": file_attachment["content_type"], "file_name": file_attachment["filename"]}, manager_name=manager["full_name"])
+                raise FileNotFoundError(
+                    f"Can't process {file_attachment['content_type']} file type with telegram, please contact administrator"
+                )
+            message_document = db.message.new_message(
+                message,
+                unread=False,
+                attachment={
+                    "file_id": file_attachment_id,
+                    "mime_type": file_attachment["content_type"],
+                    "file_name": file_attachment["filename"],
+                },
+                manager_name=manager["full_name"],
+            )
         else:
             message = await bot.send_message(chat_id, message_text)
             message_document = db.message.new_message(message, unread=False, manager_name=manager["full_name"])

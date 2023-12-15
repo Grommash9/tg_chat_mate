@@ -15,7 +15,7 @@ async def video_message_from_user(message: types.Message) -> None:
 
     if message.video is None:
         return
-        
+
     attachment = await upload_file_to_db_using_file_id(message.video.file_id)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
@@ -31,10 +31,8 @@ async def video_note_message_from_user(message: types.Message) -> None:
 
     if message.video_note is None:
         return
-    
-    attachment = await upload_file_to_db_using_file_id(
-        message.video_note.file_id
-    )
+
+    attachment = await upload_file_to_db_using_file_id(message.video_note.file_id)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
         await send_update_to_socket(message_document)
@@ -49,10 +47,8 @@ async def animation_message_from_user(message: types.Message) -> None:
 
     if message.animation is None:
         return
-    
-    attachment = await upload_file_to_db_using_file_id(
-        message.animation.file_id
-    )
+
+    attachment = await upload_file_to_db_using_file_id(message.animation.file_id)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
         await send_update_to_socket(message_document)
@@ -67,8 +63,8 @@ async def location_message_from_user(message: types.Message) -> None:
 
     if message.location is None:
         return
-    
-    message_document= db.message.new_message(
+
+    message_document = db.message.new_message(
         message,
         unread=True,
         location={
@@ -89,7 +85,7 @@ async def voice_message_from_user(message: types.Message) -> None:
 
     if message.voice is None:
         return
-    
+
     attachment = await upload_file_to_db_using_file_id(message.voice.file_id)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
@@ -105,7 +101,7 @@ async def sticker_message_from_user(message: types.Message) -> None:
 
     if message.sticker is None:
         return
-    
+
     attachment = await upload_file_to_db_using_file_id(message.sticker.file_id)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
@@ -121,7 +117,7 @@ async def document_message_from_user(message: types.Message) -> None:
 
     if message.document is None:
         return
-    
+
     attachment = await upload_file_to_db_using_file_id(message.document.file_id, message.document.file_name)
     message_document = db.message.new_message(message, unread=True, attachment=attachment)
     try:
@@ -137,7 +133,7 @@ async def photo_message_from_user(message: types.Message) -> None:
 
     if message.photo is None:
         return
-    
+
     attachment = await upload_file_to_db_using_file_id(
         message.photo[-1].file_id,
     )
@@ -152,7 +148,7 @@ async def photo_message_from_user(message: types.Message) -> None:
 async def echo_handler(message: types.Message) -> None:
     if message.chat.type != "private":
         return
-    
+
     message_document = db.message.new_message(message, unread=True)
     try:
         await send_update_to_socket(message_document)

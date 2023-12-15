@@ -1,4 +1,5 @@
 import re
+import ssl
 from os import getenv
 
 import aiohttp
@@ -9,7 +10,7 @@ from aiogram.types import FSInputFile, Message
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import ClientSession, FormData, web
 from bson import Binary
-import ssl
+
 from support_bot import db
 
 ip_address_pattern = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$")
@@ -35,12 +36,11 @@ ssl_context = ssl.create_default_context()
 ssl_context.check_hostname = False
 ssl_context.verify_mode = ssl.CERT_NONE
 
+
 def set_cors_headers(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS, GET"
-    response.headers[
-        "Access-Control-Allow-Headers"
-    ] = "Content-Type, Authorization, AuthorizationToken, X-Filename"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, AuthorizationToken, X-Filename"
     return response
 
 
@@ -50,18 +50,14 @@ async def upload_file_to_db_using_file_id(file_id: str, base_file_name: str | No
     photo_bytes = photo_binary.getvalue()
     mime_type = magic.from_buffer(photo_bytes, mime=True)
     file_name = file_info.file_path.split("/")[-1]
-    file_data = await upload_file_to_db(
-        Binary(photo_binary.getvalue()), file_name, mime_type
-    )
+    file_data = await upload_file_to_db(Binary(photo_binary.getvalue()), file_name, mime_type)
     return {"file_id": file_data["file_id"], "mime_type": mime_type, "file_name": base_file_name}
 
 
 async def upload_file_to_db(binary, file_name, mime_type):
     headers = {"X-Filename": file_name, "Content-Type": mime_type}
     async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=ssl_context)) as session:
-        async with session.post(
-            f"https://{DOMAIN}/tg-bot/file_upload", headers=headers, data=binary
-        ) as response:
+        async with session.post(f"https://{DOMAIN}/tg-bot/file_upload", headers=headers, data=binary) as response:
             print(await response.text())
             return await response.json()
 

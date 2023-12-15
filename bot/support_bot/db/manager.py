@@ -91,10 +91,7 @@ def get_manager_by_token(token: str | None):
     # Check if the token is in the manager's tokens array and not expired
     current_time = datetime.datetime.utcnow()
     for manager_token in manager.get("tokens", []):
-        if (
-            manager_token["token"] == token
-            and manager_token["expiration_date"] > current_time
-        ):
+        if manager_token["token"] == token and manager_token["expiration_date"] > current_time:
             return manager  # Token is valid and not expired
 
     return None  # Token is not valid or is expired
