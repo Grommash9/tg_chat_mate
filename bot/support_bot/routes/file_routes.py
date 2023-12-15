@@ -98,6 +98,6 @@ async def get_file(request: Request):
 
 
 @web_routes.options("/tg-bot/file")
-async def get_file(request: Request):
+async def get_file_options(request: Request):
     response = web.Response(status=200)
     return set_cors_headers(response)

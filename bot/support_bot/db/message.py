@@ -9,7 +9,7 @@ from support_bot.db.collection_names import (
 
 
 def new_message(
-    message: Message, unread=False, attachment: dict = False, location: dict = False, manager_name: str = None
+    message: Message, unread=False, attachment: dict | None = None, location: dict | None = None, manager_name: str | None = None
 ):
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]

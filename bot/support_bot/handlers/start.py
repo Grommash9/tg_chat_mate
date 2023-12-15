@@ -10,6 +10,7 @@ from support_bot.misc import router, upload_file_to_db_using_file_id, send_updat
 async def command_start_handler(message: Message) -> None:
     if message.chat.type != "private":
         return
+    assert message.from_user is not None
     db.user.new_user(message.from_user)
     message_document = db.message.new_message(message, unread=True)
     await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")

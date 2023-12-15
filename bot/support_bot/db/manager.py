@@ -45,7 +45,7 @@ def check_password(username: str, password: str) -> bool:
     return bcrypt.checkpw(password.encode("utf-8"), hashed_password)
 
 
-def create_token_for_manager(username: str, days=7) -> str:
+def create_token_for_manager(username: str, days=7) -> str | None:
     db = get_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
     manager = collection.find_one({"username": username})
@@ -67,7 +67,9 @@ def create_token_for_manager(username: str, days=7) -> str:
     return token
 
 
-def get_manager_by_token(token: str):
+def get_manager_by_token(token: str | None):
+    if token is None:
+        return token
     db = get_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
     try:

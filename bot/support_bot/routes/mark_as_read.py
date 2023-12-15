@@ -56,6 +56,6 @@ async def mark_message_as_read_option(request: Request):
 
 
 @web_routes.options("/tg-bot/mark-chat-as-read")
-async def mark_message_as_read_option(request: Request):
+async def mark_chat_as_read_option(request: Request):
     response = web.Response(status=200)
     return set_cors_headers(response)
