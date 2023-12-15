@@ -18,8 +18,9 @@ jobs:
         - cd /bot
         - pip install pipenv
         - pipenv install --dev --skip-lock
+        - pipenv shell
         - echo "Running Python linting"
-        - ./python_check.sh  # Run your python_check.sh script
+        - ./python_code_checks.sh  # Run your python_check.sh script
         - echo "Python linting completed successfully"
 
     - stage: deploy
