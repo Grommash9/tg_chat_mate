@@ -1,13 +1,11 @@
 import hashlib
 import io
 import uuid
-
 from aiohttp import web
 from aiohttp.web_request import Request
-from pymongo import DESCENDING, MongoClient
 
 from support_bot import db
-from support_bot.misc import DOMAIN, bot, set_cors_headers, web_routes
+from support_bot.misc import DOMAIN, set_cors_headers, web_routes
 
 
 @web_routes.post(f"/tg-bot/file_upload")
@@ -70,7 +68,7 @@ async def get_file(request: Request):
     filename = file_document["filename"]
     content_type = file_document["content_type"]
     file_like_object = io.BytesIO(file_bytes)
-    response = web.StreamResponse()
+    response = web.StreamResponse() # type: ignore[assignment]
     response.headers["CONTENT-DISPOSITION"] = f'attachment; filename="{filename}"'
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS, GET"

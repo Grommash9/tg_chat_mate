@@ -1,6 +1,3 @@
-from aiogram.types import Message
-from pymongo import DESCENDING
-
 from support_bot.db.client import get_mongo_db
 from support_bot.db.collection_names import FILES_COLLECTION
 
