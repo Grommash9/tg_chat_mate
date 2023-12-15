@@ -21,7 +21,7 @@ jobs:
         - pipenv graph
         - echo "Running Python linting"
         # - pipenv run mypy --version 
-        # - pipenv run black --version
+        - pipenv run black --version
         # - pipenv run flake8 --version
         - pipenv run isort --version
         # - pipenv run pip-audit --version
@@ -32,7 +32,7 @@ jobs:
         # - find tests/ -name "*.py" -exec pipenv run autoflake --in-place --remove-unused-variables --remove-all-unused-imports {} \;
         # - echo "Running mypy, black, and isort checks"
         # - pipenv run mypy .
-        # - pipenv run black --check support_bot tests
+        - pipenv run black --check support_bot tests
         - pipenv run isort --check-only .
         # - echo "Python linting completed successfully"
 
