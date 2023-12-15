@@ -17,7 +17,7 @@ requests = "*"
 [dev-packages]
 autoflake = "*"
 mypy = "==1.6.1"
-black = "==22.3.0"
+black = "==22.12.0"
 isort = "==5.12.0"
 flake8 = "==6.1.0"
 bandit = "==1.7.5"
