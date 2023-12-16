@@ -38,7 +38,7 @@ async def manager_check_token(request: Request):
     if manager is None:
         response = web.json_response(
             {"error": "Wrong credentials"}, status=401
-        )  #
+        )
         return set_cors_headers(response)
     response = web.json_response({"token": token}, status=200)
     return set_cors_headers(response)
