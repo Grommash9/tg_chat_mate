@@ -19,7 +19,9 @@ def add_photo(user: User, photo_uuid):
     db = get_mongo_db()
     collection = db[USER_COLLECTION_NAME]
 
-    collection.update_one({"_id": user.id}, {"$set": {"photo_uuid": photo_uuid}})
+    collection.update_one(
+        {"_id": user.id}, {"$set": {"photo_uuid": photo_uuid}}
+    )
 
 
 def get_all_users():

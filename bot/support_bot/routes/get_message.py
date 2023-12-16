@@ -12,7 +12,9 @@ async def get_messages_list(request: Request):
         token = request.headers.get("AuthorizationToken")
     manager = db.manager.get_manager_by_token(token)
     if manager is None:
-        response = web.json_response({"error": "AuthorizationToken", "messages_list": []}, status=401)
+        response = web.json_response(
+            {"error": "AuthorizationToken", "messages_list": []}, status=401
+        )
         return set_cors_headers(response)
 
     chat_id = int(request.match_info["chat_id"])

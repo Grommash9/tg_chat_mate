@@ -52,7 +52,9 @@ def create_token_for_manager(username: str, days=7) -> str | None:
     if not manager:
         return None
 
-    expiration_date = datetime.datetime.utcnow() + datetime.timedelta(days=days)
+    expiration_date = datetime.datetime.utcnow() + datetime.timedelta(
+        days=days
+    )
     token = jwt.encode(
         {"username": username, "exp": expiration_date},
         LONG_GOOD_SECRET_KEY,
@@ -62,7 +64,11 @@ def create_token_for_manager(username: str, days=7) -> str | None:
     # Save the token in the manager's tokens array
     collection.update_one(
         {"_id": manager["_id"]},
-        {"$push": {"tokens": {"token": token, "expiration_date": expiration_date}}},
+        {
+            "$push": {
+                "tokens": {"token": token, "expiration_date": expiration_date}
+            }
+        },
     )
     return token
 
@@ -91,7 +97,10 @@ def get_manager_by_token(token: str | None):
     # Check if the token is in the manager's tokens array and not expired
     current_time = datetime.datetime.utcnow()
     for manager_token in manager.get("tokens", []):
-        if manager_token["token"] == token and manager_token["expiration_date"] > current_time:
+        if (
+            manager_token["token"] == token
+            and manager_token["expiration_date"] > current_time
+        ):
             return manager  # Token is valid and not expired
 
     return None  # Token is not valid or is expired

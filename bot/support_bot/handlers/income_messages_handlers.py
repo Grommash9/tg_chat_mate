@@ -17,7 +17,9 @@ async def video_message_from_user(message: types.Message) -> None:
         return
 
     attachment = await upload_file_to_db_using_file_id(message.video.file_id)
-    message_document = db.message.new_message(message, unread=True, attachment=attachment)
+    message_document = db.message.new_message(
+        message, unread=True, attachment=attachment
+    )
     try:
         await send_update_to_socket(message_document)
     except Exception as e:
@@ -32,8 +34,12 @@ async def video_note_message_from_user(message: types.Message) -> None:
     if message.video_note is None:
         return
 
-    attachment = await upload_file_to_db_using_file_id(message.video_note.file_id)
-    message_document = db.message.new_message(message, unread=True, attachment=attachment)
+    attachment = await upload_file_to_db_using_file_id(
+        message.video_note.file_id
+    )
+    message_document = db.message.new_message(
+        message, unread=True, attachment=attachment
+    )
     try:
         await send_update_to_socket(message_document)
     except Exception as e:
@@ -48,8 +54,12 @@ async def animation_message_from_user(message: types.Message) -> None:
     if message.animation is None:
         return
 
-    attachment = await upload_file_to_db_using_file_id(message.animation.file_id)
-    message_document = db.message.new_message(message, unread=True, attachment=attachment)
+    attachment = await upload_file_to_db_using_file_id(
+        message.animation.file_id
+    )
+    message_document = db.message.new_message(
+        message, unread=True, attachment=attachment
+    )
     try:
         await send_update_to_socket(message_document)
     except Exception as e:
@@ -87,7 +97,9 @@ async def voice_message_from_user(message: types.Message) -> None:
         return
 
     attachment = await upload_file_to_db_using_file_id(message.voice.file_id)
-    message_document = db.message.new_message(message, unread=True, attachment=attachment)
+    message_document = db.message.new_message(
+        message, unread=True, attachment=attachment
+    )
     try:
         await send_update_to_socket(message_document)
     except Exception as e:
@@ -103,7 +115,9 @@ async def sticker_message_from_user(message: types.Message) -> None:
         return
 
     attachment = await upload_file_to_db_using_file_id(message.sticker.file_id)
-    message_document = db.message.new_message(message, unread=True, attachment=attachment)
+    message_document = db.message.new_message(
+        message, unread=True, attachment=attachment
+    )
     try:
         await send_update_to_socket(message_document)
     except Exception as e:
@@ -118,8 +132,12 @@ async def document_message_from_user(message: types.Message) -> None:
     if message.document is None:
         return
 
-    attachment = await upload_file_to_db_using_file_id(message.document.file_id, message.document.file_name)
-    message_document = db.message.new_message(message, unread=True, attachment=attachment)
+    attachment = await upload_file_to_db_using_file_id(
+        message.document.file_id, message.document.file_name
+    )
+    message_document = db.message.new_message(
+        message, unread=True, attachment=attachment
+    )
     try:
         await send_update_to_socket(message_document)
     except Exception as e:
@@ -137,7 +155,9 @@ async def photo_message_from_user(message: types.Message) -> None:
     attachment = await upload_file_to_db_using_file_id(
         message.photo[-1].file_id,
     )
-    message_document = db.message.new_message(message, unread=True, attachment=attachment)
+    message_document = db.message.new_message(
+        message, unread=True, attachment=attachment
+    )
     try:
         await send_update_to_socket(message_document)
     except Exception as e:

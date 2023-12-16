@@ -25,6 +25,7 @@ jobs:
         - pipenv run mypy --version 
         - pipenv run black --version
         - pipenv run isort --version
+        - flake8 --show-source --statistics --max-complexity 10
         - echo "Running autoflake on support_bot and tests files"
         - pipenv run autoflake --recursive --check --ignore-init-module-imports --remove-unused-variables --remove-all-unused-imports support_bot tests
         - echo "Running mypy, black, and isort checks"

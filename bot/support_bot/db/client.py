@@ -11,7 +11,8 @@ from support_bot.misc import (
 
 
 def get_mongo_db() -> Database:
-    uri = f"mongodb://{MONGO_USER_NAME}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}"
+    connection_data = f"{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}"
+    uri = f"mongodb://{MONGO_USER_NAME}:{MONGO_PASSWORD}@{connection_data}"
     client: MongoClient = MongoClient(uri, authSource="admin")
     db: Database = client[MONGO_DB_NAME]
     return db
