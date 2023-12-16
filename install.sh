@@ -14,7 +14,7 @@ docker-compose --version
 
 echo "Docker and Docker Compose have been installed successfully."
 
-docker compose up -d
+docker compose up -d --build
 
 set -a
 source .env
