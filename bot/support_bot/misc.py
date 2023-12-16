@@ -159,7 +159,7 @@ async def on_startup() -> None:
             secret_token=LONG_GOOD_SECRET_KEY,
         )
     else:
-        result = await tg_bot.set_webhook(
+        result = await bot.set_webhook(
             f"{BASE_WEBHOOK_URL}",
             secret_token=LONG_GOOD_SECRET_KEY,
         )
