@@ -1,8 +1,10 @@
+import datetime
 import re
 import ssl
 from os import getenv
 
 import aiohttp
+import jwt
 import magic
 from aiogram import Bot, Dispatcher, Router
 from aiogram.enums import ParseMode
@@ -12,6 +14,7 @@ from aiogram.webhook.aiohttp_server import (
     setup_application,
 )
 from aiohttp import web
+from aiohttp.web_request import Request
 from bson import Binary
 
 from support_bot import db
@@ -75,6 +78,43 @@ async def upload_file_to_db_using_file_id(
     }
 
 
+def create_token_for_manager(username: str, days=7) -> str | None:
+    expiration_date = datetime.datetime.utcnow() + datetime.timedelta(
+        days=days
+    )
+    token = jwt.encode(
+        {"username": username, "exp": expiration_date},
+        LONG_GOOD_SECRET_KEY,
+        algorithm="HS256",
+    )
+    return token
+
+
+def get_manager_username_from_jwt(token):
+    try:
+        payload = jwt.decode(
+            token,
+            LONG_GOOD_SECRET_KEY,
+            algorithms=["HS256"],
+            options={"verify_signature": True},
+        )
+        username = payload["username"]
+        return username
+    except jwt.DecodeError:
+        return None  # Invalid token
+
+
+def get_manager_from_request(request: Request):
+    token = (
+        request.cookies.get("AUTHToken")
+        if request.cookies.get("AUTHToken") is not None
+        else request.headers.get("AuthorizationToken")
+    )
+    if not token:
+        return None
+    return get_manager_username_from_jwt(token)
+
+
 async def upload_file_to_db(binary, file_name, mime_type):
     headers = {"X-Filename": file_name, "Content-Type": mime_type}
     async with aiohttp.ClientSession(
@@ -103,7 +143,7 @@ async def send_update_to_socket(message: dict):
             print(await resp.text())
 
 
-async def on_startup(bot: Bot) -> None:
+async def on_startup(tg_bot: Bot) -> None:
     try:
         db.manager.new_manager("Root admin", "root", ROOT_PASSWORD, root=True)
     except Exception as e:
@@ -113,13 +153,13 @@ async def on_startup(bot: Bot) -> None:
         and ISSUE_SSL is not None
         and ISSUE_SSL.lower() == "true"
     ):
-        result = await bot.set_webhook(
+        result = await tg_bot.set_webhook(
             f"{BASE_WEBHOOK_URL}",
             certificate=FSInputFile(WEBHOOK_SSL_CERT),
             secret_token=LONG_GOOD_SECRET_KEY,
         )
     else:
-        result = await bot.set_webhook(
+        result = await tg_bot.set_webhook(
             f"{BASE_WEBHOOK_URL}",
             secret_token=LONG_GOOD_SECRET_KEY,
         )

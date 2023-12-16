@@ -2,15 +2,16 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import set_cors_headers, web_routes
+from support_bot.misc import (
+    get_manager_from_request,
+    set_cors_headers,
+    web_routes,
+)
 
 
 @web_routes.post("/tg-bot/mark-as-read")
 async def mark_message_as_read(request: Request):
-    token = request.cookies.get("AUTHToken")
-    if not token:
-        token = request.headers.get("AuthorizationToken")
-    manager = db.manager.get_manager_by_token(token)
+    manager = get_manager_from_request(request)
     if manager is None:
         response = web.json_response(
             {"result": "AuthorizationToken", "modified_count": 0}, status=401
@@ -30,10 +31,7 @@ async def mark_message_as_read(request: Request):
 @web_routes.post("/tg-bot/mark-chat-as-read")
 async def mark_chat_as_read(request: Request):
     payload = await request.json()
-    token = request.cookies.get("AUTHToken")
-    if not token:
-        token = request.headers.get("AuthorizationToken")
-    manager = db.manager.get_manager_by_token(token)
+    manager = get_manager_from_request(request)
     if manager is None:
         response = web.json_response(
             {"result": "AuthorizationToken", "modified_count": 0}, status=401
@@ -51,11 +49,9 @@ async def mark_chat_as_read(request: Request):
 
 @web_routes.options("/tg-bot/mark-as-read")
 async def mark_message_as_read_option(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return set_cors_headers(web.Response(status=200))
 
 
 @web_routes.options("/tg-bot/mark-chat-as-read")
 async def mark_chat_as_read_option(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return set_cors_headers(web.Response(status=200))

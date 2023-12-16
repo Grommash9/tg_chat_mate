@@ -6,16 +6,18 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import DOMAIN, set_cors_headers, web_routes
+from support_bot.misc import (
+    DOMAIN,
+    get_manager_from_request,
+    set_cors_headers,
+    web_routes,
+)
 
 
 @web_routes.post("/tg-bot/file_upload")
 async def file_uploading(request: Request):
     if DOMAIN != request.headers.get("Host"):
-        token = request.cookies.get("AUTHToken")
-        if not token:
-            token = request.headers.get("AuthorizationToken")
-        manager = db.manager.get_manager_by_token(token)
+        manager = get_manager_from_request(request)
         if manager is None:
             response = web.json_response(
                 {"error": "AuthorizationToken"}, status=401
@@ -61,10 +63,7 @@ async def file_upload_options(request: Request):
 @web_routes.get("/tg-bot/file")
 async def get_file(request: Request):
     if DOMAIN != request.headers.get("Host"):
-        token = request.cookies.get("AUTHToken")
-        if not token:
-            token = request.headers.get("AuthorizationToken")
-        manager = db.manager.get_manager_by_token(token)
+        manager = get_manager_from_request(request)
         if manager is None:
             response = web.json_response(
                 {"error": "AuthorizationToken"}, status=401
@@ -86,12 +85,7 @@ async def get_file(request: Request):
     response.headers[
         "CONTENT-DISPOSITION"
     ] = f'attachment; filename="{filename}"'
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS, GET"
-    response.headers[
-        "Access-Control-Allow-Headers"
-    ] = "Content-Type, Authorization, AuthorizationToken, X-Filename"
-
+    response = set_cors_headers(response)
     response.content_type = content_type
     await response.prepare(request)
     while True:

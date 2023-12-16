@@ -34,7 +34,7 @@ def new_message(
         post["location"] = location
     if manager_name:
         post["manager_name"] = manager_name
-    collection.insert_one(post).inserted_id
+    collection.insert_one(post)
     return post
 
 

@@ -5,6 +5,7 @@ from aiohttp.web_request import Request
 from support_bot import db
 from support_bot.misc import (
     bot,
+    get_manager_from_request,
     send_update_to_socket,
     set_cors_headers,
     web_routes,
@@ -13,10 +14,7 @@ from support_bot.misc import (
 
 @web_routes.post("/tg-bot/new-message")
 async def new_message_from_manager(request: Request):
-    token = request.cookies.get("AUTHToken")
-    if not token:
-        token = request.headers.get("AuthorizationToken")
-    manager = db.manager.get_manager_by_token(token)
+    manager = get_manager_from_request(request)
     if manager is None:
         response = web.json_response(
             {"result": "AuthorizationToken"}, status=401

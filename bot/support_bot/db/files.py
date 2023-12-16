@@ -5,7 +5,7 @@ from support_bot.db.collection_names import FILES_COLLECTION
 def new_file(file_data):
     db = get_mongo_db()
     collection = db[FILES_COLLECTION]
-    collection.insert_one(file_data).inserted_id
+    collection.insert_one(file_data)
 
 
 def get_file(uuid):
@@ -15,8 +15,8 @@ def get_file(uuid):
     return file_document
 
 
-def find_file_by_hash(hash):
+def find_file_by_hash(file_hash):
     db = get_mongo_db()
     collection = db[FILES_COLLECTION]
-    file_document = collection.find_one({"hash": hash})
+    file_document = collection.find_one({"hash": file_hash})
     return file_document
