@@ -6,7 +6,10 @@ DOMAIN = getenv("DOMAIN")
 
 
 def check_login_page():
-    resp = requests.get(f"https://{DOMAIN}/login", verify=False)
+    login_url = f"https://{DOMAIN}/login"
+    resp = requests.get(login_url, verify=False)
+    print(resp.text)
+    print(resp.status_code)
     assert resp.status_code == 200
 
 

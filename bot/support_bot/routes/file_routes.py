@@ -6,18 +6,22 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import DOMAIN, set_cors_headers, web_routes
+from support_bot.misc import (
+    DOMAIN,
+    get_manager_from_request,
+    set_cors_headers,
+    web_routes,
+)
 
 
-@web_routes.post(f"/tg-bot/file_upload")
+@web_routes.post("/tg-bot/file_upload")
 async def file_uploading(request: Request):
     if DOMAIN != request.headers.get("Host"):
-        token = request.cookies.get("AUTHToken")
-        if not token:
-            token = request.headers.get("AuthorizationToken")
-        manager = db.manager.get_manager_by_token(token)
+        manager = get_manager_from_request(request)
         if manager is None:
-            response = web.json_response({"error": "AuthorizationToken"}, status=401)
+            response = web.json_response(
+                {"error": "AuthorizationToken"}, status=401
+            )
             return set_cors_headers(response)
 
     data = await request.read()
@@ -25,12 +29,17 @@ async def file_uploading(request: Request):
 
     existing_file = db.files.find_file_by_hash(file_hash)
     if existing_file:
-        response = web.json_response({"error": "file already exists!", "file_id": existing_file["_id"]}, status=201)
+        response = web.json_response(
+            {"error": "file already exists!", "file_id": existing_file["_id"]},
+            status=201,
+        )
         return set_cors_headers(response)
 
     file_uuid = str(uuid.uuid4())
     filename = request.headers.get("X-Filename")
-    content_type = request.headers.get("Content-Type", "application/octet-stream")
+    content_type = request.headers.get(
+        "Content-Type", "application/octet-stream"
+    )
     file_document = {
         "_id": file_uuid,
         "hash": file_hash,
@@ -39,7 +48,9 @@ async def file_uploading(request: Request):
         "binary_data": data,
     }
     db.files.new_file(file_document)
-    response = web.json_response({"error": "file uploaded!", "file_id": file_uuid}, status=201)
+    response = web.json_response(
+        {"error": "file uploaded!", "file_id": file_uuid}, status=201
+    )
     return set_cors_headers(response)
 
 
@@ -52,29 +63,29 @@ async def file_upload_options(request: Request):
 @web_routes.get("/tg-bot/file")
 async def get_file(request: Request):
     if DOMAIN != request.headers.get("Host"):
-        token = request.cookies.get("AUTHToken")
-        if not token:
-            token = request.headers.get("AuthorizationToken")
-        manager = db.manager.get_manager_by_token(token)
+        manager = get_manager_from_request(request)
         if manager is None:
-            response = web.json_response({"error": "AuthorizationToken"}, status=401)
+            response = web.json_response(
+                {"error": "AuthorizationToken"}, status=401
+            )
             return set_cors_headers(response)
 
     file_uuid = request.query.get("file_uuid", "")
     file_document = db.files.get_file(file_uuid)
     if not file_document:
-        response = web.json_response({"error": "Can't find file!", "file_id": file_uuid}, status=404)
+        response = web.json_response(
+            {"error": "Can't find file!", "file_id": file_uuid}, status=404
+        )
         return set_cors_headers(response)
     file_bytes = file_document["binary_data"]
     filename = file_document["filename"]
     content_type = file_document["content_type"]
     file_like_object = io.BytesIO(file_bytes)
     response = web.StreamResponse()  # type: ignore[assignment]
-    response.headers["CONTENT-DISPOSITION"] = f'attachment; filename="{filename}"'
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS, GET"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, AuthorizationToken, X-Filename"
-
+    response.headers[
+        "CONTENT-DISPOSITION"
+    ] = f'attachment; filename="{filename}"'
+    response = set_cors_headers(response)
     response.content_type = content_type
     await response.prepare(request)
     while True:

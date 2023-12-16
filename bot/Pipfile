@@ -26,6 +26,7 @@ types-cachetools = "*"
 types-decorator = "*"
 types-PyYAML = "*"
 types-requests = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.10"

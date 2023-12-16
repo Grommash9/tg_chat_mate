@@ -25,6 +25,8 @@ jobs:
         - pipenv run mypy --version 
         - pipenv run black --version
         - pipenv run isort --version
+        - pylint --disable=C0116 --disable=C0114 --disable=R0401 --disable=W0613 --disable=W0718 support_bot
+        - flake8 --show-source --statistics --max-complexity 10
         - echo "Running autoflake on support_bot and tests files"
         - pipenv run autoflake --recursive --check --ignore-init-module-imports --remove-unused-variables --remove-all-unused-imports support_bot tests
         - echo "Running mypy, black, and isort checks"
@@ -39,7 +41,13 @@ jobs:
           echo "Deploying service on test server"
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << ENDSSH
           cd /home
-          git clone https://github.com/Grommash9/tg_chat_mate
+          if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+            # It's a pull request, use $TRAVIS_PULL_REQUEST_BRANCH
+            git clone -b "$TRAVIS_PULL_REQUEST_BRANCH" https://github.com/Grommash9/tg_chat_mate
+          else
+            # It's a push, use $TRAVIS_BRANCH
+            git clone -b "$TRAVIS_BRANCH" https://github.com/Grommash9/tg_chat_mate
+          fi
           cd tg_chat_mate
           export DOMAIN=$PIPELINE_SERVER_IP_ADDRESS
           echo "DOMAIN=$PIPELINE_SERVER_IP_ADDRESS" >> .env
@@ -61,7 +69,8 @@ jobs:
           echo "Removing from test server"
           cd /home/tg_chat_mate
           docker compose down
-          docker system prune --volumes -a -f
+          docker rm -f $(docker ps -a -q)
+          docker volume rm $(docker volume ls -q)
           rm -r /home/tg_chat_mate
           ENDSSH
     - stage: test
@@ -77,7 +86,8 @@ jobs:
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
           cd /home/tg_chat_mate
           docker compose down
-          docker system prune --volumes -a -f
+          docker rm -f $(docker ps -a -q)
+          docker volume rm $(docker volume ls -q)
           rm -r /home/tg_chat_mate
           ENDSSH
       after_success:
@@ -86,11 +96,8 @@ jobs:
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
           cd /home/tg_chat_mate
           docker compose down
-          docker system prune --volumes -a -f
+          docker rm -f $(docker ps -a -q)
+          docker volume rm $(docker volume ls -q)
           rm -r /home/tg_chat_mate
           ENDSSH
             
-cache:
-  directories:
-    - /bot/.venv  # Cache the virtual environment created by Pipenv
-    - $HOME/.cache/pip  # Cache Pipenv packages

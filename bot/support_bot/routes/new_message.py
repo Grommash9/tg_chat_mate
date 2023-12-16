@@ -3,18 +3,25 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import bot, send_update_to_socket, set_cors_headers, web_routes
+from support_bot.misc import (
+    bot,
+    get_manager_from_request,
+    send_update_to_socket,
+    set_cors_headers,
+    web_routes,
+)
 
 
-@web_routes.post(f"/tg-bot/new-message")
+@web_routes.post("/tg-bot/new-message")
 async def new_message_from_manager(request: Request):
-    token = request.cookies.get("AUTHToken")
-    if not token:
-        token = request.headers.get("AuthorizationToken")
-    manager = db.manager.get_manager_by_token(token)
-    if manager is None:
-        response = web.json_response({"result": "AuthorizationToken"}, status=401)
+    manager_username = get_manager_from_request(request)
+    if manager_username is None:
+        response = web.json_response(
+            {"result": "AuthorizationToken"}, status=401
+        )
         return set_cors_headers(response)
+
+    manager = db.manager.get_manager_by_username(manager_username)
 
     payload = await request.json()
     chat_id = payload.get("chat_id")
@@ -22,18 +29,29 @@ async def new_message_from_manager(request: Request):
     file_attachment_id = payload.get("file_attachment_id")
     try:
         if file_attachment_id is not None:
+            message = await bot.send_message(chat_id, message_text)
+            message_document = db.message.new_message(
+                message, unread=False, manager_name=manager["full_name"]
+            )
+        else:
             file_attachment = db.files.get_file(file_attachment_id)
             if file_attachment["content_type"].startswith("video/"):
                 message = await bot.send_video(
                     chat_id,
                     caption=message_text,
-                    video=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]),
+                    video=BufferedInputFile(
+                        file_attachment["binary_data"],
+                        file_attachment["filename"],
+                    ),
                 )
             elif file_attachment["content_type"].startswith("audio/"):
                 message = await bot.send_audio(
                     chat_id,
                     caption=message_text,
-                    audio=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]),
+                    audio=BufferedInputFile(
+                        file_attachment["binary_data"],
+                        file_attachment["filename"],
+                    ),
                 )
             elif (
                 file_attachment["content_type"].startswith("application/")
@@ -43,17 +61,24 @@ async def new_message_from_manager(request: Request):
                 message = await bot.send_document(
                     chat_id,
                     caption=message_text,
-                    document=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]),
+                    document=BufferedInputFile(
+                        file_attachment["binary_data"],
+                        file_attachment["filename"],
+                    ),
                 )
             elif file_attachment["content_type"].startswith("image/"):
                 message = await bot.send_photo(
                     chat_id,
                     caption=message_text,
-                    photo=BufferedInputFile(file_attachment["binary_data"], file_attachment["filename"]),
+                    photo=BufferedInputFile(
+                        file_attachment["binary_data"],
+                        file_attachment["filename"],
+                    ),
                 )
             else:
                 raise FileNotFoundError(
-                    f"Can't process {file_attachment['content_type']} file type with telegram, please contact administrator"
+                    f"Can't process {file_attachment['content_type']} "
+                    "file type with telegram, please contact administrator"
                 )
             message_document = db.message.new_message(
                 message,
@@ -65,9 +90,6 @@ async def new_message_from_manager(request: Request):
                 },
                 manager_name=manager["full_name"],
             )
-        else:
-            message = await bot.send_message(chat_id, message_text)
-            message_document = db.message.new_message(message, unread=False, manager_name=manager["full_name"])
         await send_update_to_socket(message_document)
         response = web.json_response({"result": "Sent"}, status=200)
     except Exception as e:
