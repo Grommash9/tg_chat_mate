@@ -143,7 +143,7 @@ async def send_update_to_socket(message: dict):
             print(await resp.text())
 
 
-async def on_startup(tg_bot: Bot) -> None:
+async def on_startup() -> None:
     try:
         db.manager.new_manager("Root admin", "root", ROOT_PASSWORD, root=True)
     except Exception as e:
@@ -153,7 +153,7 @@ async def on_startup(tg_bot: Bot) -> None:
         and ISSUE_SSL is not None
         and ISSUE_SSL.lower() == "true"
     ):
-        result = await tg_bot.set_webhook(
+        result = await bot.set_webhook(
             f"{BASE_WEBHOOK_URL}",
             certificate=FSInputFile(WEBHOOK_SSL_CERT),
             secret_token=LONG_GOOD_SECRET_KEY,
