@@ -14,12 +14,14 @@ from support_bot.misc import (
 
 @web_routes.post("/tg-bot/new-message")
 async def new_message_from_manager(request: Request):
-    manager = get_manager_from_request(request)
-    if manager is None:
+    manager_username = get_manager_from_request(request)
+    if manager_username is None:
         response = web.json_response(
             {"result": "AuthorizationToken"}, status=401
         )
         return set_cors_headers(response)
+
+    manager = db.manager.get_manager_by_username(manager_username)
 
     payload = await request.json()
     chat_id = payload.get("chat_id")

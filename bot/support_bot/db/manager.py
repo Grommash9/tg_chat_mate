@@ -11,6 +11,13 @@ def hash_password(password: str):
     return hashed
 
 
+def get_manager_by_username(username):
+    db = get_mongo_db()
+    collection = db[MANAGER_COLLECTION_NAME]
+    manager = collection.find_one({"username": username})
+    return manager
+
+
 def new_manager(full_name, username, password, root=False):
     db = get_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
