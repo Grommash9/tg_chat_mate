@@ -11,6 +11,7 @@ def hash_password(password: str):
     return hashed
 
 
+
 def get_manager_by_username(username):
     db = get_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
