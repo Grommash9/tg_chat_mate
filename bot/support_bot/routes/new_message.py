@@ -28,7 +28,7 @@ async def new_message_from_manager(request: Request):
     message_text = payload.get("text")
     file_attachment_id = payload.get("file_attachment_id")
     try:
-        if file_attachment_id is not None:
+        if file_attachment_id is None:
             message = await bot.send_message(chat_id, message_text)
             message_document = db.message.new_message(
                 message, unread=False, manager_name=manager["full_name"]
