@@ -100,7 +100,7 @@ def get_manager_username_from_jwt(token):
         )
         username = payload["username"]
         return username
-    except jwt.DecodeError:
+    except (jwt.DecodeError, jwt.ExpiredSignatureError):
         return None
 
 

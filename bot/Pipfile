@@ -27,6 +27,7 @@ types-decorator = "*"
 types-PyYAML = "*"
 types-requests = "*"
 pylint = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.10"
