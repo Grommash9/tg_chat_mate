@@ -9,7 +9,7 @@ class TestLogin:
     def setup_class(self):
         self.DOMAIN = getenv("DOMAIN")
         self.USER_NAME = "root"
-        self.PASSWORD = getenv("ROOT_PASSWORD")
+        self.PASSWORD = getenv("ROOT_PASSWORD", "empty_password")
 
     def test_check_login_page(self):
         login_url = f"https://{self.DOMAIN}/login"
