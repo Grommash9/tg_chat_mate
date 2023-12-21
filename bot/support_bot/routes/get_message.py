@@ -3,7 +3,6 @@ from aiohttp.web_request import Request
 
 from support_bot import db
 from support_bot.misc import (
-    get_manager_from_request,
     set_cors_headers,
     web_routes,
 )
