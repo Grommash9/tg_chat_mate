@@ -78,7 +78,7 @@ jobs:
         - echo "Running tests"
         - |
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
-          docker exec tg_chat_mate-bot-1 pipenv run pytest tests/healf_check.py -v
+          docker exec tg_chat_mate-bot-1 pipenv run pytest tests/post_deploy_tests.py -v
           ENDSSH
       after_failure:
         - |

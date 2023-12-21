@@ -2,21 +2,13 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import (
-    get_manager_from_request,
-    set_cors_headers,
-    web_routes,
-)
+from support_bot.misc import set_cors_headers, web_routes
+from support_bot.routes.auth_decorator import require_auth
 
 
 @web_routes.get("/tg-bot/chat-list")
+@require_auth
 async def get_chat_list(request: Request):
-    manager = get_manager_from_request(request)
-    if manager is None:
-        response = web.json_response(
-            {"error": "AuthorizationToken", "chat_list": []}, status=401
-        )
-        return set_cors_headers(response)
     chat_list = db.message.get_chat_list()
     response = web.json_response(
         {"error": "bot get", "chat_list": chat_list}, status=200

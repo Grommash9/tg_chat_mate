@@ -7,17 +7,12 @@ from support_bot.misc import (
     set_cors_headers,
     web_routes,
 )
+from support_bot.routes.auth_decorator import require_auth
 
 
 @web_routes.get("/tg-bot/get-messages/{chat_id}")
+@require_auth
 async def get_messages_list(request: Request):
-    manager = get_manager_from_request(request)
-    if manager is None:
-        response = web.json_response(
-            {"error": "AuthorizationToken", "messages_list": []}, status=401
-        )
-        return set_cors_headers(response)
-
     chat_id = int(request.match_info["chat_id"])
     messages_list = db.message.get_all_chat_messages(chat_id)
     response = web.json_response({"messages_list": messages_list}, status=200)
