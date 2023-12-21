@@ -36,7 +36,9 @@ class TestFileStoring:
         }
 
         url = f"https://{self.DOMAIN}/tg-bot/file_upload"
-        response = requests.post(url, headers=headers, data=file_data)
+        response = requests.post(
+            url, headers=headers, data=file_data, verify=False
+        )
         assert response.status_code == 201, "Wrong status code on file upload"
         assert (
             "file_id" in response.json().keys()
@@ -44,7 +46,9 @@ class TestFileStoring:
         file_id = response.json()["file_id"]
 
         # Trying to upload same file again to get same id
-        response = requests.post(url, headers=headers, data=file_data)
+        response = requests.post(
+            url, headers=headers, data=file_data, verify=False
+        )
         assert response.status_code == 201, "Wrong status code on file upload"
         assert (
             "file_id" in response.json().keys()
@@ -55,7 +59,7 @@ class TestFileStoring:
 
         # Checking what file exists
         url = f"https://{self.DOMAIN}/tg-bot/file?file_uuid={file_id}"
-        response = requests.get(url)
+        response = requests.get(url, verify=False)
         assert response.status_code == 200, "Can't find uploaded file!"
 
 
