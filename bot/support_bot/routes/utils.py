@@ -10,13 +10,10 @@ from support_bot.misc import DOMAIN, get_manager_from_request, set_cors_headers
 def require_auth(f):
     @wraps(f)
     async def decorated_function(request: Request, *args, **kwargs):
-        if DOMAIN == request.headers.get("Host"):
-            request["manager_user_name"] = "root"
-            request["manager_full_name"] = "Root admin"
-            return await f(request, *args, **kwargs)
-
         manager_username = get_manager_from_request(request)
         if manager_username is None:
+            if DOMAIN == request.headers.get("Host"):
+                return await f(request, *args, **kwargs)
             response = web.json_response(
                 {"result": "AuthorizationToken"}, status=401
             )
