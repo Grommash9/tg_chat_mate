@@ -8,7 +8,7 @@ import jwt
 import magic
 from aiogram import Bot, Dispatcher, Router
 from aiogram.enums import ParseMode
-from aiogram.types import FSInputFile
+from aiogram.types import FSInputFile, User
 from aiogram.webhook.aiohttp_server import (
     SimpleRequestHandler,
     setup_application,
@@ -102,6 +102,17 @@ def get_manager_username_from_jwt(token):
         return username
     except (jwt.DecodeError, jwt.ExpiredSignatureError):
         return None
+
+
+async def save_user_photo(user: User) -> None:
+    try:
+        profile_photos = await user.get_profile_photos(0, 1)
+        photo_file_db_uuid = await upload_file_to_db_using_file_id(
+            profile_photos.photos[-1][-1].file_id
+        )
+        db.user.add_photo(user, photo_file_db_uuid["file_id"])
+    except Exception as e:
+        print(f"Error on getting photo for user {user.id}: {str(e)}")
 
 
 def get_manager_from_request(request: Request):
