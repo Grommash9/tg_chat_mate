@@ -84,9 +84,6 @@ img {
   }
 
 
-  .top_chat_setting_panel{
-    display: block;
-  }
   .messages-list-box{
     display: block;
     flex-grow: 1;
@@ -283,7 +280,8 @@ img {
   }
 
 .chat-setting {
-  display: flex;
+  /* display: flex; */
+  display: none;
   padding: 15px 15px 15px 15px;
   /* margin-bottom: 1rem; */
   /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25); */
