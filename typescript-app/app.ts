@@ -28,6 +28,10 @@ app.get('/main.css', (req, res) => {
 });
 
 
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'favicon.ico'));
+});
+
 app.get('/mixkit-correct-answer-tone-2870.wav', (req, res) => {
   res.sendFile(path.join(__dirname, 'mixkit-correct-answer-tone-2870.wav'));
 });
