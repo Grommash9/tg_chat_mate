@@ -8,6 +8,7 @@ from support_bot.misc import (
     set_cors_headers,
     web_routes,
 )
+from support_bot.routes.utils import create_option_response
 
 
 @web_routes.post("/tg-bot/login")
@@ -48,11 +49,9 @@ async def manager_check_token(request: Request):
 
 @web_routes.options("/tg-bot/check_token")
 async def manager_check_token_option(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
 
 
 @web_routes.options("/tg-bot/login")
 async def manager_login_option(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)

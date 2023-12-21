@@ -67,8 +67,12 @@
                     fileList.innerHTML = ''; 
                     const listItem = document.createElement('li');
                     listItem.classList.add('file-attached');
-                    listItem.innerText = file.name;
                     listItem.id = data["file_id"]
+                    const fileName = document.createElement('p');
+                    fileName.classList.add('attached-file-name');
+                    fileName.id = 'attached-file-name';
+                    fileName.innerText = file.name;
+                    listItem.appendChild(fileName);
                     const removeButton = document.createElement('button');
                     removeButton.classList.add('remove-attachment-button');
                     removeButton.innerText = 'Remove';
@@ -93,17 +97,30 @@
         });
         }
 
+    const acceptedPhotoExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'];
+    const acceptedAudioExtensions = [".MP3", ".M4A"]
+    const acceptedVideoExtensions = [".MPEG4"]
+
 
     function sendMessageToCustomer() {
 
         file_attachment_id = null
+        file_attachment_name = null
 
         const fileList = document.getElementById('files-attachment-list');
         const fileAttachedList = fileList.querySelectorAll('li');
         fileAttachedList.forEach(fileAttached => {
             file_attachment_id = fileAttached.id
+            const fileNameElement = document.getElementById("attached-file-name");
+                if (fileNameElement) {
+                    file_attachment_name = fileNameElement.innerText;
+                }
         })
 
+        console.log("file_attachment_id", file_attachment_id)
+
+        console.log("file_attachment_name", file_attachment_name)
+        
         let message_text_input = document.getElementById('message-input');
         let message_text = message_text_input.value;
         const payload = {
@@ -111,9 +128,25 @@
         "text": message_text,
         "file_attachment_id": file_attachment_id,
         };
+        let target_api_method;
+
+        
+        if (file_attachment_name) {
+            if (acceptedPhotoExtensions.some(ext => file_attachment_name.toLowerCase().endsWith(ext))) {
+                target_url = 'new-photo-message';
+            } else if (acceptedAudioExtensions.some(ext => file_attachment_name.toLowerCase().endsWith(ext))) {
+                target_url = 'new-audio-message';
+            } else if (acceptedVideoExtensions.some(ext => file_attachment_name.toLowerCase().endsWith(ext))) {
+                target_url = 'new-video-message';
+            } else {
+                target_url = 'new-document-message';
+            }
+        } else {
+            target_url = 'new-text-message';
+        }
 
         var authToken = getCookie("AUTHToken");
-        fetch(`/tg-bot/new-message`, {
+        fetch(`/tg-bot/` + target_url, {
         method: 'POST', // Set the method to POST
         headers: {
             'Content-Type': 'application/json',
@@ -395,12 +428,17 @@
 
         contacList.appendChild(ContactItem);
 
+        
+
         });
         let contactListItems = document.querySelectorAll('#contacts li');
-
+        
         contactListItems.forEach((li) => {
 
             li.addEventListener('click', function() {
+                const chatSettingImage = document.getElementById('chat-setting-image');
+                const chatSettingFullName = document.getElementById('chat-setting-full-name');
+
                 let uniqueNumber = this.id.split('_')[1];
 
                 if (Number(active_chat) !== Number(uniqueNumber)) {
@@ -420,6 +458,23 @@
                         unreadMessagesContainer.style.display = "none";
                     } else {
                         console.log("Element not found");
+                    }  
+
+                    let chatNameElement = this.querySelector('.chat-name');
+                    let chatName = chatNameElement ? chatNameElement.textContent : 'Default Name';
+
+
+                    let chatPhotoElement = this.querySelector('.chat-photo');
+                    let chatPhotoSrc = '/tg-bot/file?file_uuid=' + chatPhotoElement ? chatPhotoElement.src : "/user_empty_photo.png";
+
+                    chatSettingFullName.textContent = chatName;
+                    chatSettingImage.src = chatPhotoSrc
+
+                    var chatSettingTopPanel = document.getElementById(`top_chat_setting_panel`);
+                    if (chatSettingTopPanel) {
+                        chatSettingTopPanel.style.display = "flex";
+                    } else {
+                        console.log("Element chatSettingTopPanel not found");
                     }
 
                     var inputPanel = document.getElementById('input_chat_box');
@@ -447,8 +502,8 @@
         <div class="chat-window">
             
             <div id="top_chat_setting_panel" class="chat-setting">
-                <img class="client-account-photo" src="/user_empty_photo.png" width="50" height="50">
-                <p class="client-account-name">Александр Прудников</p>
+                <img id="chat-setting-image" class="client-account-photo" src="/user_empty_photo.png" width="50" height="50">
+                <p id="chat-setting-full-name" class="client-account-name">Chat name title</p>
                 <button class="back-button">Back to contacts</button>
             </div>
             <div id="messages_list_box" class="messages-list-box">

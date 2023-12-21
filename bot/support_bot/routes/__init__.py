@@ -5,4 +5,5 @@ from . import (  # noqa
     manager_auth,
     mark_as_read,
     new_message,
+    utils,
 )

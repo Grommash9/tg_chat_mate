@@ -6,24 +6,13 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import (
-    DOMAIN,
-    get_manager_from_request,
-    set_cors_headers,
-    web_routes,
-)
+from support_bot.misc import set_cors_headers, web_routes
+from support_bot.routes.utils import create_option_response, require_auth
 
 
 @web_routes.post("/tg-bot/file_upload")
+@require_auth
 async def file_uploading(request: Request):
-    if DOMAIN != request.headers.get("Host"):
-        manager = get_manager_from_request(request)
-        if manager is None:
-            response = web.json_response(
-                {"error": "AuthorizationToken"}, status=401
-            )
-            return set_cors_headers(response)
-
     data = await request.read()
     file_hash = hashlib.sha256(data).hexdigest()
 
@@ -56,20 +45,12 @@ async def file_uploading(request: Request):
 
 @web_routes.options("/tg-bot/file_upload")
 async def file_upload_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
 
 
 @web_routes.get("/tg-bot/file")
+@require_auth
 async def get_file(request: Request):
-    if DOMAIN != request.headers.get("Host"):
-        manager = get_manager_from_request(request)
-        if manager is None:
-            response = web.json_response(
-                {"error": "AuthorizationToken"}, status=401
-            )
-            return set_cors_headers(response)
-
     file_uuid = request.query.get("file_uuid", "")
     file_document = db.files.get_file(file_uuid)
     if not file_document:
@@ -99,5 +80,4 @@ async def get_file(request: Request):
 
 @web_routes.options("/tg-bot/file")
 async def get_file_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
