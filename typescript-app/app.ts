@@ -97,7 +97,7 @@ app.post('/send-message', (req, res) => {
   const ip = Array.isArray(xRealIP) ? xRealIP[0] : xRealIP;
   if (ip.startsWith('192.168.1.')) {
   const { message } = req.body;
-  io.emit('new_message', { message_text: message["message_text"], date: message["date"], chat_id: message["chat_id"], from_user: message["from_user"], unread: message["unread"], attachment: message["attachment"], location: message["location"], manager_name: message["manager_name"] });
+  io.emit('new_message', { message_text: message["message_text"], date: message["date"], chat_id: message["chat_id"], from_user: message["from_user"], unread: message["unread"], attachment: message["attachment"], location: message["location"], manager_name: message["manager_name"], reply_to_message: message["reply_to_message"] });
   res.status(200).send('Message sent to all clients');}
   else {
     return res.status(403).send('Forbidden');
