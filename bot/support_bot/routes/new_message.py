@@ -9,7 +9,7 @@ from support_bot.misc import (
     set_cors_headers,
     web_routes,
 )
-from support_bot.routes.auth_decorator import require_auth
+from support_bot.routes.utils import require_auth, create_option_response
 
 
 @web_routes.post("/tg-bot/new-text-message")
@@ -156,29 +156,24 @@ async def new_video_message_from_manager(request: Request):
 
 @web_routes.options("/tg-bot/new-video-message")
 async def new_video_message_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
 
 
 @web_routes.options("/tg-bot/new-audio-message")
 async def new_audio_message_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
 
 
 @web_routes.options("/tg-bot/new-photo-message")
 async def new_photo_message_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
 
 
 @web_routes.options("/tg-bot/new-document-message")
 async def new_document_message_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
 
 
 @web_routes.options("/tg-bot/new-text-message")
 async def new_text_message_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)

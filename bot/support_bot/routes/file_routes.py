@@ -12,6 +12,7 @@ from support_bot.misc import (
     set_cors_headers,
     web_routes,
 )
+from support_bot.routes.utils import create_option_response
 
 
 @web_routes.post("/tg-bot/file_upload")
@@ -56,8 +57,7 @@ async def file_uploading(request: Request):
 
 @web_routes.options("/tg-bot/file_upload")
 async def file_upload_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
 
 
 @web_routes.get("/tg-bot/file")
@@ -99,5 +99,4 @@ async def get_file(request: Request):
 
 @web_routes.options("/tg-bot/file")
 async def get_file_options(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)

@@ -1,5 +1,5 @@
 from . import (  # noqa
-    auth_decorator,
+    utils,
     chat_list,
     file_routes,
     get_message,

@@ -7,7 +7,7 @@ from support_bot.misc import (
     set_cors_headers,
     web_routes,
 )
-from support_bot.routes.auth_decorator import require_auth
+from support_bot.routes.utils import require_auth, create_option_response
 
 
 @web_routes.post("/tg-bot/mark-as-read")
@@ -44,9 +44,9 @@ async def mark_chat_as_read(request: Request):
 
 @web_routes.options("/tg-bot/mark-as-read")
 async def mark_message_as_read_option(request: Request):
-    return set_cors_headers(web.Response(status=200))
+    return await create_option_response(request)
 
 
 @web_routes.options("/tg-bot/mark-chat-as-read")
 async def mark_chat_as_read_option(request: Request):
-    return set_cors_headers(web.Response(status=200))
+    return await create_option_response(request)

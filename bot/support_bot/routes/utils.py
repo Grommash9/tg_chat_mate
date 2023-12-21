@@ -32,3 +32,8 @@ def require_auth(f):
         return await f(request, *args, **kwargs)
 
     return decorated_function
+
+
+async def create_option_response(request: Request):
+    response = web.Response(status=200)
+    return set_cors_headers(response)

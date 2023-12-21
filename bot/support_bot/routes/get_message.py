@@ -6,7 +6,7 @@ from support_bot.misc import (
     set_cors_headers,
     web_routes,
 )
-from support_bot.routes.auth_decorator import require_auth
+from support_bot.routes.utils import require_auth, create_option_response
 
 
 @web_routes.get("/tg-bot/get-messages/{chat_id}")
@@ -20,5 +20,4 @@ async def get_messages_list(request: Request):
 
 @web_routes.options("/tg-bot/get-messages/{chat_id}")
 async def get_messages_list_option(request: Request):
-    response = web.Response(status=200)
-    return set_cors_headers(response)
+    return await create_option_response(request)
