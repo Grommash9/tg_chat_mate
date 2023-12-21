@@ -6,7 +6,7 @@ COPY . /home/
 
 RUN pip install pipenv
 
-RUN pipenv install --dev --ignore-pipfile
+RUN pipenv install --ignore-pipfile
 
 EXPOSE 2005
 

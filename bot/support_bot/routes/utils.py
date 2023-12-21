@@ -11,6 +11,8 @@ def require_auth(f):
     @wraps(f)
     async def decorated_function(request: Request, *args, **kwargs):
         if DOMAIN == request.headers.get("Host"):
+            request["manager_user_name"] = "root"
+            request["manager_full_name"] = "Root admin"
             return await f(request, *args, **kwargs)
 
         manager_username = get_manager_from_request(request)

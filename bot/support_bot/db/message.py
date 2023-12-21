@@ -8,6 +8,24 @@ from support_bot.db.collection_names import (
 )
 
 
+def get_message_object_id(tg_message_id, tg_chat_id):
+    db = get_mongo_db()
+    collection = db[MESSAGE_COLLECTION_NAME]
+    message = collection.find_one(
+        {"message_id": tg_message_id, "chat_id": tg_chat_id}
+    )
+    if message is None:
+        return None
+    return message["_id"]
+
+
+def get_message(message_id):
+    db = get_mongo_db()
+    collection = db[MESSAGE_COLLECTION_NAME]
+    message = collection.find_one({"_id": message_id})
+    return message
+
+
 def new_message(
     message: Message,
     unread=False,
@@ -34,12 +52,28 @@ def new_message(
         post["location"] = location
     if manager_name:
         post["manager_name"] = manager_name
-    collection.insert_one(post)
-    return post
+    if message.reply_to_message:
+        post["reply_to_message"] = get_message_object_id(
+            message.reply_to_message.message_id,
+            message.reply_to_message.chat.id,
+        )
+    created_message_id = collection.insert_one(post).inserted_id
+    return get_message_with_reply(created_message_id)
+
+
+def get_message_with_reply(message_id):
+    message = get_message(message_id)
+    reply_to_message = message.get("reply_to_message")
+    message_json = convert_objects_str(message)
+    if reply_to_message is not None:
+        message_json["reply_to_message"] = convert_objects_str(
+            get_message(reply_to_message)
+        )
+    return message_json
 
 
 def convert_objects_str(data):
-    for json_bad_fields in ["_id", "date"]:
+    for json_bad_fields in ["_id", "date", "reply_to_message"]:
         if json_bad_fields in data:
             data[json_bad_fields] = str(data[json_bad_fields])
     return data
@@ -66,10 +100,20 @@ def mark_chat_as_read(chat_id):
 
 
 def get_all_chat_messages(chat_id):
+    messages_list = []
     db = get_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
     filter_dict = {"chat_id": chat_id}
-    return [convert_objects_str(data) for data in collection.find(filter_dict)]
+    for message in collection.find(filter_dict):
+        reply_to_message = None
+        if message.get("reply_to_message") is not None:
+            reply_to_message = convert_objects_str(
+                get_message(message["reply_to_message"])
+            )
+        json_message = convert_objects_str(message)
+        json_message["reply_to_message"] = reply_to_message
+        messages_list.append(json_message)
+    return messages_list
 
 
 def get_chat_list():
