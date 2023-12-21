@@ -2,11 +2,8 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import (
-    set_cors_headers,
-    web_routes,
-)
-from support_bot.routes.utils import require_auth, create_option_response
+from support_bot.misc import set_cors_headers, web_routes
+from support_bot.routes.utils import create_option_response, require_auth
 
 
 @web_routes.get("/tg-bot/get-messages/{chat_id}")
