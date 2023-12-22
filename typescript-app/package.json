@@ -8,6 +8,8 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "devDependencies": {
+        "@types/form-data": "^2.5.0",
+        "@types/socket.io-client": "^3.0.0",
         "typescript": "^4.4.3"
     },
     "dependencies": {
@@ -19,6 +21,7 @@
         "cookie-parser": "^1.4.6",
         "express": "^4.18.2",
         "node-fetch": "^3.3.2",
-        "socket.io": "^4.7.2"
+        "socket.io": "^4.7.2",
+        "socket.io-client": "^4.7.2"
     }
 }
