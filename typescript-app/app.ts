@@ -31,6 +31,10 @@ app.get('/index.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.js'));
 });
 
+app.get('/login.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.js'));
+});
+
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname, 'favicon.ico'));
 });
