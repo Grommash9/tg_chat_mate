@@ -46,10 +46,10 @@ interface MessageList {
 const socket = io();
 socket.on('new_message', function (message: Message) {
   if (message.hasOwnProperty('manager_name')) {
-    var audio = new Audio('mixkit-message-pop-alert-2354.mp3');
+    var audio = new Audio('/files/mixkit-message-pop-alert-2354.mp3');
     audio.play();
   } else {
-    var audio = new Audio('mixkit-correct-answer-tone-2870.wav');
+    var audio = new Audio('/files/mixkit-correct-answer-tone-2870.wav');
     audio.play();
   }
   if (String(active_chat) === String(message['chat_id'])) {
@@ -524,7 +524,9 @@ function displayDialogList(chat_list: ChatListContainer) {
 
   contactListItems.forEach((li) => {
     li.addEventListener('click', (event) => {
-      const chatSettingImage = document.getElementById('chat-setting-image');
+      const chatSettingImage = document.getElementById(
+        'chat-setting-image'
+      ) as HTMLImageElement;
       const chatSettingFullName = document.getElementById(
         'chat-setting-full-name'
       );
@@ -567,13 +569,13 @@ function displayDialogList(chat_list: ChatListContainer) {
         let chatPhotoSrc =
           '/tg-bot/file?file_uuid=' + chatPhotoElement
             ? chatPhotoElement.src
-            : '/user_empty_photo.png';
+            : '/files/user_empty_photo.png';
 
         if (chatSettingFullName) {
           chatSettingFullName.textContent = chatName;
         }
-        if (chatPhotoElement) {
-          chatPhotoElement.src = chatPhotoSrc;
+        if (chatSettingImage) {
+          chatSettingImage.src = chatPhotoSrc;
         }
 
         var chatSettingTopPanel = document.getElementById(
