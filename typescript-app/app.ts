@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
         res.sendFile(path.join(__dirname, 'login.html'));
         throw new Error(`Network response was not ok: ${response.status}`);
       }
-      res.sendFile(path.join(__dirname, 'index.html'));
+      res.sendFile(path.join(__dirname, 'main_chat_page.html'));
       console.log('Success:', response.data);
     })
     .catch((error) => {
