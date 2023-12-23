@@ -1,4 +1,9 @@
 import io from 'socket.io-client';
+import FileUpload from './api_methods/file_upload.js';
+import getChatListFromApi from './api_methods/get_chat_list.js';
+import markChatAsRead from './api_methods/mark_chat_as_read.js';
+import loadChatMessages from './api_methods/get_chat_messages.js';
+import SendMessage from './api_methods/send_message.js';
 
 let active_chat = 0;
 
@@ -81,86 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-function FileUpload() {
-  let attachment_input = document.getElementById(
-    'file-input'
-  ) as HTMLInputElement;
-
-  attachment_input.click();
-  attachment_input.addEventListener('change', function (event) {
-    const input = event.target as HTMLInputElement;
-
-    if (input && input.files && input.files.length > 0) {
-      const file = input.files[0];
-      if (file) {
-        // Read the file as a binary blob
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-          const fileReader = evt.target as FileReader;
-          if (fileReader && fileReader.result) {
-            const fileReader = evt.target as FileReader;
-            const binary = fileReader.result;
-            let headers = {
-              'X-Filename': file.name,
-              'Content-Type': file.type
-            };
-
-            fetch('/tg-bot/file_upload', {
-              method: 'POST',
-              body: binary,
-              headers: headers
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (
-                  (data.error && data.error === 'file uploaded!') ||
-                  data.error === 'file already exists!'
-                ) {
-                  const fileList = document.getElementById(
-                    'files-attachment-list'
-                  );
-                  if (fileList) {
-                    fileList.innerHTML = '';
-                  }
-                  const listItem = document.createElement('li');
-                  listItem.classList.add('file-attached');
-                  listItem.id = data['file_id'];
-                  const fileName = document.createElement('p');
-                  fileName.classList.add('attached-file-name');
-                  fileName.id = 'attached-file-name';
-                  fileName.innerText = file.name;
-                  listItem.appendChild(fileName);
-                  const removeButton = document.createElement('button');
-                  removeButton.classList.add('remove-attachment-button');
-                  removeButton.innerText = 'Remove';
-                  removeButton.onclick = function () {
-                    listItem.remove();
-                  };
-
-                  listItem.appendChild(removeButton);
-                  if (fileList) {
-                    fileList.appendChild(listItem);
-                  }
-                  console.log('File uploaded id:', data['file_id']);
-                } else {
-                  alert(`Error: ${data.error}`);
-                  console.error('Failed to upload file:', data.error);
-                }
-              })
-              .catch((error) => {
-                console.error(
-                  'There has been a problem with your fetch operation:',
-                  error
-                );
-              });
-          }
-          reader.readAsArrayBuffer(file);
-        };
-      }
-    }
-  });
-}
-
 const acceptedPhotoExtensions = [
   '.jpg',
   '.jpeg',
@@ -220,52 +145,16 @@ function sendMessageToCustomer() {
     }
   }
 
-  var authToken = getCookie('AUTHToken');
-  fetch(`/tg-bot/` + target_api_method, {
-    method: 'POST', // Set the method to POST
-    headers: {
-      'Content-Type': 'application/json',
-      AuthorizationToken: authToken
-    },
-    body: JSON.stringify(payload) // Stringify your payload and set it in the body property
-  }).then((response) => {
-    if (response.status === 200) {
-      return response.json().then((data) => {
-        if (fileList) {
-          fileList.innerHTML = '';
-        }
-        message_text_input.value = '';
-        console.log('Success message was sent', data);
-      });
+  SendMessage(target_api_method, payload).then((result) => {
+    if (result) {
+      if (fileList) {
+        fileList.innerHTML = '';
+      }
+      message_text_input.value = '';
     } else {
-      return response.json().then((data) => {
-        alert(`Error: ${data['result']}`);
-        console.error('Error:', data['result']);
-      });
+      // There was an error sending the message
     }
   });
-}
-
-function loadChatMessages(chat_id: number) {
-  fetch('/tg-bot/get-messages/' + chat_id, {
-    method: 'GET'
-  })
-    .then((response) => {
-      if (response.status !== 200) {
-        throw new Error('Network response was not ok ' + response.statusText);
-      }
-      return response.json(); // Parse JSON response
-    })
-    .then((data) => {
-      console.log('Data received:', data);
-      displayChatHistory(data); // Function to handle the display of data
-    })
-    .catch((error) => {
-      console.error(
-        'There has been a problem with your fetch operation:',
-        error
-      );
-    });
 }
 
 function displayChatHistory(message_list: MessageList) {
@@ -398,50 +287,6 @@ function getCookie(name: string) {
     }
   }
   return '';
-}
-
-function getChatListFromApi() {
-  fetch('/tg-bot/chat-list', {
-    method: 'GET'
-  })
-    .then((response) => {
-      if (response.status !== 200) {
-        throw new Error('Network response was not ok ' + response.statusText);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log('Data received:', data);
-      displayDialogList(data);
-    })
-    .catch((error) => {
-      console.error(
-        'There has been a problem with your fetch operation:',
-        error
-      );
-    });
-}
-
-function markChatAsRead(chat_id: number) {
-  const payload = { chat_id: chat_id };
-  fetch(`/tg-bot/mark-chat-as-read`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  }).then((response) => {
-    if (response.status === 200) {
-      return response.json().then((data) => {
-        console.log('Mark as read', data);
-      });
-    } else {
-      return response.json().then((data) => {
-        alert(`Error: ${data['result']}`);
-        console.error('Error:', data['result']);
-      });
-    }
-  });
 }
 
 function displayDialogList(chat_list: ChatListContainer) {
@@ -596,4 +441,7 @@ function displayDialogList(chat_list: ChatListContainer) {
     });
   });
 }
+
 console.log('active_chat', active_chat);
+
+export { displayDialogList, displayChatHistory };
