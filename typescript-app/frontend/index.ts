@@ -278,16 +278,6 @@ function DisplayMessage(message_object: Message) {
   messageElement.scrollIntoView({ behavior: 'smooth' });
 }
 
-function getCookie(name: string) {
-  var cookieArr = document.cookie.split(';');
-  for (var i = 0; i < cookieArr.length; i++) {
-    var cookiePair = cookieArr[i].split('=');
-    if (name == cookiePair[0].trim()) {
-      return decodeURIComponent(cookiePair[1]);
-    }
-  }
-  return '';
-}
 
 function displayDialogList(chat_list: ChatListContainer) {
   const contactList = document.getElementById('contacts');
