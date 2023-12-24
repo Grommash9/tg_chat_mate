@@ -62,6 +62,8 @@ jobs:
           echo "ROOT_PASSWORD=$ROOT_PASSWORD" >> .env
           chmod +x install.sh
           ./install.sh
+          docker cp ./dump.gz tg_chat_mate-mongo-db-1:/data/dump.gz
+          docker-compose exec mongo-db mongorestore --archive=/data/dump.gz --gzip --db bot_support_db --username root --password $MONGO_PASSWORD --authenticationDatabase admin
           ENDSSH
       after_failure:
         - |
