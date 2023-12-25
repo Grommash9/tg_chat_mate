@@ -255,43 +255,42 @@ function CreateMessageHTMLObject(message_object: Message): HTMLLIElement {
     messageElement.className = 'message-from-manager';
   }
 
-  if (message_object.reply_to_message)  {
+  if (message_object.reply_to_message) {
+    var r_message_object = message_object.reply_to_message;
 
-      var r_message_object = message_object.reply_to_message
+    var replyMessageObject = document.createElement('div');
+    replyMessageObject.className = 'reply-to-message';
 
-      var replyMessageObject = document.createElement("div")
-      replyMessageObject.className = "reply-to-message"
+    if (r_message_object.attachment && r_message_object.attachment.mime_type) {
+      var attachmentHTML = getAttachmentHTMLCode(r_message_object.attachment);
+      replyMessageObject.appendChild(attachmentHTML);
+    }
 
-      if (r_message_object.attachment && r_message_object.attachment.mime_type) {
-        var attachmentHTML = getAttachmentHTMLCode(r_message_object.attachment);
-        replyMessageObject.appendChild(attachmentHTML);
-      }
-    
-      if (r_message_object.location) {
-        var locationHTMLBlock = getHTMLLocation(r_message_object.location);
-        replyMessageObject.appendChild(locationHTMLBlock);
-      }
-    
-      if (r_message_object.manager_name) {
-        const messageAutor = document.createElement('p');
-        messageAutor.classList.add('message-manager-name');
-        messageAutor.innerText = r_message_object.manager_name;
-        replyMessageObject.appendChild(messageAutor);
-      }
-    
-      if (r_message_object.message_text) {
-        const messageText = document.createElement('p');
-        messageText.classList.add('message-text');
-        messageText.innerText = r_message_object.message_text;
-        replyMessageObject.appendChild(messageText);
-      }
-    
-      const messageDate = document.createElement('p');
-      messageDate.classList.add('message-date');
-      messageDate.innerText = r_message_object.date;
-      replyMessageObject.appendChild(messageDate);
-    
-      messageElement.appendChild(replyMessageObject);
+    if (r_message_object.location) {
+      var locationHTMLBlock = getHTMLLocation(r_message_object.location);
+      replyMessageObject.appendChild(locationHTMLBlock);
+    }
+
+    if (r_message_object.manager_name) {
+      const messageAutor = document.createElement('p');
+      messageAutor.classList.add('message-manager-name');
+      messageAutor.innerText = r_message_object.manager_name;
+      replyMessageObject.appendChild(messageAutor);
+    }
+
+    if (r_message_object.message_text) {
+      const messageText = document.createElement('p');
+      messageText.classList.add('message-text');
+      messageText.innerText = r_message_object.message_text;
+      replyMessageObject.appendChild(messageText);
+    }
+
+    const messageDate = document.createElement('p');
+    messageDate.classList.add('message-date');
+    messageDate.innerText = r_message_object.date;
+    replyMessageObject.appendChild(messageDate);
+
+    messageElement.appendChild(replyMessageObject);
   }
 
   if (message_object.attachment && message_object.attachment.mime_type) {
