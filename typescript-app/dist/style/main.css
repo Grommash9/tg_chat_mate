@@ -122,6 +122,11 @@ img {
 
   }
 
+  .reply-to-message {
+    background-color: yellowgreen;
+    padding: 10px;
+  }
+  
   .attach-file-button svg {
     margin-right: 5px; /* Adds space to the right of the SVG icon */
   }
