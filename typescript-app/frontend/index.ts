@@ -171,6 +171,83 @@ function DisplayMessage(message_object: Message) {
   const messagesList = document.getElementById(
     'messages-list'
   ) as HTMLUListElement;
+  var messageElement = CreateMessageHTMLObject(message_object);
+  messagesList.appendChild(messageElement);
+  messageElement.scrollIntoView({ behavior: 'smooth' });
+}
+
+function getHTMLLocation(location: MessageLocation): HTMLAnchorElement {
+  var url =
+    'https://www.google.com/maps?q=' +
+    location.latitude +
+    ',' +
+    location.longitude;
+  var embedUrl =
+    'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12090.442629191114!2d' +
+    location.longitude +
+    '!3d' +
+    location.latitude +
+    '!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1651254363314!5m2!1sen!2s';
+  const mapLinkeble = document.createElement('a');
+  mapLinkeble.href = url;
+  const mapIframe = document.createElement('iframe');
+  mapIframe.id = 'mapPreview';
+  mapIframe.classList.add('map-preview');
+  mapIframe.src = embedUrl;
+  mapLinkeble.appendChild(mapIframe);
+  return mapLinkeble;
+}
+
+function getAttachmentHTMLCode(attachment: MessageAttachment) {
+  const attachment_source = '/tg-bot/file?file_uuid=' + attachment.file_id;
+  if (attachment.mime_type.startsWith('image/')) {
+    const photoObject = document.createElement('img');
+    const photoObjectUrl = document.createElement('a');
+    photoObjectUrl.href = attachment_source;
+    photoObject.classList.add('message-image');
+    photoObject.src = attachment_source;
+    photoObject.width = 200;
+    photoObject.height = 300;
+    photoObjectUrl.appendChild(photoObject);
+    return photoObjectUrl;
+  } else if (attachment.mime_type.startsWith('video/')) {
+    const videoObject = document.createElement('video');
+    videoObject.classList.add('message-video');
+    videoObject.src = attachment_source;
+    videoObject.width = 400;
+    videoObject.height = 300;
+    videoObject.controls = true;
+    return videoObject;
+  } else if (attachment.mime_type.startsWith('audio/')) {
+    const audioObject = document.createElement('audio');
+    audioObject.classList.add('message-audio');
+    audioObject.src = attachment_source;
+    audioObject.controls = true;
+    return audioObject;
+  } else {
+    const fileObject = document.createElement('div');
+    const fileExtension = attachment.file_name.split('.').pop() || 'file';
+
+    const fileIcon = document.createElement('span');
+    fileIcon.classList.add('message-application-icon');
+    fileIcon.innerText = `${fileExtension.toUpperCase()} File`;
+    fileObject.appendChild(fileIcon);
+
+    const EmptyNewLine = document.createElement('p');
+    const downloadLink = document.createElement('a');
+    EmptyNewLine.classList.add('message-application-empty-line');
+    downloadLink.classList.add('message-download-link');
+    downloadLink.href = attachment_source;
+    downloadLink.innerText = `${attachment.file_name}`;
+    downloadLink.download = attachment.file_name;
+    fileObject.appendChild(EmptyNewLine);
+    fileObject.appendChild(downloadLink);
+
+    return fileObject;
+  }
+}
+
+function CreateMessageHTMLObject(message_object: Message): HTMLLIElement {
   const messageElement: HTMLLIElement = document.createElement('li');
   if (String(message_object.from_user) === String(active_chat)) {
     messageElement.className = 'message-from-client';
@@ -178,81 +255,13 @@ function DisplayMessage(message_object: Message) {
     messageElement.className = 'message-from-manager';
   }
   if (message_object.attachment && message_object.attachment.mime_type) {
-    const attachment_source =
-      '/tg-bot/file?file_uuid=' + message_object.attachment.file_id;
-    if (message_object.attachment.mime_type.startsWith('image/')) {
-      const photoObject = document.createElement('img');
-      const photoObjectUrl = document.createElement('a');
-      photoObjectUrl.href = attachment_source;
-      photoObject.classList.add('message-image');
-      photoObject.src = attachment_source;
-      photoObject.width = 200;
-      photoObject.height = 300;
-      photoObjectUrl.appendChild(photoObject);
-      messageElement.appendChild(photoObjectUrl);
-    } else if (message_object.attachment.mime_type.startsWith('video/')) {
-      const videoObject = document.createElement('video');
-      videoObject.classList.add('message-video');
-      videoObject.src = attachment_source;
-      videoObject.width = 400;
-      videoObject.height = 300;
-      videoObject.controls = true;
-      messageElement.appendChild(videoObject);
-    } else if (message_object.attachment.mime_type.startsWith('audio/')) {
-      const audioObject = document.createElement('audio');
-      audioObject.classList.add('message-audio');
-      audioObject.src = attachment_source;
-      audioObject.controls = true;
-      messageElement.appendChild(audioObject);
-    } else if (message_object.attachment.mime_type.startsWith('application/')) {
-      const fileExtension =
-        message_object.attachment.file_name.split('.').pop() || 'file';
-
-      const fileIcon = document.createElement('span');
-      fileIcon.classList.add('message-application-icon');
-      fileIcon.innerText = `${fileExtension.toUpperCase()} File`;
-      messageElement.appendChild(fileIcon);
-
-      const EmptyNewLine = document.createElement('p');
-      const downloadLink = document.createElement('a');
-      EmptyNewLine.classList.add('message-application-empty-line');
-      downloadLink.classList.add('message-download-link');
-      downloadLink.href = attachment_source;
-      downloadLink.innerText = `${message_object.attachment.file_name}`;
-      downloadLink.download = message_object.attachment.file_name;
-      messageElement.appendChild(EmptyNewLine);
-      messageElement.appendChild(downloadLink);
-    }
+    var attachmentHTML = getAttachmentHTMLCode(message_object.attachment);
+    messageElement.appendChild(attachmentHTML);
   }
 
   if (message_object.location) {
-    var url =
-      'https://www.google.com/maps?q=' +
-      message_object.location.latitude +
-      ',' +
-      message_object.location.longitude;
-    var embedUrl =
-      'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12090.442629191114!2d' +
-      message_object.location.longitude +
-      '!3d' +
-      message_object.location.latitude +
-      '!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1651254363314!5m2!1sen!2s';
-    const mapLinkeble = document.createElement('a');
-    mapLinkeble.href = url;
-    const mapIframe = document.createElement('iframe');
-    mapIframe.id = 'mapPreview';
-    mapIframe.classList.add('map-preview');
-    mapIframe.src = embedUrl;
-    mapLinkeble.appendChild(mapIframe);
-    messageElement.appendChild(mapLinkeble);
-
-    const locationCoordinatesText = document.createElement('p');
-    locationCoordinatesText.classList.add('location-coordinates');
-    locationCoordinatesText.innerText =
-      message_object.location.latitude +
-      ',' +
-      message_object.location.longitude;
-    messageElement.appendChild(locationCoordinatesText);
+    var locationHTMLBlock = getHTMLLocation(message_object.location);
+    messageElement.appendChild(locationHTMLBlock);
   }
 
   if (message_object.manager_name) {
@@ -274,10 +283,8 @@ function DisplayMessage(message_object: Message) {
   messageDate.innerText = message_object.date;
   messageElement.appendChild(messageDate);
 
-  messagesList.appendChild(messageElement);
-  messageElement.scrollIntoView({ behavior: 'smooth' });
+  return messageElement;
 }
-
 
 function displayDialogList(chat_list: ChatListContainer) {
   const contactList = document.getElementById('contacts');
