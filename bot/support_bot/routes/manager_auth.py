@@ -49,10 +49,10 @@ async def manager_check_token(request: Request):
         response = web.json_response(
             {"error": "Wrong token or it was expired"}, status=401
         )
-        return set_cors_headers(response)
-    response = web.json_response(
-        {"token": token, "manager": manager_user_name}, status=200
-    )
+    else:
+        response = web.json_response(
+            {"token": token, "manager": manager_user_name}, status=200
+        )
     return set_cors_headers(response)
 
 
@@ -88,21 +88,6 @@ async def manager_registration(request: Request):
     return set_cors_headers(response)
 
 
-@web_routes.options("/tg-bot/registration")
-async def manager_registration_option(request: Request):
-    return await create_option_response(request)
-
-
-@web_routes.options("/tg-bot/get-manager-info")
-async def manager_info_option(request: Request):
-    return await create_option_response(request)
-
-
-@web_routes.options("/tg-bot/check_token")
-async def manager_check_token_option(request: Request):
-    return await create_option_response(request)
-
-
-@web_routes.options("/tg-bot/login")
-async def manager_login_option(request: Request):
+@web_routes.options("/tg-bot/<action>")
+async def manager_option(request: Request):
     return await create_option_response(request)
