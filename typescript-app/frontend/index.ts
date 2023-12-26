@@ -4,6 +4,7 @@ import getChatListFromApi from './api_methods/get_chat_list.js';
 import markChatAsRead from './api_methods/mark_chat_as_read.js';
 import loadChatMessages from './api_methods/get_chat_messages.js';
 import SendMessage from './api_methods/send_message.js';
+import getManagerInfo from './api_methods/get_manager_info.js';
 
 let active_chat = 0;
 
@@ -15,6 +16,14 @@ interface ChatListItem {
   photo_uuid: string;
   username: string;
   name: string;
+}
+
+interface Manager {
+  _id: string;
+  username: string;
+  full_name: string;
+  activated: string | boolean;
+  photo_uuid: string | null;
 }
 
 interface ChatListContainer {
@@ -65,6 +74,7 @@ socket.on('new_message', function (message: Message) {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
+  getManagerInfo();
   getChatListFromApi();
   let message_send_button = document.getElementById(
     'message-send-button'
@@ -165,6 +175,22 @@ function displayChatHistory(message_list: MessageList) {
   message_list.messages_list.forEach((message_from_db: Message) => {
     DisplayMessage(message_from_db);
   });
+}
+
+function displayManagerInfo(manager_info: Manager) {
+  const managerAccountName = document.getElementById(
+    'manager-account-name'
+  ) as HTMLParagraphElement;
+  const managerPhoto = document.getElementById(
+    'manager-photo-element'
+  ) as HTMLImageElement;
+
+  var attachment_source = '/files/manager_empty_photo.png';
+  if (manager_info.photo_uuid) {
+    attachment_source = '/tg-bot/file?file_uuid=' + manager_info.photo_uuid;
+  }
+  managerPhoto.src = attachment_source;
+  managerAccountName.innerText = manager_info.full_name;
 }
 
 function DisplayMessage(message_object: Message) {
@@ -352,7 +378,7 @@ function displayDialogList(chat_list: ChatListContainer) {
       photoObject.height = 50;
       chatPhotoContainer.appendChild(photoObject);
     } else {
-      const attachment_source = 'user_empty_photo.png';
+      const attachment_source = '/files/manager_empty_photo.png';
       const photoObject = document.createElement('img');
       photoObject.classList.add('chat-photo');
       photoObject.src = attachment_source;
@@ -480,4 +506,4 @@ function displayDialogList(chat_list: ChatListContainer) {
 
 console.log('active_chat', active_chat);
 
-export { displayDialogList, displayChatHistory };
+export { displayDialogList, displayChatHistory, displayManagerInfo };

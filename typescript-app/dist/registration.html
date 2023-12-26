@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/style/normal.css">
     <link rel="stylesheet" href="/style/login.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <script src="login.js" type="module"></script>
+    <script src="registration.js" type="module"></script>
   </head>
   <body>
     
@@ -17,12 +17,13 @@
         <div class="login-square-container">
           <div class="container">
             <h2 class="welcome-label">Welcome</h2>
-            <p class="welcome-description">Enter your credentials to access your account</p>
-            <input class="login-input-field" id="login-input-object" type="text" placeholder="Enter your email" required autofocus autocomplete="email">
+            <p class="welcome-description">Enter your credentials to create new account</p>
+            <input class="login-input-field" id="full-name-input-object" type="text" placeholder="Enter your full name" required autofocus autocomplete="given-name">
+            <input class="password-input-field" id="login-input-object" type="text" placeholder="Enter your email" required autofocus autocomplete="email">
             <input class="password-input-field" id="password-input-object" type="password" placeholder="Enter your password" required autocomplete="current-password">
-            <button class="login-button" id="login-button-object">Sign in</button>
-            <a href="/registration">
-              <button class="sing-up-button">Create Account</button>
+            <button class="sing-up-button" id="create-manager-account-button">Create Account</button>
+            <a href="/login">
+                <button class="login-button">Sign in</button>
             </a>
           </div>
         </div>

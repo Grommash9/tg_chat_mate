@@ -55,6 +55,10 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'login.html'));
 });
 
+app.get('/registration', (req, res) => {
+  res.sendFile(path.join(__dirname, 'registration.html'));
+});
+
 app.post('/send-message', (req, res) => {
   const xRealIP = req.headers['x-real-ip']!;
   const ip = Array.isArray(xRealIP) ? xRealIP[0] : xRealIP;

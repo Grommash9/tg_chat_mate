@@ -18,12 +18,9 @@ def get_manager_by_username(username):
     return manager
 
 
-def new_manager(full_name, username, password, root=False):
+def new_manager(full_name, username, password, root=False, activated=True):
     db = get_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
-
-    print("manager founded", collection.find_one({"username": username}))
-
     if collection.find_one({"username": username}):
         raise DuplicateKeyError("Username is not unique")
 
@@ -31,10 +28,11 @@ def new_manager(full_name, username, password, root=False):
         "username": username,
         "hashed_password": hash_password(password).decode("utf-8"),
         "full_name": full_name,
-        "tokens": [],
     }
     if root:
         manager["root"] = True
+    if activated:
+        manager["activated"] = True
     collection.insert_one(manager)
 
 
