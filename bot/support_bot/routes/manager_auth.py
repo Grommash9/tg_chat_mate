@@ -93,6 +93,11 @@ async def manager_registration_option(request: Request):
     return await create_option_response(request)
 
 
+@web_routes.options("/tg-bot/get-manager-info")
+async def manager_info_option(request: Request):
+    return await create_option_response(request)
+
+
 @web_routes.options("/tg-bot/check_token")
 async def manager_check_token_option(request: Request):
     return await create_option_response(request)
