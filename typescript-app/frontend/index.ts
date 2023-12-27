@@ -494,7 +494,7 @@ function displayDialogList(chat_list: ChatListContainer) {
         var inputPanel = document.getElementById(
           'input_chat_box'
         ) as HTMLDivElement;
-        inputPanel.style.display = 'flex';
+        inputPanel.style.display = 'inline';
         active_chat = uniqueNumber;
 
         let message_send_button = document.getElementById(

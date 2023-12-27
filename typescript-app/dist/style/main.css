@@ -106,10 +106,11 @@ display: none;
   overflow-y: auto;
   height: 600px;
 }
+
+/* MESSAGE AND DATA INPUT */
 .input-chat-bot-object{
   width: 95%;
   display: none;
-  background-color: rgba(249, 249, 249, 1);
   border-radius: 10px;
   margin-left: 2%;
   margin-right: 2%;
@@ -117,64 +118,25 @@ display: none;
   margin-top: 2%;
 }
 
-.message-input-form{
-  width: 90%;
-  height: 110px;
-  background-color: rgba(249, 249, 249, 1);
-  border-style: none;
-  border-radius: 10px;
-  padding: 10px;
-  color: rgba(152, 157, 163, 1);
-  font-size: 12px;
-  resize: none;
-
-  /* width: 100%;
-  height: 150px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  resize: vertical; */
-
+.files-attachment-list-object {
+  display: block;
+  padding: 1px;
+  margin: 2px;
+  list-style: none;
 }
 
-.reply-to-message {
-  background-color: yellowgreen;
-  padding: 10px;
+.attached-file-name {
+  display: inline;
 }
 
-.attach-file-button svg {
-  margin-right: 5px; /* Adds space to the right of the SVG icon */
-}
-
-.attach-file-button {
-    /* display: inline;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background-color: #CECECE;
-    width: 30px;
-    margin-right: 10px;
-    margin-top: 10px;
-    height: 40px; */
-  padding: 0;
+.remove-attachment-button {
+  display: inline;
+  margin-left: 20px;
   border: none;
   font: inherit;
   color: inherit;
   background-color: transparent;
-  
-}
-
-.user-account-options-button {
-  border: none;
-  font: inherit;
-  color: inherit;
-  background-color: transparent;
-  margin-right: 10px; /* backend shit */
-  display: flex; /* backend shit */
-  margin-left: auto; /* backend shit */
-
+  background-color: #CECECE;
 }
 
 .send-message-button{
@@ -188,6 +150,49 @@ display: none;
   margin-top: 10px;
   height: 40px;
   border-radius: 20%;
+}
+
+.attach-file-button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+.attach-file-button svg {
+  margin-right: 5px; /* Adds space to the right of the SVG icon */
+}
+
+.message-input-form{
+  width: 90%;
+  height: 110px;
+  background-color: rgba(249, 249, 249, 1);
+  border-style: none;
+  border-radius: 10px;
+  padding: 10px;
+  color: rgba(152, 157, 163, 1);
+  font-size: 12px;
+  resize: none;
+  display: inline;
+  background-color: rgba(249, 249, 249, 1);
+}
+
+.reply-to-message {
+  background-color: yellowgreen;
+  padding: 10px;
+}
+
+
+.user-account-options-button {
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  margin-right: 10px; /* backend shit */
+  display: flex; /* backend shit */
+  margin-left: auto; /* backend shit */
+
 }
 
 .contact-item {
@@ -260,16 +265,12 @@ display: none;
   color: rgba(34, 42, 50, 0.5);
 }
 
-
-
 .name-date-message-container {
   /* display: inline;
   flex-direction: row;
     */
 
 }
-
-
 
 .message-from-client {
   list-style-type: none;
@@ -311,12 +312,9 @@ display: none;
 }
 
 .chat-setting {
-/* display: flex; */
 display: none;
 padding: 15px 15px 15px 15px;
 align-items: center;
-/* margin-bottom: 1rem; */
-/* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25); */
 }
 .client-account-photo {
 border-radius: 50%;
