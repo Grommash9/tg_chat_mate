@@ -126,6 +126,7 @@ display: none;
   padding: 10px;
   color: rgba(152, 157, 163, 1);
   font-size: 12px;
+  resize: none;
 
   /* width: 100%;
   height: 150px;
