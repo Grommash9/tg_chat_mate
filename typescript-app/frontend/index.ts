@@ -88,9 +88,23 @@ document.addEventListener('DOMContentLoaded', function () {
   let settingButton = document.getElementById(
     'manager-settings-button'
   ) as HTMLButtonElement;
+
   settingButton.addEventListener('click', function () {
-    console.log("manager-settings-button");
-    window.location.href = '/settings';
+    // Load the modal HTML
+    fetch('settings-modal.html')
+      .then(response => response.text())
+      .then(html => {
+        document.body.insertAdjacentHTML('beforeend', html);
+        var modalSettingsWindow = document.getElementById("settings-modal") as HTMLDivElement;
+        modalSettingsWindow.style.display = "block"
+        
+        const script = document.createElement('script');
+        script.src = 'settings-modal.js';
+        document.body.appendChild(script);
+      })
+      .catch(error => {
+        console.error('Error loading the settings modal:', error);
+      });
   });
 });
 
