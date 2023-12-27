@@ -14,6 +14,7 @@ pyjwt = "*"
 python-magic = "*"
 requests = "*"
 pytest = "*"
+motor = "*"
 
 [dev-packages]
 autoflake = "*"
