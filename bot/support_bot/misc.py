@@ -156,7 +156,9 @@ async def send_update_to_socket(message: dict):
 
 async def on_startup() -> None:
     try:
-        db.manager.new_manager("Root admin", "root", ROOT_PASSWORD, root=True)
+        await db.manager.new_manager(
+            "Root admin", "root", ROOT_PASSWORD, root=True
+        )
     except Exception as e:
         print(f"Can't create root user: {e}")
     if (

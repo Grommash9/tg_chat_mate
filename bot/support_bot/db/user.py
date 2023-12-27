@@ -3,6 +3,7 @@ from pymongo.errors import DuplicateKeyError
 
 from support_bot.db.client import get_async_mongo_db, get_mongo_db
 from support_bot.db.collection_names import USER_COLLECTION_NAME
+from support_bot.misc import save_user_photo
 
 
 async def new_user(user: User):
@@ -11,6 +12,7 @@ async def new_user(user: User):
     post = {"_id": user.id, "username": user.username, "name": user.full_name}
     try:
         await collection.insert_one(post)
+        await save_user_photo(user)
     except DuplicateKeyError:
         pass
 
