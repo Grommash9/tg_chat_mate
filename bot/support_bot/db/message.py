@@ -1,4 +1,4 @@
-from typing import List, Mapping, Any
+from typing import Any, List, Mapping
 
 from aiogram.types import Message
 from pymongo import DESCENDING
