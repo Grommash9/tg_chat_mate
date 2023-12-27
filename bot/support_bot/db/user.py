@@ -15,11 +15,10 @@ async def new_user(user: User):
         pass
 
 
-def add_photo(user: User, photo_uuid):
-    db = get_mongo_db()
+async def add_photo(user: User, photo_uuid):
+    db = await get_async_mongo_db()
     collection = db[USER_COLLECTION_NAME]
-
-    collection.update_one(
+    await collection.update_one(
         {"_id": user.id}, {"$set": {"photo_uuid": photo_uuid}}
     )
 
