@@ -55,6 +55,7 @@ display: none;
 .manager-account-name {
   font-size: 20px;
   font-weight: 900;
+  min-width: 100px;
   /* height: 1rem; backend shit */
   /* line-height: 2.5em; backend shit */
 } 
