@@ -42,6 +42,7 @@ jobs:
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << ENDSSH
           cd /home
           if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+            git clone https://github.com/Grommash9/tg_chat_mate
             if git ls-remote --heads https://github.com/Grommash9/tg_chat_mate refs/pull/$TRAVIS_PULL_REQUEST/merge; then
               git fetch origin +refs/pull/$TRAVIS_PULL_REQUEST/merge: --depth=50
               git checkout -qf FETCH_HEAD
