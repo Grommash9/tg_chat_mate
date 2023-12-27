@@ -1,3 +1,5 @@
+from typing import List, Mapping, Any
+
 from aiogram.types import Message
 from pymongo import DESCENDING
 
@@ -119,7 +121,7 @@ async def get_all_chat_messages(chat_id):
 async def get_chat_list():
     db = await get_async_mongo_db()
     messages_collection = db[MESSAGE_COLLECTION_NAME]
-    pipeline = [
+    pipeline: List[Mapping[str, Any]] = [
         # Sort by user and date first to prepare for the grouping
         {"$sort": {"chat_id": 1, "date": DESCENDING}},
         # Group by user ID to get the last message and its time
