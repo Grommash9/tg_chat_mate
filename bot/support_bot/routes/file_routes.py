@@ -16,7 +16,7 @@ async def file_uploading(request: Request):
     data = await request.read()
     file_hash = hashlib.sha256(data).hexdigest()
 
-    existing_file = db.files.find_file_by_hash(file_hash)
+    existing_file = await db.files.find_file_by_hash(file_hash)
     if existing_file:
         response = web.json_response(
             {"error": "file already exists!", "file_id": existing_file["_id"]},
@@ -36,7 +36,7 @@ async def file_uploading(request: Request):
         "content_type": content_type,
         "binary_data": data,
     }
-    db.files.new_file(file_document)
+    await db.files.new_file(file_document)
     response = web.json_response(
         {"error": "file uploaded!", "file_id": file_uuid}, status=201
     )
@@ -47,7 +47,7 @@ async def file_uploading(request: Request):
 @require_auth
 async def get_file(request: Request):
     file_uuid = request.query.get("file_uuid", "")
-    file_document = db.files.get_file(file_uuid)
+    file_document = await db.files.get_file(file_uuid)
     if not file_document:
         response = web.json_response(
             {"error": "Can't find file!", "file_id": file_uuid}, status=404

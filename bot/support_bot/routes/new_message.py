@@ -20,7 +20,7 @@ async def new_message_from_manager(request: Request):
         message = await bot.send_message(
             payload.get("chat_id"), payload.get("text")
         )
-        message_document = db.message.new_message(
+        message_document = await db.message.new_message(
             message, unread=False, manager_name=request["manager_full_name"]
         )
         await send_update_to_socket(message_document)
@@ -34,7 +34,9 @@ async def new_message_from_manager(request: Request):
 @require_auth
 async def new_document_message_from_manager(request: Request):
     payload = await request.json()
-    file_attachment = db.files.get_file(payload.get("file_attachment_id"))
+    file_attachment = await db.files.get_file(
+        payload.get("file_attachment_id")
+    )
     try:
         message = await bot.send_document(
             payload.get("chat_id"),
@@ -44,7 +46,7 @@ async def new_document_message_from_manager(request: Request):
                 file_attachment["filename"],
             ),
         )
-        message_document = db.message.new_message(
+        message_document = await db.message.new_message(
             message,
             unread=False,
             attachment={
@@ -65,7 +67,9 @@ async def new_document_message_from_manager(request: Request):
 @require_auth
 async def new_photo_message_from_manager(request: Request):
     payload = await request.json()
-    file_attachment = db.files.get_file(payload.get("file_attachment_id"))
+    file_attachment = await db.files.get_file(
+        payload.get("file_attachment_id")
+    )
     try:
         message = await bot.send_photo(
             payload.get("chat_id"),
@@ -75,7 +79,7 @@ async def new_photo_message_from_manager(request: Request):
                 file_attachment["filename"],
             ),
         )
-        message_document = db.message.new_message(
+        message_document = await db.message.new_message(
             message,
             unread=False,
             attachment={
@@ -96,7 +100,9 @@ async def new_photo_message_from_manager(request: Request):
 @require_auth
 async def new_audio_message_from_manager(request: Request):
     payload = await request.json()
-    file_attachment = db.files.get_file(payload.get("file_attachment_id"))
+    file_attachment = await db.files.get_file(
+        payload.get("file_attachment_id")
+    )
     try:
         message = await bot.send_audio(
             payload.get("chat_id"),
@@ -106,7 +112,7 @@ async def new_audio_message_from_manager(request: Request):
                 file_attachment["filename"],
             ),
         )
-        message_document = db.message.new_message(
+        message_document = await db.message.new_message(
             message,
             unread=False,
             attachment={
@@ -127,7 +133,9 @@ async def new_audio_message_from_manager(request: Request):
 @require_auth
 async def new_video_message_from_manager(request: Request):
     payload = await request.json()
-    file_attachment = db.files.get_file(payload.get("file_attachment_id"))
+    file_attachment = await db.files.get_file(
+        payload.get("file_attachment_id")
+    )
     try:
         message = await bot.send_video(
             payload.get("chat_id"),
@@ -137,7 +145,7 @@ async def new_video_message_from_manager(request: Request):
                 file_attachment["filename"],
             ),
         )
-        message_document = db.message.new_message(
+        message_document = await db.message.new_message(
             message,
             unread=False,
             attachment={
