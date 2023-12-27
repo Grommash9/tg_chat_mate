@@ -43,19 +43,14 @@ jobs:
           cd /home
           if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
             git clone https://github.com/Grommash9/tg_chat_mate
-            if git ls-remote --heads https://github.com/Grommash9/tg_chat_mate refs/pull/$TRAVIS_PULL_REQUEST/merge; then
-              git fetch origin +refs/pull/$TRAVIS_PULL_REQUEST/merge: --depth=50
-              git checkout -qf FETCH_HEAD
-            else
-              echo "Pull request branch does not exist, falling back to default branch."
-              # Provide a fallback branch here if the PR branch doesn't exist
-              git checkout -qf your_fallback_branch
-            fi
+            cd tg_chat_mate
+            git ls-remote --heads https://github.com/Grommash9/tg_chat_mate refs/pull/$TRAVIS_PULL_REQUEST/merge; then
+            git fetch origin +refs/pull/$TRAVIS_PULL_REQUEST/merge: --depth=50
+            git checkout -qf FETCH_HEAD
           else
-            # It's a push, use $TRAVIS_BRANCH
             git clone -b "$TRAVIS_BRANCH" https://github.com/Grommash9/tg_chat_mate
           fi
-          cd tg_chat_mate
+          cd /home/tg_chat_mate
           export DOMAIN=$PIPELINE_SERVER_IP_ADDRESS
           echo "DOMAIN=$PIPELINE_SERVER_IP_ADDRESS" >> .env
           echo "ISSUE_SSL=true" >> .env
