@@ -1,17 +1,19 @@
+from typing import Any, List, Mapping
+
 from aiogram.types import Message
 from pymongo import DESCENDING
 
-from support_bot.db.client import get_mongo_db
+from support_bot.db.client import get_async_mongo_db
 from support_bot.db.collection_names import (
     MESSAGE_COLLECTION_NAME,
     USER_COLLECTION_NAME,
 )
 
 
-def get_message_object_id(tg_message_id, tg_chat_id):
-    db = get_mongo_db()
+async def get_message_object_id(tg_message_id, tg_chat_id):
+    db = await get_async_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
-    message = collection.find_one(
+    message = await collection.find_one(
         {"message_id": tg_message_id, "chat_id": tg_chat_id}
     )
     if message is None:
@@ -19,21 +21,21 @@ def get_message_object_id(tg_message_id, tg_chat_id):
     return message["_id"]
 
 
-def get_message(message_id):
-    db = get_mongo_db()
+async def get_message(message_id):
+    db = await get_async_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
-    message = collection.find_one({"_id": message_id})
+    message = await collection.find_one({"_id": message_id})
     return message
 
 
-def new_message(
+async def new_message(
     message: Message,
     unread=False,
     attachment: dict | None = None,
     location: dict | None = None,
     manager_name: str | None = None,
 ):
-    db = get_mongo_db()
+    db = await get_async_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
     post = {
         "message_id": message.message_id,
@@ -53,21 +55,21 @@ def new_message(
     if manager_name:
         post["manager_name"] = manager_name
     if message.reply_to_message:
-        post["reply_to_message"] = get_message_object_id(
+        post["reply_to_message"] = await get_message_object_id(
             message.reply_to_message.message_id,
             message.reply_to_message.chat.id,
         )
-    created_message_id = collection.insert_one(post).inserted_id
-    return get_message_with_reply(created_message_id)
+    created_message_id = (await collection.insert_one(post)).inserted_id
+    return await get_message_with_reply(created_message_id)
 
 
-def get_message_with_reply(message_id):
-    message = get_message(message_id)
+async def get_message_with_reply(message_id):
+    message = await get_message(message_id)
     reply_to_message = message.get("reply_to_message")
     message_json = convert_objects_str(message)
     if reply_to_message is not None:
         message_json["reply_to_message"] = convert_objects_str(
-            get_message(reply_to_message)
+            await get_message(reply_to_message)
         )
     return message_json
 
@@ -79,36 +81,36 @@ def convert_objects_str(data):
     return data
 
 
-def mark_as_read(chat_id, message_id):
-    db = get_mongo_db()
+async def mark_as_read(chat_id, message_id):
+    db = await get_async_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
     filter_condition = {"message_id": int(message_id), "chat_id": int(chat_id)}
-    update_result = collection.update_one(
+    update_result = await collection.update_one(
         filter_condition, {"$unset": {"unread": ""}}
     )
     return update_result.modified_count
 
 
-def mark_chat_as_read(chat_id):
-    db = get_mongo_db()
+async def mark_chat_as_read(chat_id):
+    db = await get_async_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
     filter_condition = {"chat_id": int(chat_id)}
-    update_result = collection.update_many(
+    update_result = await collection.update_many(
         filter_condition, {"$unset": {"unread": ""}}
     )
     return update_result.modified_count
 
 
-def get_all_chat_messages(chat_id):
+async def get_all_chat_messages(chat_id):
     messages_list = []
-    db = get_mongo_db()
+    db = await get_async_mongo_db()
     collection = db[MESSAGE_COLLECTION_NAME]
     filter_dict = {"chat_id": chat_id}
-    for message in collection.find(filter_dict):
+    async for message in collection.find(filter_dict):
         reply_to_message = None
         if message.get("reply_to_message") is not None:
             reply_to_message = convert_objects_str(
-                get_message(message["reply_to_message"])
+                await get_message(message["reply_to_message"])
             )
         json_message = convert_objects_str(message)
         json_message["reply_to_message"] = reply_to_message
@@ -116,10 +118,10 @@ def get_all_chat_messages(chat_id):
     return messages_list
 
 
-def get_chat_list():
-    db = get_mongo_db()
+async def get_chat_list():
+    db = await get_async_mongo_db()
     messages_collection = db[MESSAGE_COLLECTION_NAME]
-    pipeline = [
+    pipeline: List[Mapping[str, Any]] = [
         # Sort by user and date first to prepare for the grouping
         {"$sort": {"chat_id": 1, "date": DESCENDING}},
         # Group by user ID to get the last message and its time
@@ -204,5 +206,8 @@ def get_chat_list():
     ]
 
     # Execute the aggregation pipeline
-    results = messages_collection.aggregate(pipeline)  # type: ignore[arg-type]
+    results = []
+    async for document in messages_collection.aggregate(pipeline):
+        # type: ignore[arg-type]
+        results.append(document)
     return list(results)

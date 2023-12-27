@@ -9,7 +9,7 @@ from support_bot.routes.utils import require_auth
 @web_routes.get("/tg-bot/chat-list")
 @require_auth
 async def get_chat_list(request: Request):
-    chat_list = db.message.get_chat_list()
+    chat_list = await db.message.get_chat_list()
     response = web.json_response(
         {"error": "bot get", "chat_list": chat_list}, status=200
     )

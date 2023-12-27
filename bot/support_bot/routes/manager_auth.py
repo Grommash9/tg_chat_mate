@@ -21,12 +21,12 @@ async def manager_login(request: Request):
             {"error": "Missing username or password"}, status=400
         )
 
-    if not db.manager.check_password(user_name, password):
+    if not await db.manager.check_password(user_name, password):
         response = web.json_response(
             {"error": "Wrong credentials"}, status=401
         )
         return set_cors_headers(response)
-    manager = db.manager.get_manager_by_username(user_name)
+    manager = await db.manager.get_manager_by_username(user_name)
 
     if manager.get("activated"):
         token = create_token_for_manager(user_name)
@@ -59,7 +59,7 @@ async def manager_check_token(request: Request):
 @web_routes.get("/tg-bot/get-manager-info")
 @require_auth
 async def get_manager_info(request: Request):
-    manager_info = db.manager.get_manager_by_username(
+    manager_info = await db.manager.get_manager_by_username(
         request.get("manager_user_name")
     )
     manager_info["_id"] = str(manager_info["_id"])
@@ -83,7 +83,9 @@ async def manager_registration(request: Request):
             {"error": "Password should be at least 6 characters long!"},
             status=400,
         )
-    db.manager.new_manager(full_name, user_name, password, activated=False)
+    await db.manager.new_manager(
+        full_name, user_name, password, activated=False
+    )
     response = web.json_response({"user_name": user_name}, status=200)
     return set_cors_headers(response)
 

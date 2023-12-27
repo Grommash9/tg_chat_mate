@@ -110,7 +110,7 @@ async def save_user_photo(user: User) -> None:
         photo_file_db_uuid = await upload_file_to_db_using_file_id(
             profile_photos.photos[-1][-1].file_id
         )
-        db.user.add_photo(user, photo_file_db_uuid["file_id"])
+        await db.user.add_photo(user, photo_file_db_uuid["file_id"])
     except Exception as e:
         print(f"Error on getting photo for user {user.id}: {str(e)}")
 
@@ -156,7 +156,9 @@ async def send_update_to_socket(message: dict):
 
 async def on_startup() -> None:
     try:
-        db.manager.new_manager("Root admin", "root", ROOT_PASSWORD, root=True)
+        await db.manager.new_manager(
+            "Root admin", "root", ROOT_PASSWORD, root=True
+        )
     except Exception as e:
         print(f"Can't create root user: {e}")
     if (

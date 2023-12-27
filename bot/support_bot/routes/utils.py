@@ -19,7 +19,7 @@ def require_auth(f):
             )
             return set_cors_headers(response)
 
-        manager = db.manager.get_manager_by_username(manager_username)
+        manager = await db.manager.get_manager_by_username(manager_username)
         if not manager:
             # Handle case where manager is not found
             response = web.json_response(

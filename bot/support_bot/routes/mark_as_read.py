@@ -14,7 +14,7 @@ from support_bot.routes.utils import require_auth
 @require_auth
 async def mark_message_as_read(request: Request):
     payload = await request.json()
-    modified_count = db.message.mark_as_read(
+    modified_count = await db.message.mark_as_read(
         payload.get("chat_id"), payload.get("message_id")
     )
     response = web.json_response(
@@ -35,7 +35,7 @@ async def mark_chat_as_read(request: Request):
 
     payload = await request.json()
     chat_id = payload.get("chat_id")
-    modified_count = db.message.mark_chat_as_read(chat_id)
+    modified_count = await db.message.mark_chat_as_read(chat_id)
     response = web.json_response(
         {"result": "Marked!", "modified_count": modified_count}, status=200
     )

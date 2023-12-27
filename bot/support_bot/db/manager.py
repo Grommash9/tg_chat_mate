@@ -1,7 +1,7 @@
 import bcrypt
 from pymongo.errors import DuplicateKeyError
 
-from support_bot.db.client import get_mongo_db
+from support_bot.db.client import get_async_mongo_db
 from support_bot.db.collection_names import MANAGER_COLLECTION_NAME
 
 
@@ -11,17 +11,19 @@ def hash_password(password: str):
     return hashed
 
 
-def get_manager_by_username(username):
-    db = get_mongo_db()
+async def get_manager_by_username(username):
+    db = await get_async_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
-    manager = collection.find_one({"username": username})
+    manager = await collection.find_one({"username": username})
     return manager
 
 
-def new_manager(full_name, username, password, root=False, activated=True):
-    db = get_mongo_db()
+async def new_manager(
+    full_name, username, password, root=False, activated=True
+):
+    db = await get_async_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
-    if collection.find_one({"username": username}):
+    if await collection.find_one({"username": username}):
         raise DuplicateKeyError("Username is not unique")
 
     manager = {
@@ -33,13 +35,13 @@ def new_manager(full_name, username, password, root=False, activated=True):
         manager["root"] = True
     if activated:
         manager["activated"] = True
-    collection.insert_one(manager)
+    await collection.insert_one(manager)
 
 
-def check_password(username: str, password: str) -> bool:
-    db = get_mongo_db()
+async def check_password(username: str, password: str) -> bool:
+    db = await get_async_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]
-    manager = collection.find_one({"username": username})
+    manager = await collection.find_one({"username": username})
     if not manager:
         return False
     hashed_password = manager["hashed_password"].encode("utf-8")
