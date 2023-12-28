@@ -157,14 +157,19 @@ async def send_update_to_socket(message: dict):
 
 
 class ChatTypeFilter(BaseFilter):
+    """
+    Custom filter for filtering chat messages based on their type.
+
+    Usage example in message decorators:
+    ChatTypeFilter(chat_type=["private"])
+    """
     def __init__(self, chat_type: Union[str, list]):
         self.chat_type = chat_type
 
     async def __call__(self, message: Message) -> bool:
         if isinstance(self.chat_type, str):
             return message.chat.type == self.chat_type
-        else:
-            return message.chat.type in self.chat_type
+        return message.chat.type in self.chat_type
 
 
 async def on_startup() -> None:
