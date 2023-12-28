@@ -8,8 +8,6 @@ from support_bot.misc import ChatTypeFilter, router, send_update_to_socket
 
 @router.message(ChatTypeFilter(chat_type=["private"]), CommandStart())
 async def command_start_handler(message: Message) -> None:
-    if message.chat.type != "private":
-        return
     assert message.from_user is not None
     await db.user.new_user(message.from_user)
     message_document = await db.message.new_message(message, unread=True)

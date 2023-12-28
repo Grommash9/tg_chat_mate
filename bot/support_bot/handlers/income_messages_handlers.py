@@ -11,9 +11,6 @@ from support_bot.misc import (
 
 @router.message(ChatTypeFilter(chat_type=["private"]), F.video)
 async def video_message_from_user(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     if message.video is None:
         return
 
@@ -29,9 +26,6 @@ async def video_message_from_user(message: types.Message) -> None:
 
 @router.message(ChatTypeFilter(chat_type=["private"]), F.video_note)
 async def video_note_message_from_user(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     if message.video_note is None:
         return
 
@@ -49,9 +43,6 @@ async def video_note_message_from_user(message: types.Message) -> None:
 
 @router.message(ChatTypeFilter(chat_type=["private"]), F.animation)
 async def animation_message_from_user(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     if message.animation is None:
         return
 
@@ -69,9 +60,6 @@ async def animation_message_from_user(message: types.Message) -> None:
 
 @router.message(ChatTypeFilter(chat_type=["private"]), F.location)
 async def location_message_from_user(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     if message.location is None:
         return
 
@@ -91,9 +79,6 @@ async def location_message_from_user(message: types.Message) -> None:
 
 @router.message(ChatTypeFilter(chat_type=["private"]), F.voice)
 async def voice_message_from_user(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     if message.voice is None:
         return
 
@@ -109,9 +94,6 @@ async def voice_message_from_user(message: types.Message) -> None:
 
 @router.message(ChatTypeFilter(chat_type=["private"]), F.sticker)
 async def sticker_message_from_user(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     if message.sticker is None:
         return
 
@@ -127,9 +109,6 @@ async def sticker_message_from_user(message: types.Message) -> None:
 
 @router.message(ChatTypeFilter(chat_type=["private"]), F.document)
 async def document_message_from_user(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     if message.document is None:
         return
 
@@ -147,9 +126,6 @@ async def document_message_from_user(message: types.Message) -> None:
 
 @router.message(ChatTypeFilter(chat_type=["private"]), F.photo)
 async def photo_message_from_user(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     if message.photo is None:
         return
 
@@ -167,9 +143,6 @@ async def photo_message_from_user(message: types.Message) -> None:
 
 @router.message(ChatTypeFilter(chat_type=["private"]))
 async def echo_handler(message: types.Message) -> None:
-    if message.chat.type != "private":
-        return
-
     message_document = await db.message.new_message(message, unread=True)
     try:
         await send_update_to_socket(message_document)
