@@ -163,6 +163,7 @@ class ChatTypeFilter(BaseFilter):
     Usage example in message decorators:
     ChatTypeFilter(chat_type=["private"])
     """
+
     def __init__(self, chat_type: Union[str, list]):
         self.chat_type = chat_type
 
