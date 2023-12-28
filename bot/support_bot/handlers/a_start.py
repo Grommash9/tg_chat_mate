@@ -3,10 +3,10 @@ from aiogram.types import Message
 from aiogram.utils.markdown import hbold
 
 from support_bot import db
-from support_bot.misc import router, send_update_to_socket
+from support_bot.misc import ChatTypeFilter, router, send_update_to_socket
 
 
-@router.message(CommandStart())
+@router.message(ChatTypeFilter(chat_type=["private"]), CommandStart())
 async def command_start_handler(message: Message) -> None:
     if message.chat.type != "private":
         return

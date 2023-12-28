@@ -2,13 +2,14 @@ from aiogram import F, types
 
 from support_bot import db
 from support_bot.misc import (
+    ChatTypeFilter,
     router,
     send_update_to_socket,
     upload_file_to_db_using_file_id,
 )
 
 
-@router.message(F.video)
+@router.message(ChatTypeFilter(chat_type=["private"]), F.video)
 async def video_message_from_user(message: types.Message) -> None:
     if message.chat.type != "private":
         return
@@ -26,7 +27,7 @@ async def video_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message(F.video_note)
+@router.message(ChatTypeFilter(chat_type=["private"]), F.video_note)
 async def video_note_message_from_user(message: types.Message) -> None:
     if message.chat.type != "private":
         return
@@ -46,7 +47,7 @@ async def video_note_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message(F.animation)
+@router.message(ChatTypeFilter(chat_type=["private"]), F.animation)
 async def animation_message_from_user(message: types.Message) -> None:
     if message.chat.type != "private":
         return
@@ -66,7 +67,7 @@ async def animation_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message(F.location)
+@router.message(ChatTypeFilter(chat_type=["private"]), F.location)
 async def location_message_from_user(message: types.Message) -> None:
     if message.chat.type != "private":
         return
@@ -88,7 +89,7 @@ async def location_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message(F.voice)
+@router.message(ChatTypeFilter(chat_type=["private"]), F.voice)
 async def voice_message_from_user(message: types.Message) -> None:
     if message.chat.type != "private":
         return
@@ -106,7 +107,7 @@ async def voice_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message(F.sticker)
+@router.message(ChatTypeFilter(chat_type=["private"]), F.sticker)
 async def sticker_message_from_user(message: types.Message) -> None:
     if message.chat.type != "private":
         return
@@ -124,7 +125,7 @@ async def sticker_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message(F.document)
+@router.message(ChatTypeFilter(chat_type=["private"]), F.document)
 async def document_message_from_user(message: types.Message) -> None:
     if message.chat.type != "private":
         return
@@ -144,7 +145,7 @@ async def document_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message(F.photo)
+@router.message(ChatTypeFilter(chat_type=["private"]), F.photo)
 async def photo_message_from_user(message: types.Message) -> None:
     if message.chat.type != "private":
         return
@@ -164,7 +165,7 @@ async def photo_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message()
+@router.message(ChatTypeFilter(chat_type=["private"]))
 async def echo_handler(message: types.Message) -> None:
     if message.chat.type != "private":
         return
