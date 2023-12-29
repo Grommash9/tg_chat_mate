@@ -25,6 +25,15 @@ async def add_photo(user: User, photo_uuid):
     )
 
 
+async def update(user_id: int, info: dict):
+    db = await get_async_mongo_db()
+    collection = db[USER_COLLECTION_NAME]
+    for key, value in info.items():
+        await collection.update_one(
+            {"_id": user_id}, {"$set": {key: value}}
+        )
+
+
 def get_all_users():
     db = get_mongo_db()
     collection = db[USER_COLLECTION_NAME]
