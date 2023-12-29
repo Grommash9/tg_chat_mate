@@ -1,306 +1,371 @@
 html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #FFFFFF;
-  font-family: 'Inter', sans-serif;
-  color: rgba(34, 42, 50, 1);
+height: 100%;
+margin: 0;
+padding: 0;
+background-color: #FFFFFF;
+font-family: 'Inter', sans-serif;
+color: rgba(34, 42, 50, 1);
 }
 p {
-  margin: 0;
+margin: 0;
 }
 *,
 *::before,
 *::after {
-    box-sizing: inherit;
+  box-sizing: inherit;
 }
 a {
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 img {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 /* hide scroll bar */
 ::-webkit-scrollbar {
-  display: none;
+display: none;
 }
 
 
 .main-page-container {
-    display: flex;
-    height: 100%;
-  }
-  .contacts-list-object {
-    margin: 0;
-    padding: 0;
-  }
-  .message-list-object {
-    margin: 0;
-    padding: 0;
-  }
-  .manager-account-view {
-    display: flex;
-    padding: 15px 15px 15px 15px;
-    margin-bottom: 1rem;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
-  }
-  .manager-account-photo {
-    border-radius: 50%;
-    margin-right: 15px;
-  }
-  .manager-account-name {
-    font-size: 20px;
-    font-weight: 900;
-    height: 1rem;
-    line-height: 2.5em;
-  }
-  .contants-list {
-    width: 20%;
-    min-width: 350px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
-    overflow-y: scroll;
-    -ms-overflow-style: none; /* hide scroll bar for some browsers */
-    scrollbar-width: none; /* hide scroll bar for some browsers */
-  }
-
-  .chat-window {
-    width: 80%;
-
-    display: flex;
-    flex-direction: column;
-    -ms-overflow-style: none; /* hide scroll bar for some browsers */
-    scrollbar-width: none; /* hide scroll bar for some browsers */
-
-
-
-    /* your styles for chat area */
-  }
-
-  .active-contact {
-    background-color: #F7F7F7;
-    border-radius: 20px;
-  }
-
-
-  .messages-list-box{
-    display: block;
-    flex-grow: 1;
-    overflow-y: auto;
-    height: 600px;
-  }
-  .input-chat-bot-object{
-    width: 95%;
-    display: none;
-    background-color: rgba(249, 249, 249, 1);
-    border-radius: 10px;
-    margin-left: 2%;
-    margin-right: 2%;
-    margin-bottom: 2%;
-    margin-top: 2%;
-  }
-
-  .message-input-form{
-    width: 90%;
-    height: 110px;
-    background-color: rgba(249, 249, 249, 1);
-    border-style: none;
-    border-radius: 10px;
-    padding: 10px;
-    color: rgba(152, 157, 163, 1);
-    font-size: 12px;
-
-    /* width: 100%;
-    height: 150px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-    resize: vertical; */
-
-  }
-
-  .reply-to-message {
-    background-color: yellowgreen;
-    padding: 10px;
-  }
-  
-  .attach-file-button svg {
-    margin-right: 5px; /* Adds space to the right of the SVG icon */
-  }
-
-  .attach-file-button {
-      /* display: inline;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      background-color: #CECECE;
-      width: 30px;
-      margin-right: 10px;
-      margin-top: 10px;
-      height: 40px; */
-    padding: 0;
-    border: none;
-    font: inherit;
-    color: inherit;
-    background-color: transparent;
-    
-  }
-
-  .send-message-button{
-    display: inline;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background-color: #CECECE;
-    width: 30px;
-    margin-right: 10px;
-    margin-top: 10px;
-    height: 40px;
-    border-radius: 20%;
-  }
-
-  /* CONTACT */
-  .contact-item {
-    margin: 5px;
-
-    list-style-type: none;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
-  }
-
-  .chat-photo {
-    border-radius: 50%;
-
-  }
-
-  .chat-name {
-    font-size: 12px;
-    font-weight: 800;
-    display: inline;
-    margin-right: 2px;
-  }
-
-  .chat-last-message {
-    font-size: 12px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 270px;
-  }
-
-  .chat-last-message-date {
-    font-size: 10px;
-    color: rgba(34, 42, 50, 0.5);
-    display: inline;
-  }
-
-  .chat-unread-messages {
-    background-color: rgba(200, 224, 253, 1);
-
-    font-size: 8px;
-    border-radius: 50%;
-    display: block;
-    justify-content: center;
-    text-align: center;
-  }
-  .unread-messages-container {
-    line-height: 20px;
-    width: 20px;
-  }
-
-  .chat-photo-container {
-    padding: 8px;
-  }
-
-  .chat-last-message-text-container {
-    /* display: inline; */
-  }
-  .message-name {
-    font-size: 14px;
-    font-weight: 700;
-  }
-  .message-text{
-    overflow-wrap: break-word;
-    font-size: 14px;
-    max-width: 600px;
-  }
-  .location-coordinates {
-    font-size: 10px;
-    color: rgba(34, 42, 50, 0.5);
-  }
-
-
-
-  .name-date-message-container {
-    /* display: inline;
-    flex-direction: row;
-     */
-
-  }
-
-
-
-  .message-from-client {
-    list-style-type: none;
-    float: left;
-    display: block;
-    clear: both; /* Ensures that each message is on a new line */
-    border: 0.5px solid #C8E0FD;
-    border-radius: 10px;
-    background: #C8E0FD;
-    padding: 10px;
-    margin: 5px;
-    margin-left: 2%;
-  }
-
-  .message-date {
-    font-size: 10px;
-    color: gray;
-  }
-
-  .message-manager-name {
-    font-size: 14px;
-    font-weight: 700;
-  }
-
-  .message-from-manager {
-    list-style-type: none;
-    float: right;
-    display: block;
-    clear: both; /* Ensures that each message is on a new line */
-    border: 0.5px solid #F5F5F5;
-    border-radius: 20px;
-    padding: 10px;
-    margin: 5px;
-    margin-right: 3.5%;
-    background:  #F5F5F5;
-  }
-  .back-button {
-    display: none; /* show back button on mobile */
-  }
-
-.chat-setting {
-  /* display: flex; */
-  display: none;
-  padding: 15px 15px 15px 15px;
-  /* margin-bottom: 1rem; */
-  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25); */
+  display: flex;
+  height: 100%;
 }
-.client-account-photo {
+.contacts-list-object {
+  margin: 0;
+  padding: 0;
+}
+.message-list-object {
+  margin: 0;
+  padding: 0;
+}
+.manager-account-view {
+  display: flex;
+  padding: 15px 15px 15px 15px;
+  margin-bottom: 1rem;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+  justify-content: flex-start; /* backend shit */
+  align-items: center; /* backend shit */
+}
+.manager-account-photo {
   border-radius: 50%;
   margin-right: 15px;
 }
-.client-account-name{
+.manager-account-name {
   font-size: 20px;
   font-weight: 900;
-  height: 1rem;
-  line-height: 2.5em;
+  min-width: 100px;
+  /* height: 1rem; backend shit */
+  /* line-height: 2.5em; backend shit */
+} 
+
+.manager-settings-button,
+.manager-logout-button {
+  display: flex; /* backend shit */
+  margin-left: auto; /* backend shit */
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+}
+
+
+.contants-list {
+  width: 20%;
+  min-width: 350px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* hide scroll bar for some browsers */
+  scrollbar-width: none; /* hide scroll bar for some browsers */
+}
+
+.chat-window {
+  width: 80%;
+
+  display: flex;
+  flex-direction: column;
+  -ms-overflow-style: none; /* hide scroll bar for some browsers */
+  scrollbar-width: none; /* hide scroll bar for some browsers */
+
+
+
+  /* your styles for chat area */
+}
+
+.active-contact {
+  background-color: #F7F7F7;
+  border-radius: 20px;
+}
+
+
+.messages-list-box{
+  display: block;
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 600px;
+}
+
+/* MESSAGE AND DATA INPUT */
+.input-chat-bot-object{
+  width: 95%;
+  display: none;
+  border-radius: 10px;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 2%;
+  margin-top: 2%;
+}
+
+.files-attachment-list-object {
+  display: block;
+  padding: 1px;
+  margin: 2px;
+  list-style: none;
+}
+
+.attached-file-name {
+  display: inline;
+}
+
+.remove-attachment-button {
+  display: inline;
+  margin-left: 20px;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: #CECECE;
+}
+
+.send-message-button{
+  display: inline;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: #CECECE;
+  width: 30px;
+  margin-right: 10px;
+  margin-top: 5px;
+  height: 40px;
+  border-radius: 20%;
+  vertical-align: top;
+}
+
+.attach-file-button {
+  padding: 0;
+  margin: 10px;
+  background-color: #CECECE;
+  border-radius: 20%;
+  width: 40px;
+  height: 43px;
+  border: none;
+  font: inherit;
+  color: inherit;
+  vertical-align: top;
+  margin: 5px;
+}
+
+.attach-file-button svg {
+}
+
+.message-input-form{
+  width: 90%;
+  height: 110px;
+  background-color: rgba(249, 249, 249, 1);
+  border-style: none;
+  border-radius: 10px;
+  padding: 10px;
+  color: rgba(152, 157, 163, 1);
+  font-size: 12px;
+  resize: none;
+  display: inline;
+  background-color: rgba(249, 249, 249, 1);
+}
+
+.reply-to-message {
+  background-color: yellowgreen;
+  padding: 10px;
+}
+
+
+.user-account-options-button {
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  margin-right: 10px; /* backend shit */
+  display: flex; /* backend shit */
+  margin-left: auto; /* backend shit */
+
+}
+
+.contact-item {
+  margin: 5px;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.chat-photo {
+  border-radius: 50%;
+
+}
+
+.chat-name {
+  font-size: 12px;
+  font-weight: 800;
+  display: inline;
+  margin-right: 2px;
+}
+
+.chat-last-message {
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 270px;
+}
+
+.chat-last-message-date {
+  font-size: 10px;
+  color: rgba(34, 42, 50, 0.5);
+  display: inline;
+}
+
+.chat-unread-messages {
+  background-color: rgba(200, 224, 253, 1);
+
+  font-size: 8px;
+  border-radius: 50%;
+  display: block;
+  justify-content: center;
+  text-align: center;
+}
+.unread-messages-container {
+  line-height: 20px;
+  width: 20px;
+}
+
+.chat-photo-container {
+  padding: 8px;
+}
+
+.chat-last-message-text-container {
+  /* display: inline; */
+}
+.message-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+.message-text{
+  overflow-wrap: break-word;
+  font-size: 14px;
+  max-width: 600px;
+}
+.location-coordinates {
+  font-size: 10px;
+  color: rgba(34, 42, 50, 0.5);
+}
+
+.name-date-message-container {
+  /* display: inline;
+  flex-direction: row;
+    */
+
+}
+
+.message-from-client {
+  list-style-type: none;
+  float: left;
+  display: block;
+  clear: both; /* Ensures that each message is on a new line */
+  border: 0.5px solid #C8E0FD;
+  border-radius: 10px;
+  background: #C8E0FD;
+  padding: 10px;
+  margin: 5px;
+  margin-left: 2%;
+}
+
+.message-date {
+  font-size: 10px;
+  color: gray;
+}
+
+.message-manager-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.message-from-manager {
+  list-style-type: none;
+  float: right;
+  display: block;
+  clear: both; /* Ensures that each message is on a new line */
+  border: 0.5px solid #F5F5F5;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 5px;
+  margin-right: 3.5%;
+  background:  #F5F5F5;
+}
+.back-button {
+  display: none; /* show back button on mobile */
+}
+
+.chat-setting {
+display: none;
+padding: 15px 15px 15px 15px;
+align-items: center;
+}
+.client-account-photo {
+border-radius: 50%;
+margin-right: 15px;
+}
+.client-account-name{
+font-size: 20px;
+font-weight: 900;
 }
 input[type=text]:focus {
-  outline: none;
+outline: none;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
