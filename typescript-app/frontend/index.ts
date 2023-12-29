@@ -76,12 +76,12 @@ socket.on('new_message', function (message: Message) {
 document.addEventListener('DOMContentLoaded', function () {
   getManagerInfo();
   getChatListFromApi();
-  console.log("manager-logout-button1");
+  console.log('manager-logout-button1');
   let logoutButton = document.getElementById(
     'manager-logout-button'
   ) as HTMLButtonElement;
   logoutButton.addEventListener('click', function () {
-    console.log("manager-logout-button");
+    console.log('manager-logout-button');
     window.location.href = '/login';
   });
 
@@ -92,17 +92,20 @@ document.addEventListener('DOMContentLoaded', function () {
   settingButton.addEventListener('click', function () {
     // Load the modal HTML
     fetch('settings-modal.html')
-      .then(response => response.text())
-      .then(html => {
+      .then((response) => response.text())
+      .then((html) => {
         document.body.insertAdjacentHTML('beforeend', html);
-        var modalSettingsWindow = document.getElementById("settings-modal") as HTMLDivElement;
-        modalSettingsWindow.style.display = "block"
-        
+        var modalSettingsWindow = document.getElementById(
+          'settings-modal'
+        ) as HTMLDivElement;
+        modalSettingsWindow.style.display = 'block';
+
         const script = document.createElement('script');
-        script.src = 'settings-modal.js';
+        script.id = 'manager-settings-script-js';
+        script.src = '/manager_settings_modal/settings-modal.js';
         document.body.appendChild(script);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error loading the settings modal:', error);
       });
   });
@@ -515,14 +518,14 @@ function displayDialogList(chat_list: ChatListContainer) {
           'message-send-button'
         ) as HTMLElement | null;
         if (message_send_button) {
-        message_send_button.addEventListener('click', sendMessageToCustomer);
+          message_send_button.addEventListener('click', sendMessageToCustomer);
         }
-        
+
         let add_attachment_button = document.getElementById(
           'attachment-send-button'
         ) as HTMLElement | null;
         if (add_attachment_button) {
-        add_attachment_button.addEventListener('click', FileUpload);
+          add_attachment_button.addEventListener('click', FileUpload);
         }
 
         let add_attachment_icon = document.getElementById(
@@ -532,17 +535,43 @@ function displayDialogList(chat_list: ChatListContainer) {
           add_attachment_icon.addEventListener('click', FileUpload);
         }
 
-        
+        let user_account_settings_button = document.getElementById(
+          'user-account-options-button'
+        ) as HTMLButtonElement | null;
+        if (user_account_settings_button) {
+          user_account_settings_button.addEventListener('click', function () {
+            // Load the modal HTML
+            fetch('user-settings-modal.html')
+              .then((response) => response.text())
+              .then((html) => {
+                document.body.insertAdjacentHTML('beforeend', html);
+                var modalSettingsWindow = document.getElementById(
+                  'user-settings-modal'
+                ) as HTMLDivElement;
+                modalSettingsWindow.style.display = 'block';
+
+                const script = document.createElement('script');
+                script.src = '/user_settings_modal/user_settings_modal.js';
+                script.id = 'user-settings-script-js';
+                document.body.appendChild(script);
+              })
+              .catch((error) => {
+                console.error('Error loading the settings modal:', error);
+              });
+          });
+        }
 
         let message_input = document.getElementById(
           'message-input'
         ) as HTMLElement | null;
         if (message_input) {
-        message_input.addEventListener('keyup', function (event) {
-          event.preventDefault();
-          if (event.key === 'Enter') {
-            sendMessageToCustomer();
-          }});}
+          message_input.addEventListener('keyup', function (event) {
+            event.preventDefault();
+            if (event.key === 'Enter') {
+              sendMessageToCustomer();
+            }
+          });
+        }
       }
     });
   });
