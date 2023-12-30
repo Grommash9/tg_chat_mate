@@ -56,7 +56,7 @@ async def manager_check_token(request: Request):
     return set_cors_headers(response)
 
 
-@web_routes.get("/tg-bot/get-manager-info")
+@web_routes.get("/tg-bot/manager")
 @require_auth
 async def get_manager_info(request: Request):
     manager_info = await db.manager.get_manager_by_username(
@@ -67,7 +67,7 @@ async def get_manager_info(request: Request):
     return set_cors_headers(response)
 
 
-@web_routes.post("/tg-bot/registration")
+@web_routes.post("/tg-bot/manager")
 async def manager_registration(request: Request):
     payload = await request.json()
     user_name = payload.get("user_name")
