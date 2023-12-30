@@ -50,7 +50,7 @@ function CreateManager() {
     password: password_input.value,
     full_name: full_name_input.value
   };
-  fetch(`/tg-bot/registration`, {
+  fetch(`/tg-bot/manager`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
