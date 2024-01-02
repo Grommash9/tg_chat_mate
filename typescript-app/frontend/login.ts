@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+  clearCookies();
   let login_button = document.getElementById(
     'login-button-object'
   ) as HTMLButtonElement;
@@ -58,16 +59,27 @@ function SignIn() {
       });
     }
   });
+}
 
-  function setCookie(name: string, value: string, daysToLive: number) {
-    var cookieValue = encodeURIComponent(value);
-    var cookie = name + '=' + cookieValue;
+function setCookie(name: string, value: string, daysToLive: number) {
+  var cookieValue = encodeURIComponent(value);
+  var cookie = name + '=' + cookieValue;
 
-    if (typeof daysToLive === 'number') {
-      cookie += '; max-age=' + daysToLive * 24 * 60 * 60;
-      cookie += '; path=/';
-    }
+  if (typeof daysToLive === 'number') {
+    cookie += '; max-age=' + daysToLive * 24 * 60 * 60;
+    cookie += '; path=/';
+  }
 
-    document.cookie = cookie;
+  document.cookie = cookie;
+}
+
+function clearCookies() {
+  var cookies = document.cookie.split(';');
+
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i];
+    var eqPos = cookie.indexOf('=');
+    var name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
   }
 }
