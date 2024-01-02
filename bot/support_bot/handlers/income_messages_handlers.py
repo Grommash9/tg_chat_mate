@@ -141,9 +141,7 @@ async def photo_message_from_user(message: types.Message) -> None:
         await message.answer(f"Manager delivery error! {str(e)}")
 
 
-@router.message(
-    ChatTypeFilter(chat_type=["private"])
-)
+@router.message(ChatTypeFilter(chat_type=["private"]))
 async def echo_handler(message: types.Message) -> None:
     message_document = await db.message.new_message(message, unread=True)
     try:
