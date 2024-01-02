@@ -6,7 +6,10 @@ from support_bot import db
 from support_bot.misc import ChatTypeFilter, router, send_update_to_socket
 
 
-@router.message(ChatTypeFilter(chat_type=["private"]), CommandStart())
+@router.message(
+    ChatTypeFilter(chat_type=["private"]),
+    CommandStart()
+)
 async def command_start_handler(message: Message) -> None:
     assert message.from_user is not None
     await db.user.new_user(message.from_user)
