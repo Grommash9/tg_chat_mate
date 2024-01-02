@@ -37,4 +37,3 @@ async def user_update(request: Request):
     if update_user_info:
         return web.json_response({"success": "User info updated"}, status=200)
     return web.json_response({"error": "User not found"}, status=404)
-
