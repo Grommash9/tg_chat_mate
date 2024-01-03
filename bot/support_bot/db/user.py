@@ -1,3 +1,5 @@
+from typing import Optional
+
 from aiogram.types import User
 from pymongo.errors import DuplicateKeyError
 
@@ -25,7 +27,21 @@ async def add_photo(user: User, photo_uuid):
     )
 
 
+async def update(user_id: int, info: dict) -> int:
+    db = await get_async_mongo_db()
+    collection = db[USER_COLLECTION_NAME]
+    result = await collection.update_one({"_id": user_id}, {"$set": info})
+    return result.modified_count
+
+
 def get_all_users():
     db = get_mongo_db()
     collection = db[USER_COLLECTION_NAME]
     return list(collection.find())
+
+
+async def get_user(user_id: int) -> Optional[dict]:
+    db = await get_async_mongo_db()
+    collection = db[USER_COLLECTION_NAME]
+    info = await collection.find_one({"_id": user_id})
+    return info
