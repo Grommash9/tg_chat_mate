@@ -10,7 +10,7 @@ from support_bot.routes.utils import require_auth
 @require_auth
 async def get_user_info(request: Request):
     try:
-        user_id = int(request.match_info.get("user_id"))
+        user_id = int(request.match_info.get("user_id", 0))
     except (ValueError, TypeError) as e:
         return web.json_response(
             {"result": f"user_id param error: {e}"}, status=400
@@ -26,7 +26,7 @@ async def get_user_info(request: Request):
 async def user_update(request: Request):
     data = await request.json()
     try:
-        user_id = int(request.match_info.get("user_id"))
+        user_id = int(request.match_info.get("user_id", 0))
     except (ValueError, TypeError) as e:
         return web.json_response(
             {"result": f"user_id param error: {e}"}, status=400
