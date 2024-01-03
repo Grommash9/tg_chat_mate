@@ -17,15 +17,12 @@ def access_token():
         "password": PASSWORD,
     }
     response = requests.post(auth_endpoint_url, json=payload, verify=False)
-    assert (
-            response.status_code == 200
-    ), "Valid credentials should be accepted"
+    assert response.status_code == 200, "Valid credentials should be accepted"
     token = response.json()["token"]
     return token
 
 
 class TestFileStoring:
-
     def test_upload_file_to_db_without_duplicate(self, access_token):
         with open("tests/test_data/api-svgrepo-com.svg", "rb") as f:
             file_data = f.read()
@@ -65,7 +62,6 @@ class TestFileStoring:
 
 
 class TestLogin:
-
     def test_check_login_page(self):
         login_url = f"https://{DOMAIN}/login"
         response = requests.get(login_url, verify=False)
@@ -129,51 +125,45 @@ class TestUser:
             "AuthorizationToken": access_token,
         }
         url = f"https://{DOMAIN}/tg-bot/user/721058"
-        response = requests.get(
-            url, headers=headers, verify=False
-        )
+        response = requests.get(url, headers=headers, verify=False)
         assert response.status_code == 200, "Wrong status code on user getting"
-        assert (
-            "_id" in response.json().keys()
-        ), "file_id is not in response"
+        assert "_id" in response.json().keys(), "file_id is not in response"
 
     def test_not_existing_user(self, access_token):
         headers = {
             "AuthorizationToken": access_token,
         }
         url = f"https://{DOMAIN}/tg-bot/user/72105900"
-        response = requests.get(
-            url, headers=headers, verify=False
-        )
+        response = requests.get(url, headers=headers, verify=False)
         assert response.status_code == 404, "Wrong status code on user getting"
         assert (
-                response.json().get("result") == "User not found"
+            response.json().get("result") == "User not found"
         ), "founded user not existing"
 
     def test_update_user_info(self, access_token):
         headers = {
             "AuthorizationToken": access_token,
         }
-        json_data = {
-            "is_banned": True,
-            "country": "Ukraine"
-        }
+        json_data = {"is_banned": True, "country": "Ukraine"}
+
         url = f"https://{DOMAIN}/tg-bot/user/859203"
         response = requests.put(
             url, headers=headers, json=json_data, verify=False
         )
-        assert response.status_code == 200, "Wrong status code on update user information"
+        assert (
+            response.status_code == 200
+        ), "Wrong status code on update user information"
 
     def test_user_for_update_not_existing(self, access_token):
         headers = {
             "AuthorizationToken": access_token,
         }
-        json_data = {
-            "is_banned": "true",
-            "country": "Ukraine"
-        }
+        json_data = {"is_banned": "true", "country": "Ukraine"}
+
         url = f"https://{DOMAIN}/tg-bot/user/72105900"
         response = requests.put(
             url, headers=headers, json=json_data, verify=False
         )
-        assert response.status_code == 404, "Wrong status code on update user information"
+        assert (
+            response.status_code == 404
+        ), "Wrong status code on update user information"
