@@ -177,6 +177,7 @@ class BannedUserCheck(BaseMiddleware):
     """
     Middleware to ignore updates from users which are banned.
     """
+
     async def user_banned(self, user: User) -> bool:
         user_info = await db.user.get_user(user.id)
         if not user_info:
