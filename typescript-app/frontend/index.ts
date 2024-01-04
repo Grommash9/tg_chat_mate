@@ -18,6 +18,13 @@ interface ChatListItem {
   name: string;
 }
 
+interface User {
+  user_id: string;
+  user_name: string;
+  full_name: string;
+  is_banned: boolean | null;
+}
+
 interface Manager {
   _id: string;
   username: string;
@@ -553,7 +560,8 @@ function displayDialogList(chat_list: ChatListContainer) {
                 const script = document.createElement('script');
                 script.src = '/user_settings_modal/user_settings_modal.js';
                 script.id = 'user-settings-script-js';
-                document.body.appendChild(script);
+                script.type = 'module';
+                document.head.appendChild(script);
               })
               .catch((error) => {
                 console.error('Error loading the settings modal:', error);
@@ -579,4 +587,10 @@ function displayDialogList(chat_list: ChatListContainer) {
 
 console.log('active_chat', active_chat);
 
-export { displayDialogList, displayChatHistory, displayManagerInfo };
+export {
+  displayDialogList,
+  displayChatHistory,
+  displayManagerInfo,
+  User,
+  active_chat
+};
