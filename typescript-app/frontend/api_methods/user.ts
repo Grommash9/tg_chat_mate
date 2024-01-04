@@ -24,7 +24,7 @@ function GetUser(user_id: number) {
 
 function UpdateUser(user_id: number, payload: object) {
   return fetch(`/tg-bot/user/` + user_id, {
-    method: 'POST',
+    method: 'PATCH',
     body: JSON.stringify(payload),
     headers: {
       'Content-Type': 'application/json'

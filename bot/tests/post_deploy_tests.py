@@ -147,7 +147,7 @@ class TestUser:
         json_data = {"is_banned": True, "country": "Ukraine"}
 
         url = f"https://{DOMAIN}/tg-bot/user/859203"
-        response = requests.put(
+        response = requests.patch(
             url, headers=headers, json=json_data, verify=False
         )
         assert (
@@ -161,7 +161,7 @@ class TestUser:
         json_data = {"is_banned": "true", "country": "Ukraine"}
 
         url = f"https://{DOMAIN}/tg-bot/user/72105900"
-        response = requests.put(
+        response = requests.patch(
             url, headers=headers, json=json_data, verify=False
         )
         assert (

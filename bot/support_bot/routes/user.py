@@ -21,7 +21,7 @@ async def get_user_info(request: Request):
     return web.json_response(user_info, status=200)
 
 
-@web_routes.put("/tg-bot/user/{user_id}")
+@web_routes.patch("/tg-bot/user/{user_id}")
 @require_auth
 async def user_update(request: Request):
     data = await request.json()
