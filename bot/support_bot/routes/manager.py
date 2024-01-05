@@ -135,7 +135,7 @@ async def manager_registration(request: Request):
         response = web.json_response({"result": str(e)}, status=409)
     else:
         response = web.json_response(
-            {"result": "ok", "username": username}, status=200
+            {"result": "ok", "username": username}, status=201
         )
     return set_cors_headers(response)
 
