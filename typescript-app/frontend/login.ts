@@ -34,10 +34,10 @@ function SignIn() {
     'password-input-object'
   ) as HTMLInputElement;
   let payload = {
-    user_name: email_input.value,
+    username: email_input.value,
     password: password_input.value
   };
-  fetch(`/tg-bot/login`, {
+  fetch(`/tg-bot/manager/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
