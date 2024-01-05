@@ -14,3 +14,4 @@ class Manager(BaseType):
     full_name: str
     root: Optional[bool]
     activated: Optional[bool]
+    username: str

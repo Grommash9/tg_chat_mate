@@ -21,7 +21,7 @@ interface ChatListItem {
 interface User {
   user_id: string;
   photo_uuid: string;
-  user_name: string;
+  username: string;
   full_name: string;
   is_banned: boolean | null;
 }

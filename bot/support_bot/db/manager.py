@@ -21,6 +21,15 @@ async def get_manager_by_username(username) -> Optional[Manager]:
     return Manager.from_dict(manager) if manager is not None else None
 
 
+async def update(username: str, info: dict) -> int:
+    db = await get_async_mongo_db()
+    collection = db[MANAGER_COLLECTION_NAME]
+    result = await collection.update_one(
+        {"username": username}, {"$set": info}
+    )
+    return result.modified_count
+
+
 async def get_managers() -> list[Manager]:
     db = await get_async_mongo_db()
     collection = db[MANAGER_COLLECTION_NAME]

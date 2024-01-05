@@ -80,7 +80,7 @@ class TestLogin:
 
     def test_try_to_get_token(self):
         auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
-        payload = {"user_name": USER_NAME, "password": PASSWORD}
+        payload = {"username": USER_NAME, "password": PASSWORD}
         response = requests.post(auth_endpoint_url, json=payload, verify=False)
         assert (
             response.status_code == 200
@@ -89,7 +89,7 @@ class TestLogin:
 
     def test_token_check_logic(self):
         auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
-        payload = {"user_name": USER_NAME, "password": PASSWORD}
+        payload = {"username": USER_NAME, "password": PASSWORD}
         response = requests.post(auth_endpoint_url, json=payload, verify=False)
         assert (
             response.status_code == 200
