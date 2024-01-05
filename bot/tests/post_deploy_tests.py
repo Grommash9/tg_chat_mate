@@ -223,7 +223,7 @@ class TestManager:
         ), "managers is not in response"
         manager_active_status = {
             manager["username"]: manager.get("activated")
-            for manager in response.json()["managers"].keys()
+            for manager in response.json()["managers"]
         }
         assert "root" in manager_active_status.keys()
 
