@@ -15,6 +15,7 @@ python-magic = "*"
 requests = "*"
 pytest = "*"
 motor = "*"
+dataclasses-jsonschema = "*"
 
 [dev-packages]
 autoflake = "*"

@@ -11,7 +11,7 @@ PASSWORD = getenv("ROOT_PASSWORD", "root_strong_password")
 # @staticmethod
 @pytest.fixture(scope="module")
 def access_token():
-    auth_endpoint_url = f"https://{DOMAIN}/tg-bot/login"
+    auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
     payload = {
         "user_name": USER_NAME,
         "password": PASSWORD,
@@ -68,7 +68,7 @@ class TestLogin:
         assert response.status_code == 200, "Login page is not accessible"
 
     def test_try_to_fail_get_token(self):
-        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/login"
+        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
         payload = {
             "user_name": USER_NAME,
             "password": PASSWORD + "?>asfl",
@@ -79,7 +79,7 @@ class TestLogin:
         ), "Invalid credentials should not be accepted"
 
     def test_try_to_get_token(self):
-        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/login"
+        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
         payload = {"user_name": USER_NAME, "password": PASSWORD}
         response = requests.post(auth_endpoint_url, json=payload, verify=False)
         assert (
@@ -88,7 +88,7 @@ class TestLogin:
         assert "token" in response.json(), "Response should contain a token"
 
     def test_token_check_logic(self):
-        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/login"
+        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
         payload = {"user_name": USER_NAME, "password": PASSWORD}
         response = requests.post(auth_endpoint_url, json=payload, verify=False)
         assert (
@@ -96,7 +96,7 @@ class TestLogin:
         ), "Valid credentials should be accepted"
         token = response.json()["token"]
 
-        check_token_endpoint = f"https://{DOMAIN}/tg-bot/check_token"
+        check_token_endpoint = f"https://{DOMAIN}/tg-bot/manager/check_token"
         check_token_payload = {"token": token}
         response = requests.post(
             check_token_endpoint, json=check_token_payload, verify=False
@@ -109,7 +109,7 @@ class TestLogin:
     def test_wrong_token_check_logic(self):
         wrong_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
 
-        check_token_endpoint = f"https://{DOMAIN}/tg-bot/check_token"
+        check_token_endpoint = f"https://{DOMAIN}/tg-bot/manager/check_token"
         check_token_payload = {"token": wrong_token}
         response = requests.post(
             check_token_endpoint, json=check_token_payload, verify=False

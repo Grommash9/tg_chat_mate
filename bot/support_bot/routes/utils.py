@@ -29,7 +29,7 @@ def require_auth(f):
 
         # Add the manager to the request for downstream usage
         request["manager_user_name"] = manager_username
-        request["manager_full_name"] = manager["full_name"]
+        request["manager_full_name"] = manager.full_name
 
         return await f(request, *args, **kwargs)
 

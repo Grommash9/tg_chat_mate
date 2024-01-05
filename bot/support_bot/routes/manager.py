@@ -1,5 +1,6 @@
 from aiohttp import web
 from aiohttp.web_request import Request
+from pymongo.errors import DuplicateKeyError
 
 from support_bot import db
 from support_bot.misc import (
@@ -11,7 +12,7 @@ from support_bot.misc import (
 from support_bot.routes.utils import create_option_response, require_auth
 
 
-@web_routes.post("/tg-bot/login")
+@web_routes.post("/tg-bot/manager/login")
 async def manager_login(request: Request):
     payload = await request.json()
     user_name = payload.get("user_name")
@@ -28,7 +29,7 @@ async def manager_login(request: Request):
         return set_cors_headers(response)
     manager = await db.manager.get_manager_by_username(user_name)
 
-    if manager.get("activated"):
+    if manager is not None and manager.activated:
         token = create_token_for_manager(user_name)
         response = web.json_response({"token": token}, status=200)
         return set_cors_headers(response)
@@ -40,7 +41,7 @@ async def manager_login(request: Request):
     return set_cors_headers(response)
 
 
-@web_routes.post("/tg-bot/check_token")
+@web_routes.post("/tg-bot/manager/check_token")
 async def manager_check_token(request: Request):
     payload = await request.json()
     token = payload.get("token")
@@ -56,14 +57,41 @@ async def manager_check_token(request: Request):
     return set_cors_headers(response)
 
 
-@web_routes.get("/tg-bot/manager")
+@web_routes.get("/tg-bot/manager/get-me")
 @require_auth
 async def get_manager_info(request: Request):
-    manager_info = await db.manager.get_manager_by_username(
+    manager = await db.manager.get_manager_by_username(
         request.get("manager_user_name")
     )
-    manager_info["_id"] = str(manager_info["_id"])
-    response = web.json_response({"manager_info": manager_info}, status=200)
+    if manager is None:
+        response = web.json_response({"manager_info": {}}, status=404)
+    else:
+        response = web.json_response(
+            {"manager_info": manager.to_dict()}, status=200
+        )
+    return set_cors_headers(response)
+
+
+@web_routes.get("/tg-bot/manager")
+@require_auth
+async def get_managers(request: Request):
+    managers = await db.manager.get_managers()
+    response = web.json_response(
+        {"managers": [manager.to_dict() for manager in managers]}, status=200
+    )
+    return set_cors_headers(response)
+
+
+@web_routes.delete("/tg-bot/manager")
+async def delete_manager(request: Request):
+    payload = await request.json()
+    user_name = payload.get("user_name")
+    if not user_name:
+        return web.json_response(
+            {"error": "Missing username or password or full name"}, status=400
+        )
+    await db.manager.delete_manager_by_username(user_name)
+    response = web.json_response({}, status=204)
     return set_cors_headers(response)
 
 
@@ -72,7 +100,6 @@ async def manager_registration(request: Request):
     payload = await request.json()
     user_name = payload.get("user_name")
     password = payload.get("password")
-
     full_name = payload.get("full_name")
     if not user_name or not password or not full_name:
         return web.json_response(
@@ -83,10 +110,16 @@ async def manager_registration(request: Request):
             {"error": "Password should be at least 6 characters long!"},
             status=400,
         )
-    await db.manager.new_manager(
-        full_name, user_name, password, activated=False
-    )
-    response = web.json_response({"user_name": user_name}, status=200)
+    try:
+        await db.manager.new_manager(
+            full_name, user_name, password, activated=False
+        )
+    except DuplicateKeyError as e:
+        response = web.json_response({"result": str(e)}, status=409)
+    else:
+        response = web.json_response(
+            {"result": "ok", "user_name": user_name}, status=200
+        )
     return set_cors_headers(response)
 
 
