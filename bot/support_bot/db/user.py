@@ -45,3 +45,14 @@ async def get_user(user_id: int) -> Optional[dict]:
     collection = db[USER_COLLECTION_NAME]
     info = await collection.find_one({"_id": user_id})
     return info
+
+
+async def check_is_user_banned(user_id: int) -> bool:
+    db = await get_async_mongo_db()
+    collection = db[USER_COLLECTION_NAME]
+    info = await collection.find_one({"_id": user_id})
+    if not info:
+        return False
+    if info.get("is_banned"):
+        return True
+    return False
