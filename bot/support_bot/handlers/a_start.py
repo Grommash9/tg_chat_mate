@@ -13,6 +13,7 @@ async def command_start_handler(message: Message) -> None:
     message_document = await db.message.new_message(message, unread=True)
     await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
 
+
     try:
         await send_update_to_socket(message_document)
     except Exception as e:
