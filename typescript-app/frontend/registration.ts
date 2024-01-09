@@ -46,7 +46,7 @@ function CreateManager() {
     'full-name-input-object'
   ) as HTMLInputElement;
   let payload = {
-    user_name: email_input.value,
+    username: email_input.value,
     password: password_input.value,
     full_name: full_name_input.value
   };

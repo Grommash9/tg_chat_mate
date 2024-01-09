@@ -93,6 +93,10 @@ display: none;
   /* your styles for chat area */
 }
 
+.user-data-container{
+  min-height: 200px;
+}
+
 .active-contact {
   background-color: #F7F7F7;
   border-radius: 20px;

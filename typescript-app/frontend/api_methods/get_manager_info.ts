@@ -1,7 +1,7 @@
 import { displayManagerInfo } from '../index.js';
 
 function getManagerInfo() {
-  fetch('/tg-bot/get-manager-info', {
+  fetch('/tg-bot/manager/get-me', {
     method: 'GET'
   })
     .then((response) => {

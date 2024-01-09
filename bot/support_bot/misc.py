@@ -2,15 +2,15 @@ import datetime
 import re
 import ssl
 from os import getenv
-from typing import Union
+from typing import Any, Awaitable, Callable, Dict, Union
 
 import aiohttp
 import jwt
 import magic
-from aiogram import Bot, Dispatcher, Router
+from aiogram import BaseMiddleware, Bot, Dispatcher, Router
 from aiogram.enums import ParseMode
 from aiogram.filters import BaseFilter
-from aiogram.types import FSInputFile, Message, User
+from aiogram.types import FSInputFile, Message, TelegramObject, User
 from aiogram.webhook.aiohttp_server import (
     SimpleRequestHandler,
     setup_application,
@@ -173,6 +173,27 @@ class ChatTypeFilter(BaseFilter):
         return message.chat.type in self.chat_type
 
 
+class BannedUserCheck(BaseMiddleware):
+    """
+    Middleware to ignore updates from users which are banned.
+    """
+
+    async def user_banned(self, user: User) -> bool:
+        is_banned = await db.user.check_is_user_banned(user.id)
+        return is_banned
+
+    async def __call__(
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any],
+    ) -> Any:
+        user = data["event_from_user"]
+        if await self.user_banned(user):
+            return None
+        return await handler(event, data)
+
+
 async def on_startup() -> None:
     try:
         await db.manager.new_manager(
@@ -217,6 +238,7 @@ router = Router()
 web_routes = web.RouteTableDef()
 dp = Dispatcher()
 dp.include_router(router)
+dp.message.outer_middleware(BannedUserCheck())
 dp.startup.register(on_startup)
 bot = Bot(TOKEN, parse_mode=ParseMode.HTML)
 app = web.Application(client_max_size=20 * 1024 * 1024)
