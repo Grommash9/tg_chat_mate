@@ -4,8 +4,8 @@ python: 3.10.13
 if: branch = master AND type = push OR type = pull_request
 
 stages:
-  - name: typescript pre-deploy code testing
-  - name: python pre-deploy code testing
+  - name: pre-deploy typescript code checking
+  - name: pre-deploy code python checking
   - name: deploy
   - name: test
 
@@ -15,16 +15,15 @@ before_script:
 
 jobs:
   include:
-    - stage: typescript pre-deploy code testing
+    - stage: pre-deploy typescript code checking
       script:
         - export PIPENV_VERBOSITY=-1
         - echo "Running TypeScript linting"
         - cd typescript-app
-        - npm install --save-dev prettier
         - npx prettier --check --ignore-path .prettierignore frontend app.ts
         - echo "TypeScript linting completed successfully"
 
-    - stage: python pre-deploy code testing
+    - stage: pre-deploy code python checking
       script:
         - export PIPENV_VERBOSITY=-1
         - cd bot
