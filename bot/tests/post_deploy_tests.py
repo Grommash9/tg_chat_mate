@@ -3,7 +3,7 @@ from os import getenv
 import pytest
 import requests
 
-DOMAIN = getenv("DOMAIN", "eeea-85-198-141-215.ngrok-free.app")
+DOMAIN = getenv("DOMAIN", "ae16-86-30-162-24.ngrok-free.app")
 USER_NAME = "root"
 PASSWORD = getenv("ROOT_PASSWORD", "root_strong_password")
 
@@ -11,9 +11,9 @@ PASSWORD = getenv("ROOT_PASSWORD", "root_strong_password")
 # @staticmethod
 @pytest.fixture(scope="module")
 def access_token():
-    auth_endpoint_url = f"https://{DOMAIN}/tg-bot/login"
+    auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
     payload = {
-        "user_name": USER_NAME,
+        "username": USER_NAME,
         "password": PASSWORD,
     }
     response = requests.post(auth_endpoint_url, json=payload, verify=False)
@@ -68,19 +68,20 @@ class TestLogin:
         assert response.status_code == 200, "Login page is not accessible"
 
     def test_try_to_fail_get_token(self):
-        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/login"
+        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
         payload = {
-            "user_name": USER_NAME,
+            "username": USER_NAME,
             "password": PASSWORD + "?>asfl",
         }
         response = requests.post(auth_endpoint_url, json=payload, verify=False)
+        print("test_try_to_fail_get_token", response.text)
         assert (
             response.status_code == 401
         ), "Invalid credentials should not be accepted"
 
     def test_try_to_get_token(self):
-        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/login"
-        payload = {"user_name": USER_NAME, "password": PASSWORD}
+        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
+        payload = {"username": USER_NAME, "password": PASSWORD}
         response = requests.post(auth_endpoint_url, json=payload, verify=False)
         assert (
             response.status_code == 200
@@ -88,15 +89,15 @@ class TestLogin:
         assert "token" in response.json(), "Response should contain a token"
 
     def test_token_check_logic(self):
-        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/login"
-        payload = {"user_name": USER_NAME, "password": PASSWORD}
+        auth_endpoint_url = f"https://{DOMAIN}/tg-bot/manager/login"
+        payload = {"username": USER_NAME, "password": PASSWORD}
         response = requests.post(auth_endpoint_url, json=payload, verify=False)
         assert (
             response.status_code == 200
         ), "Valid credentials should be accepted"
         token = response.json()["token"]
 
-        check_token_endpoint = f"https://{DOMAIN}/tg-bot/check_token"
+        check_token_endpoint = f"https://{DOMAIN}/tg-bot/manager/check_token"
         check_token_payload = {"token": token}
         response = requests.post(
             check_token_endpoint, json=check_token_payload, verify=False
@@ -109,7 +110,7 @@ class TestLogin:
     def test_wrong_token_check_logic(self):
         wrong_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
 
-        check_token_endpoint = f"https://{DOMAIN}/tg-bot/check_token"
+        check_token_endpoint = f"https://{DOMAIN}/tg-bot/manager/check_token"
         check_token_payload = {"token": wrong_token}
         response = requests.post(
             check_token_endpoint, json=check_token_payload, verify=False
@@ -147,7 +148,11 @@ class TestUser:
         json_data = {"is_banned": True, "country": "Ukraine"}
 
         url = f"https://{DOMAIN}/tg-bot/user/859203"
-        response = requests.put(
+        response = requests.patch(
+            url, headers=headers, json=json_data, verify=False
+        )
+        json_data = {"is_banned": False, "country": "Ukraine"}
+        response = requests.patch(
             url, headers=headers, json=json_data, verify=False
         )
         assert (
@@ -161,9 +166,129 @@ class TestUser:
         json_data = {"is_banned": "true", "country": "Ukraine"}
 
         url = f"https://{DOMAIN}/tg-bot/user/72105900"
-        response = requests.put(
+        response = requests.patch(
             url, headers=headers, json=json_data, verify=False
         )
         assert (
             response.status_code == 404
         ), "Wrong status code on update user information"
+
+
+class TestManager:
+    def test_create_new_duplicate_delete_manager(self, access_token):
+        headers = {
+            "AuthorizationToken": access_token,
+        }
+        url = f"https://{DOMAIN}/tg-bot/manager"
+        payload = {
+            "username": "random_manager",
+            "password": "1238234212341234",
+            "full_name": "Random full name",
+        }
+        response = requests.delete(
+            url, headers=headers, verify=False, json=payload
+        )
+        assert (
+            response.status_code == 204
+        ), "Wrong status code on manager deleting"
+
+        response = requests.post(
+            url, headers=headers, verify=False, json=payload
+        )
+        assert (
+            response.status_code == 201
+        ), "Wrong status code on manager creating"
+        assert "result" in response.json().keys(), "result is not in response"
+
+        response = requests.post(
+            url, headers=headers, verify=False, json=payload
+        )
+        assert response.status_code == 409, "Wrong status on manager creating"
+        assert "result" in response.json().keys(), "result is not in response"
+
+        response = requests.delete(
+            url, headers=headers, verify=False, json=payload
+        )
+        assert response.status_code == 204, "Wrong status on manager deleting"
+
+    def test_get_managers(self, access_token):
+        headers = {
+            "AuthorizationToken": access_token,
+        }
+        url = f"https://{DOMAIN}/tg-bot/manager"
+        response = requests.get(url, headers=headers, verify=False)
+        assert response.status_code == 200, "Wrong status on manager getting"
+        assert (
+            "managers" in response.json().keys()
+        ), "managers is not in response"
+        manager_active_status = {
+            manager["username"]: manager.get("activated")
+            for manager in response.json()["managers"]
+        }
+        assert "root" in manager_active_status.keys()
+
+    def test_create_new_patch_get_manager(self, access_token):
+        headers = {
+            "AuthorizationToken": access_token,
+        }
+        url = f"https://{DOMAIN}/tg-bot/manager"
+        payload = {
+            "username": "random_manager",
+            "password": "1238234212341234",
+            "full_name": "Random full name",
+        }
+        response = requests.delete(
+            url, headers=headers, verify=False, json=payload
+        )
+        assert response.status_code == 204, "Wrong status on manager deleting"
+
+        response = requests.get(url, headers=headers, verify=False)
+        assert response.status_code == 200, "Wrong status on manager getting"
+        assert (
+            "managers" in response.json().keys()
+        ), "managers is not in response"
+        manager_active_status = {
+            manager["username"]: manager.get("activated")
+            for manager in response.json()["managers"]
+        }
+        assert "random_manager" not in manager_active_status.keys()
+
+        response = requests.post(
+            url, headers=headers, verify=False, json=payload
+        )
+        assert (
+            response.status_code == 201
+        ), "Wrong status code on manager creating"
+
+        response = requests.get(url, headers=headers, verify=False)
+        assert response.status_code == 200, "Wrong status on manager getting"
+        assert (
+            "managers" in response.json().keys()
+        ), "managers is not in response"
+        manager_active_status = {
+            manager["username"]: manager.get("activated")
+            for manager in response.json()["managers"]
+        }
+        assert "random_manager" in manager_active_status.keys()
+        assert manager_active_status["random_manager"] is None
+
+        payload = {
+            "username": "random_manager",
+            "activated": True,  # type: ignore
+        }
+        response = requests.patch(
+            url, headers=headers, verify=False, json=payload
+        )
+        assert response.status_code == 200, "Wrong status on manager update"
+
+        response = requests.get(url, headers=headers, verify=False)
+        assert response.status_code == 200, "Wrong status on manager getting"
+        assert (
+            "managers" in response.json().keys()
+        ), "managers is not in response"
+        manager_active_status = {
+            manager["username"]: manager.get("activated")
+            for manager in response.json()["managers"]
+        }
+        assert "random_manager" in manager_active_status.keys()
+        assert manager_active_status["random_manager"] is True
