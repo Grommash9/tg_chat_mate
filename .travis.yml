@@ -34,6 +34,12 @@ jobs:
         - pipenv run black --check support_bot tests
         - pipenv run isort --check-only support_bot tests
         - echo "Python linting completed successfully"
+        - echo "Running TypeScript linting"
+        - cd ../typescript-app
+        - npm install
+        - npm install --save-dev prettier
+        - npx prettier --check frontend app.ts
+        - echo "TypeScript linting completed successfully"
 
     - stage: deploy
       script:
