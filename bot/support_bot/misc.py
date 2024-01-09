@@ -179,12 +179,8 @@ class BannedUserCheck(BaseMiddleware):
     """
 
     async def user_banned(self, user: User) -> bool:
-        user_info = await db.user.get_user(user.id)
-        if not user_info:
-            return False
-        if user_info.get("is_banned"):
-            return True
-        return False
+        is_banned = await db.user.check_is_user_banned(user.id)
+        return is_banned
 
     async def __call__(
         self,
