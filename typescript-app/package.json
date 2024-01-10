@@ -8,7 +8,7 @@
         "build:backend": "tsc -p tsconfig.json",
         "build": "npm run build:frontend && npm run build:backend",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prettier-format": "prettier --config --ignore-path .prettierignore frontend app.ts --write"
+        "prettier-format": "prettier --config .prettierrc --ignore-path .prettierignore frontend app.ts --write"
     },
     "devDependencies": {
         "@types/form-data": "^2.5.0",
