@@ -15,6 +15,7 @@ before_script:
 jobs:
   include:
     - stage: linting
+      name: TypeScript linting
       script:
         - echo "Running TypeScript linting"
         - cd typescript-app
@@ -23,6 +24,7 @@ jobs:
         - echo "TypeScript linting completed successfully"
 
     - stage: linting
+      name: Python linting
       script:
         - export PIPENV_VERBOSITY=-1
         - cd bot
