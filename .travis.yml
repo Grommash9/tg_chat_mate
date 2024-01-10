@@ -4,8 +4,7 @@ python: 3.10.13
 if: branch = master AND type = push OR type = pull_request
 
 stages:
-  - name: pre-deploy
-  - name: parallel-stage
+  - name: code_linting
   - name: deploy
   - name: test
 
@@ -19,7 +18,8 @@ parallel:
 
 jobs:
   include:
-    - stage: parallel-stage
+    - stage: code_linting
+      name: ts_linting
       script:
         - export PIPENV_VERBOSITY=-1
         - cd bot
@@ -27,7 +27,8 @@ jobs:
         - pipenv install --dev --skip-lock
         - pipenv graph
 
-    - stage: pre-deploy
+    - stage: code_linting
+      name: python_linting
       script:
         - export PIPENV_VERBOSITY=-1
         - cd bot
