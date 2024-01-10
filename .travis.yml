@@ -16,6 +16,7 @@ parallel:
 - stage: pre-deploy
 - stage: parallel-stage
 
+
 jobs:
   include:
     - stage: code_linting
