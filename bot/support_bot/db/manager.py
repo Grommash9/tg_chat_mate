@@ -8,10 +8,10 @@ from support_bot.db.client import get_async_mongo_db
 from support_bot.db.collection_names import MANAGER_COLLECTION_NAME
 
 
-def hash_password(password: str) -> bytes:
+def hash_password(password: str) -> str:
     salt = bcrypt.gensalt(rounds=12)
     hashed = bcrypt.hashpw(password.encode(), salt)
-    return hashed
+    return hashed.decode("utf-8")
 
 
 async def get_manager_by_username(username) -> Optional[Manager]:
@@ -53,7 +53,7 @@ async def new_manager(
 
     manager = {
         "username": username,
-        "hashed_password": hash_password(password).decode("utf-8"),
+        "hashed_password": hash_password(password),
         "full_name": full_name,
     }
     if root:

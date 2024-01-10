@@ -3,7 +3,7 @@ from os import getenv
 import pytest
 import requests
 
-DOMAIN = getenv("DOMAIN", "ae16-86-30-162-24.ngrok-free.app")
+DOMAIN = getenv("DOMAIN", "ddb2-86-30-162-24.ngrok-free.app")
 USER_NAME = "root"
 PASSWORD = getenv("ROOT_PASSWORD", "root_strong_password")
 
@@ -57,7 +57,7 @@ class TestFileStoring:
 
         # Checking what file exists
         url = f"https://{DOMAIN}/tg-bot/file?file_uuid={file_id}"
-        response = requests.get(url, verify=False)
+        response = requests.get(url, verify=False, headers=headers)
         assert response.status_code == 200, "Can't find uploaded file!"
 
 
@@ -226,6 +226,7 @@ class TestManager:
             for manager in response.json()["managers"]
         }
         assert "root" in manager_active_status.keys()
+
 
     def test_create_new_patch_get_manager(self, access_token):
         headers = {
