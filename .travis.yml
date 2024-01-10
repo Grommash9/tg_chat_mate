@@ -5,6 +5,7 @@ if: branch = master AND type = push OR type = pull_request
 
 stages:
   - name: pre-deploy
+  - name: parallel-stage
   - name: deploy
   - name: test
 
@@ -12,8 +13,20 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install -y ssh sshpass curl
 
+parallel:
+- stage: pre-deploy
+- stage: parallel-stage
+
 jobs:
   include:
+    - stage: parallel-stage
+      script:
+        - export PIPENV_VERBOSITY=-1
+        - cd bot
+        - pip install pipenv
+        - pipenv install --dev --skip-lock
+        - pipenv graph
+
     - stage: pre-deploy
       script:
         - export PIPENV_VERBOSITY=-1
