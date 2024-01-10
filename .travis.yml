@@ -4,7 +4,7 @@ python: 3.10.13
 if: branch = master AND type = push OR type = pull_request
 
 stages:
-  - name: pre-deploy
+  - name: linting
   - name: deploy
   - name: test
 
@@ -14,7 +14,8 @@ before_script:
 
 jobs:
   include:
-    - stage: pre-deploy
+    - stage: linting
+      name: Python linting
       script:
         - export PIPENV_VERBOSITY=-1
         - cd bot
@@ -22,7 +23,7 @@ jobs:
         - pipenv install --dev --skip-lock
         - pipenv graph
         - echo "Running Python linting"
-        - pipenv run mypy --version 
+        - pipenv run mypy --version
         - pipenv run black --version
         - pipenv run isort --version
         - pylint --disable=C0116 --disable=C0114 --disable=R0401 --disable=W0613 --disable=W0718 --disable=C0115 support_bot
@@ -34,6 +35,15 @@ jobs:
         - pipenv run black --check support_bot tests
         - pipenv run isort --check-only support_bot tests
         - echo "Python linting completed successfully"
+
+    - stage: linting
+      name: TypeScript linting
+      script:
+        - echo "Running TypeScript linting"
+        - cd typescript-app
+        - npm install
+        - npx prettier --check --config .prettierrc --ignore-path .prettierignore frontend app.ts
+        - echo "TypeScript linting completed successfully"
 
     - stage: deploy
       script:
