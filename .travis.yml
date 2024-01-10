@@ -4,8 +4,7 @@ python: 3.10.13
 if: branch = master AND type = push OR type = pull_request
 
 stages:
-  - name: ts linting
-  - name: python linting
+  - name: linting
   - name: deploy
   - name: test
 
@@ -15,7 +14,7 @@ before_script:
 
 jobs:
   include:
-    - stage: ts linting
+    - stage: linting
       script:
         - echo "Running TypeScript linting"
         - cd typescript-app
@@ -23,7 +22,6 @@ jobs:
         - npx prettier --check --ignore-path .prettierignore frontend app.ts
         - echo "TypeScript linting completed successfully"
 
-    - stage: python linting
       script:
         - export PIPENV_VERBOSITY=-1
         - cd bot
