@@ -23,6 +23,7 @@ jobs:
         - npx prettier --check --ignore-path .prettierignore frontend app.ts
         - echo "TypeScript linting completed successfully"
 
+
     - stage: linting
       name: Python linting
       script:
