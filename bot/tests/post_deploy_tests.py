@@ -173,6 +173,19 @@ class TestUser:
             response.status_code == 404
         ), "Wrong status code on update user information"
 
+    def test_user_for_send_notification_about_manager_activity(self, access_token):
+        headers = {
+            "AuthorizationToken": access_token,
+        }
+
+        url = f"https://{DOMAIN}/tg-bot/user/72105900/typing"
+
+        response = requests.post(url, headers=headers, verify=False)
+        assert response.status_code == 404
+        assert (
+            response.json().get("result") == "User not found"
+        ), "founded user not existing"
+
 
 class TestManager:
     def test_create_new_duplicate_delete_manager(self, access_token):

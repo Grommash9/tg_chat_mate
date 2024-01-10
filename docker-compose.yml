@@ -45,6 +45,9 @@ services:
   redis:
     image: redis:latest
     restart: always
+    networks:
+      my_network:
+        ipv4_address: 192.168.1.111
     ports:
       - "6379:6379"
     environment:
