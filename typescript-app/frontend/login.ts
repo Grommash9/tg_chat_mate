@@ -37,11 +37,7 @@ function SignIn() {
     username: email_input.value,
     password: password_input.value
   };
-  fetch(`/tg-bot/manager/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+  fetch(`/tg-bot/manager/login`, { method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(payload)
   }).then((response) => {
     if (response.status === 200) {
