@@ -173,7 +173,7 @@ class TestUser:
             response.status_code == 404
         ), "Wrong status code on update user information"
 
-    def test_user_for_send_notification_about_manager_activity(self, access_token):
+    def test_user_send_notification_about_manager_activity(self, access_token):
         headers = {
             "AuthorizationToken": access_token,
         }
