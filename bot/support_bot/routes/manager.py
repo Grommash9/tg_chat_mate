@@ -88,7 +88,7 @@ async def manager_change_password(request: Request):
 @web_routes.get("/tg-bot/manager/get-me")
 @require_auth
 async def get_manager_info(request: Request):
-    manager = await get_manager_by_username(request.get("manager_user_name"))
+    manager = await get_manager_by_username(request["manager_user_name"])
     if manager is None:
         response = json_response({"manager_info": {}}, status=404)
     else:
