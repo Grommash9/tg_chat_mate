@@ -3,7 +3,7 @@ from os import getenv
 import pytest
 import requests
 
-DOMAIN = getenv("DOMAIN", "ddb2-86-30-162-24.ngrok-free.app")
+DOMAIN = getenv("DOMAIN", "4c78-86-30-162-24.ngrok-free.app")
 USER_NAME = "root"
 PASSWORD = getenv("ROOT_PASSWORD", "root_strong_password")
 
@@ -74,7 +74,6 @@ class TestLogin:
             "password": PASSWORD + "?>asfl",
         }
         response = requests.post(auth_endpoint_url, json=payload, verify=False)
-        print("test_try_to_fail_get_token", response.text)
         assert (
             response.status_code == 401
         ), "Invalid credentials should not be accepted"
@@ -175,22 +174,19 @@ class TestUser:
 
 
 class TestManager:
+    base_url = f"https://{DOMAIN}/tg-bot"
+
     def test_create_new_duplicate_delete_manager(self, access_token):
         headers = {
             "AuthorizationToken": access_token,
         }
-        url = f"https://{DOMAIN}/tg-bot/manager"
+        url = f"{self.base_url}/manager"
         payload = {
             "username": "random_manager",
             "password": "1238234212341234",
             "full_name": "Random full name",
         }
-        response = requests.delete(
-            url, headers=headers, verify=False, json=payload
-        )
-        assert (
-            response.status_code == 204
-        ), "Wrong status code on manager deleting"
+        self.delete_manager(access_token, payload["username"])
 
         response = requests.post(
             url, headers=headers, verify=False, json=payload
@@ -206,16 +202,13 @@ class TestManager:
         assert response.status_code == 409, "Wrong status on manager creating"
         assert "result" in response.json().keys(), "result is not in response"
 
-        response = requests.delete(
-            url, headers=headers, verify=False, json=payload
-        )
-        assert response.status_code == 204, "Wrong status on manager deleting"
+        self.delete_manager(access_token, payload["username"])
 
     def test_get_managers(self, access_token):
         headers = {
             "AuthorizationToken": access_token,
         }
-        url = f"https://{DOMAIN}/tg-bot/manager"
+        url = f"{self.base_url}/manager"
         response = requests.get(url, headers=headers, verify=False)
         assert response.status_code == 200, "Wrong status on manager getting"
         assert (
@@ -227,21 +220,121 @@ class TestManager:
         }
         assert "root" in manager_active_status.keys()
 
+    def delete_manager(self, token, username: str) -> None:
+        headers = {
+            "AuthorizationToken": token,
+        }
+        url = f"{self.base_url}/manager"
+        response = requests.delete(
+            url, headers=headers, verify=False, json={"username": username}
+        )
+        assert response.status_code == 204, "Wrong status on manager deleting"
+
+    def manager_get_token(self, username: str, password: str) -> str:
+        url = f"{self.base_url}/manager/login"
+        payload = {"username": username, "password": password}
+        response = requests.post(url, verify=False, json=payload)
+        assert response.status_code == 200, "Wrong status on manager get token"
+        data = response.json()
+        assert "token" in data.keys()
+        return data["token"]
+
+    def test_new_manager_change_password(self, access_token):
+        headers = {
+            "AuthorizationToken": access_token,
+        }
+        url = f"{self.base_url}/manager"
+        payload = {
+            "username": "random_manager2",
+            "password": "1238234212341234",
+            "full_name": "Random full name",
+        }
+        self.delete_manager(access_token, payload["username"])
+        response = requests.post(
+            url, headers=headers, verify=False, json=payload
+        )
+        assert (
+            response.status_code == 201
+        ), "Wrong status code on manager creating"
+
+        path_payload = {
+            "username": payload["username"],
+            "activated": True,  # type: ignore
+        }
+        response = requests.patch(
+            url, headers=headers, verify=False, json=path_payload
+        )
+        assert response.status_code == 200, "Wrong status on manager update"
+
+        cur_manager_token = self.manager_get_token(
+            payload["username"], payload["password"]
+        )
+
+        cur_manager_headers = {
+            "AuthorizationToken": cur_manager_token,
+        }
+
+        change_password_url = f"{self.base_url}/manager/change-password"
+        wrong_pass_payload = {
+            "new_password": "MyNewPassword01",
+            "old_password": payload["password"] + "2",
+        }
+        response = requests.post(
+            change_password_url,
+            headers=cur_manager_headers,
+            verify=False,
+            json=wrong_pass_payload,
+        )
+        assert (
+            response.status_code == 401
+        ), "Wrong status code on manager change password error"
+
+        new_pass_payload = {
+            "new_password": "MyNewPassword01",
+            "old_password": payload["password"],
+        }
+        response = requests.post(
+            change_password_url,
+            headers=cur_manager_headers,
+            verify=False,
+            json=new_pass_payload,
+        )
+        assert (
+            response.status_code == 201
+        ), "Wrong status code on manager change password"
+
+        new_manager_token = self.manager_get_token(
+            payload["username"], "MyNewPassword01"
+        )
+
+        get_me_url = f"{self.base_url}/manager/get-me"
+        new_manager_headers = {
+            "AuthorizationToken": new_manager_token,
+        }
+        response = requests.get(
+            get_me_url, headers=new_manager_headers, verify=False
+        )
+        assert (
+            response.status_code == 200
+        ), "Wrong status code on manager get me method"
+        data = response.json()
+        assert (
+            "manager_info" in data.keys()
+        ), "Manager info missing from response"
+        assert "random_manager2" == data["manager_info"]["username"]
+        self.delete_manager(access_token, payload["username"])
 
     def test_create_new_patch_get_manager(self, access_token):
         headers = {
             "AuthorizationToken": access_token,
         }
-        url = f"https://{DOMAIN}/tg-bot/manager"
+        url = f"{self.base_url}/manager"
         payload = {
             "username": "random_manager",
             "password": "1238234212341234",
             "full_name": "Random full name",
         }
-        response = requests.delete(
-            url, headers=headers, verify=False, json=payload
-        )
-        assert response.status_code == 204, "Wrong status on manager deleting"
+        self.delete_manager(access_token, payload["username"])
 
         response = requests.get(url, headers=headers, verify=False)
         assert response.status_code == 200, "Wrong status on manager getting"

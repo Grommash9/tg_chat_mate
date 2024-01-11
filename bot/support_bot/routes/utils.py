@@ -4,7 +4,7 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import DOMAIN, get_manager_from_request, set_cors_headers
+from support_bot.misc import get_manager_from_request, set_cors_headers
 
 
 def require_auth(f):

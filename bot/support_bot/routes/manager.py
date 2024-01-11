@@ -65,10 +65,11 @@ async def manager_check_token(request: Request):
 @require_auth
 async def manager_change_password(request: Request):
     payload = await request.json()
-    user_name = request.get("manager_user_name")
-    new_password = payload.get("new_password")
-    old_password = payload.get("old_password")
-    if not new_password or not old_password:
+    user_name = request["manager_user_name"]
+    try:
+        new_password = payload["new_password"]
+        old_password = payload["old_password"]
+    except KeyError:
         response = json_response(
             {"result": "new_password or old_password fields missing!"},
             status=422,
@@ -125,16 +126,18 @@ async def update_manager(request: Request):
 
 
 @web_routes.delete("/tg-bot/manager")
+@require_auth
 async def delete_manager(request: Request):
     payload = await request.json()
     username = payload.get("username")
     if not username:
-        return json_response(
-            {"error": "Missing username or password or full name"}, status=400
+        response = json_response(
+            {"error": "Missing username"}, status=400
         )
-    await db.manager.delete_manager_by_username(username)
-    response = json_response({}, status=204)
-    return set_cors_headers(response)
+    else:
+        await db.manager.delete_manager_by_username(username)
+        response = json_response({}, status=204)
+        return set_cors_headers(response)
 
 
 @web_routes.post("/tg-bot/manager")
