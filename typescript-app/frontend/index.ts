@@ -4,7 +4,7 @@ import getChatListFromApi from './api_methods/get_chat_list.js';
 import markChatAsRead from './api_methods/mark_chat_as_read.js';
 import loadChatMessages from './api_methods/get_chat_messages.js';
 import SendMessage from './api_methods/send_message.js';
-import getManagerInfo from './api_methods/get_manager_info.js';
+import { getManagerInfoAndDisplay } from './api_methods/get_manager_info.js';
 
 let active_chat = 0;
 
@@ -82,7 +82,7 @@ socket.on('new_message', function (message: Message) {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  getManagerInfo();
+  getManagerInfoAndDisplay();
   getChatListFromApi();
   console.log('manager-logout-button1');
   let logoutButton = document.getElementById(
@@ -110,8 +110,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const script = document.createElement('script');
         script.id = 'manager-settings-script-js';
-        script.src = '/manager_settings_modal/settings-modal.js';
-        document.body.appendChild(script);
+        script.type = 'module';
+        script.src = '/manager_settings_modal/settings-modal.js?' +
+        new Date().getTime();
+        document.head.appendChild(script);
       })
       .catch((error) => {
         console.error('Error loading the settings modal:', error);
@@ -595,5 +597,6 @@ export {
   displayChatHistory,
   displayManagerInfo,
   User,
-  active_chat
+  active_chat,
+  Manager
 };

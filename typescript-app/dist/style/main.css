@@ -70,6 +70,25 @@ display: none;
   background-color: transparent;
 }
 
+.ms-category-button{
+  background-color: #e1e1e1;
+  padding: 5px;
+  border: 2px;
+  border-style: groove;
+  margin-bottom: 15px;
+}
+
+.settings-block-container{
+  display: flex;
+}
+
+.settings-categories-container{
+  max-width: 150px;
+}
+
+.settings-content-container{
+  background-color: aqua;
+}
 
 .contants-list {
   width: 20%;
