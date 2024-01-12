@@ -1,4 +1,4 @@
-import { getManager } from '../api_methods/get_manager_info.js';
+import { getManager, getAllManagers } from '../api_methods/get_manager_info.js';
 import { Manager } from '../index.js';
 
 var modal = document.getElementById('settings-modal') as HTMLDivElement;
@@ -63,7 +63,7 @@ if (my_profile_button) {
 }
 
 if (managers_management_button) {
-  managers_management_button.addEventListener('click', notImplementedHandler);
+  managers_management_button.addEventListener('click', DisplayManagerManagementSettings);
 }
 
 if (global_setting_button) {
@@ -88,6 +88,46 @@ if (qa_settings_button) {
 
 if (data_management_button) {
   data_management_button.addEventListener('click', notImplementedHandler);
+}
+
+async function DisplayManagerManagementSettings() {
+  cleanUpSettings();
+
+  managers_management_button.style.backgroundColor = '#00ff70';
+
+  
+  var managers_list = await getAllManagers();
+  managers_list.forEach(manager => {
+
+    const managerSettings = document.createElement('div');
+
+    const photoObject = document.createElement('img');
+    photoObject.classList.add('setting-user-photo');
+    photoObject.width = 50;
+    photoObject.height = 50;
+
+    if (manager.photo_uuid) {
+      photoObject.src = '/tg-bot/file?file_uuid=' + manager.photo_uuid;
+    } else {
+      photoObject.src = '/files/manager_empty_photo.png';
+    }
+
+    managerSettings.appendChild(photoObject);
+    
+    const managerUserName = document.createElement('p');
+    managerUserName.innerText = manager.username;
+
+    managerSettings.appendChild(managerUserName);
+
+    const managerFullName = document.createElement('p');
+    managerFullName.innerText = manager.full_name;
+
+    managerSettings.appendChild(managerFullName);
+    settingContent.appendChild(managerSettings);
+
+
+  });
+  
 }
 
 async function displayMyProfileSettings() {

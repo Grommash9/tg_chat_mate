@@ -22,6 +22,29 @@ function getManagerInfoAndDisplay() {
     });
 }
 
+function getAllManagers (): Promise<Manager[]> {
+  return fetch('/tg-bot/manager', {
+    method: 'GET'
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json();
+    })
+    .then((data: {"managers": Manager[]}) => {
+      console.log('Data received:', data);
+      return data["managers"]; // Return the data conforming to the Manager interface
+    })
+    .catch((error) => {
+      console.error(
+        'There has been a problem with your fetch operation:',
+        error
+      );
+      throw error; // Rethrow the error
+    });
+}
+
 function getManager(): Promise<Manager> {
   return fetch('/tg-bot/manager/get-me', {
     method: 'GET'
@@ -45,4 +68,4 @@ function getManager(): Promise<Manager> {
     });
 }
 
-export { getManager, getManagerInfoAndDisplay };
+export { getManager, getManagerInfoAndDisplay, getAllManagers };
