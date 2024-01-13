@@ -1,9 +1,22 @@
 <div id="settings-modal" class="modal">
     <div class="modal-content">
       <span id="close-manager-settings" class="close-button">&times;</span>
-      <h2>Manager Settings</h2>
-      <label for="setting1">Manager Setting 1:</label>
-      <input type="text" id="setting1" name="setting1"><br><br>
-      <button id="save-settings">Save</button>
+      <h2>Settings</h2>
+
+      <div class="settings-block-container">
+        <div class="settings-categories-container" id="settings-categories-container"> 
+          <p class="ms-category-button" id="manager-setting-my-profile">My profile</p>
+          <p class="ms-category-button" id="manager-setting-manager-settings">Manager management</p>
+          <p class="ms-category-button" id="manager-setting-global-settings">Global settings</p>
+          <p class="ms-category-button" id="manager-setting-any-settings">Any other settings</p>
+          <p class="ms-category-button" id="manager-setting-lang-settings">Language settings</p>
+          <p class="ms-category-button" id="manager-setting-qa-settings">QA client session</p>
+          <p class="ms-category-button" id="manager-setting-start-message">Greetings message settings</p>
+          <p class="ms-category-button" id="manager-setting-data-management">Data management</p>
+        </div>
+        <div class="settings-content-container" id="settings-content-object">
+        </div>
+      </div>
+
     </div>
-  </div>
+</div>
