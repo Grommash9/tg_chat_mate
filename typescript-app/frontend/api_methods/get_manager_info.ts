@@ -22,7 +22,7 @@ function getManagerInfoAndDisplay() {
     });
 }
 
-function getAllManagers (): Promise<Manager[]> {
+function getAllManagers(): Promise<Manager[]> {
   return fetch('/tg-bot/manager', {
     method: 'GET'
   })
@@ -32,9 +32,9 @@ function getAllManagers (): Promise<Manager[]> {
       }
       return response.json();
     })
-    .then((data: {"managers": Manager[]}) => {
+    .then((data: { managers: Manager[] }) => {
       console.log('Data received:', data);
-      return data["managers"]; // Return the data conforming to the Manager interface
+      return data['managers']; // Return the data conforming to the Manager interface
     })
     .catch((error) => {
       console.error(
@@ -55,9 +55,9 @@ function getManager(): Promise<Manager> {
       }
       return response.json();
     })
-    .then((data: {"manager_info": Manager}) => {
+    .then((data: { manager_info: Manager }) => {
       console.log('Data received:', data);
-      return data["manager_info"]; // Return the data conforming to the Manager interface
+      return data['manager_info']; // Return the data conforming to the Manager interface
     })
     .catch((error) => {
       console.error(

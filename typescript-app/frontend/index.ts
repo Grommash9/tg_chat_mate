@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const script = document.createElement('script');
         script.id = 'manager-settings-script-js';
         script.type = 'module';
-        script.src = '/manager_settings_modal/settings-modal.js?' +
-        new Date().getTime();
+        script.src =
+          '/manager_settings_modal/settings-modal.js?' + new Date().getTime();
         document.head.appendChild(script);
       })
       .catch((error) => {
