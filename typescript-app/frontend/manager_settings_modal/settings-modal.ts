@@ -96,11 +96,12 @@ if (data_management_button) {
 async function DisplayManagerManagementSettings() {
   cleanUpSettings();
 
-  managers_management_button.style.backgroundColor = '#00ff70';
+  managers_management_button.style.backgroundColor = 'rgb(221, 220, 220)';
 
   var managers_list = await getAllManagers();
   managers_list.forEach((manager) => {
     const managerSettings = document.createElement('div');
+    managerSettings.className = 'manager-settings-container';
 
     const photoObject = document.createElement('img');
     photoObject.classList.add('setting-user-photo');
@@ -115,15 +116,35 @@ async function DisplayManagerManagementSettings() {
 
     managerSettings.appendChild(photoObject);
 
-    const managerUserName = document.createElement('p');
+    const managerUserName = document.createElement('p') as HTMLParagraphElement;
+    managerUserName.className = 'manager-settings-user-name';
     managerUserName.innerText = manager.username;
 
     managerSettings.appendChild(managerUserName);
 
-    const managerFullName = document.createElement('p');
+    const managerFullName = document.createElement('p') as HTMLParagraphElement;
+    managerFullName.className = 'manager-settings-full-name';
     managerFullName.innerText = manager.full_name;
-
     managerSettings.appendChild(managerFullName);
+
+    if (!manager.activated) {
+      const activationManagerButton = document.createElement(
+        'button'
+      ) as HTMLButtonElement;
+      activationManagerButton.innerText = 'Activate Manager';
+      activationManagerButton.className = 'manager-settings-activate-button';
+      managerSettings.appendChild(activationManagerButton);
+    }
+
+    if (manager.username !== 'root') {
+      const deleteManagerButton = document.createElement(
+        'button'
+      ) as HTMLButtonElement;
+      deleteManagerButton.innerText = 'Delete Manager';
+      deleteManagerButton.className = 'manager-settings-delete-button';
+      managerSettings.appendChild(deleteManagerButton);
+    }
+
     settingContent.appendChild(managerSettings);
   });
 }
@@ -131,7 +152,7 @@ async function DisplayManagerManagementSettings() {
 async function displayMyProfileSettings() {
   cleanUpSettings();
 
-  my_profile_button.style.backgroundColor = '#00ff70';
+  my_profile_button.style.backgroundColor = 'rgb(221, 220, 220)';
 
   var manager: Manager = await getManager();
   console.log(manager);
@@ -229,7 +250,7 @@ function notImplementedHandler(event: MouseEvent) {
 
   const clickedButton = event.target as HTMLElement;
   if (clickedButton) {
-    clickedButton.style.backgroundColor = '#00ff70';
+    clickedButton.style.backgroundColor = 'rgb(221, 220, 220)';
   }
 
   const notImplementedText = document.createElement('p');
@@ -242,7 +263,7 @@ function cleanUpSettings() {
   const categoriesButtons = document.querySelectorAll('.ms-category-button');
   categoriesButtons.forEach(function (button) {
     if (button instanceof HTMLElement) {
-      button.style.backgroundColor = '#e1e1e1';
+      button.style.backgroundColor = 'rgb(255, 255, 255)';
     }
   });
 
