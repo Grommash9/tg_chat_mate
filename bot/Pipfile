@@ -15,6 +15,7 @@ python-magic = "*"
 requests = "*"
 pytest = "*"
 motor = "*"
+aioredis = "*"
 dataclasses-jsonschema = "*"
 
 [dev-packages]
