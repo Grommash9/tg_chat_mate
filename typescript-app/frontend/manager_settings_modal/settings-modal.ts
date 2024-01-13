@@ -1,7 +1,8 @@
 import {
   getManager,
   getAllManagers,
-  deleteManager
+  deleteManager,
+  updateManager
 } from '../api_methods/manager.js';
 import { Manager } from '../index.js';
 
@@ -140,9 +141,13 @@ async function DisplayManagerManagementSettings() {
       activationManagerButton.className = 'manager-settings-activate-button';
       activationManagerButton.value = manager.username;
       managerSettings.appendChild(activationManagerButton);
+      activationManagerButton.addEventListener('click', function () {
+        updateManager({ username: manager.username, activated: true });
+        DisplayManagerManagementSettings();
+      });
     }
 
-    if (!manager.root && current_manager.root) {
+    if (current_manager.root && manager.username !== current_manager.username) {
       const deleteManagerButton = document.createElement(
         'button'
       ) as HTMLButtonElement;

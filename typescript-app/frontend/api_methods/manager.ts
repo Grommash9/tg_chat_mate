@@ -77,20 +77,56 @@ function deleteManager(username: string) {
       'Content-Type': 'application/json'
     }
   })
-  .then((response) => {
-    if (response.status === 204) { // Check for 204 status code
-      console.log('Success: manager was deleted!');
-      return true; // Resolve the promise with true
-    } else {
-      console.error('Error: manager was not deleted. Status code:', response.status);
+    .then((response) => {
+      if (response.status === 204) {
+        // Check for 204 status code
+        console.log('Success: manager was deleted!');
+        return true; // Resolve the promise with true
+      } else {
+        console.error(
+          'Error: manager was not deleted. Status code:',
+          response.status
+        );
+        return false; // Resolve the promise with false
+      }
+    })
+    .catch((error) => {
+      console.error('There was an error in manager deleting:', error);
       return false; // Resolve the promise with false
-    }
-  })
-  .catch((error) => {
-    console.error('There was an error in manager deleting:', error);
-    return false; // Resolve the promise with false
-  });
+    });
 }
 
+function updateManager(payload: object) {
+  return fetch(`/tg-bot/manager`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((response) => {
+      if (response.status === 204) {
+        // Check for 204 status code
+        console.log('Success: manager was deleted!');
+        return true; // Resolve the promise with true
+      } else {
+        console.error(
+          'Error: manager was not deleted. Status code:',
+          response.status
+        );
+        return false; // Resolve the promise with false
+      }
+    })
+    .catch((error) => {
+      console.error('There was an error in manager deleting:', error);
+      return false; // Resolve the promise with false
+    });
+}
 
-export { getManager, getManagerInfoAndDisplay, getAllManagers, deleteManager };
+export {
+  getManager,
+  getManagerInfoAndDisplay,
+  getAllManagers,
+  deleteManager,
+  updateManager
+};
