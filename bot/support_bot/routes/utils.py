@@ -1,10 +1,25 @@
 from functools import wraps
 
+import aioredis
 from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
 from support_bot.misc import DOMAIN, get_manager_from_request, set_cors_headers
+
+ACTION_LIST = [
+    "typing",
+    "upload_photo",
+    "record_video",
+    "upload_video",
+    "record_voice",
+    "upload_voice",
+    "upload_document",
+    "choose_sticker",
+    "find_location",
+    "record_video_note",
+    "upload_video_note",
+]
 
 
 def require_auth(f):
@@ -39,3 +54,22 @@ def require_auth(f):
 async def create_option_response(request: Request):
     response = web.Response(status=200)
     return set_cors_headers(response)
+
+
+async def check_action_flood_protection(user_id: int) -> bool:
+    redis = aioredis.from_url("redis://192.168.1.111")
+    key = f"user:{user_id}"
+    if await redis.exists(key):
+        await redis.close()
+        return True
+
+    await redis.set(key, "", 5)
+    await redis.close()
+    return False
+
+
+def check_action_value(request: Request) -> str:
+    action = request.match_info["action"]
+    if action not in ACTION_LIST:
+        raise ValueError("Wrong action")
+    return action
