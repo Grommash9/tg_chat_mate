@@ -1,4 +1,8 @@
-import { getManager, getAllManagers } from '../api_methods/get_manager_info.js';
+import {
+  getManager,
+  getAllManagers,
+  deleteManager
+} from '../api_methods/manager.js';
 import { Manager } from '../index.js';
 
 var modal = document.getElementById('settings-modal') as HTMLDivElement;
@@ -95,6 +99,7 @@ if (data_management_button) {
 
 async function DisplayManagerManagementSettings() {
   cleanUpSettings();
+  var current_manager: Manager = await getManager();
 
   managers_management_button.style.backgroundColor = 'rgb(221, 220, 220)';
 
@@ -127,22 +132,27 @@ async function DisplayManagerManagementSettings() {
     managerFullName.innerText = manager.full_name;
     managerSettings.appendChild(managerFullName);
 
-    if (!manager.activated) {
+    if (!manager.activated && current_manager.root) {
       const activationManagerButton = document.createElement(
         'button'
       ) as HTMLButtonElement;
       activationManagerButton.innerText = 'Activate Manager';
       activationManagerButton.className = 'manager-settings-activate-button';
+      activationManagerButton.value = manager.username;
       managerSettings.appendChild(activationManagerButton);
     }
 
-    if (manager.username !== 'root') {
+    if (!manager.root && current_manager.root) {
       const deleteManagerButton = document.createElement(
         'button'
       ) as HTMLButtonElement;
       deleteManagerButton.innerText = 'Delete Manager';
       deleteManagerButton.className = 'manager-settings-delete-button';
       managerSettings.appendChild(deleteManagerButton);
+      deleteManagerButton.addEventListener('click', function () {
+        deleteManager(manager.username);
+        DisplayManagerManagementSettings();
+      });
     }
 
     settingContent.appendChild(managerSettings);
@@ -155,7 +165,6 @@ async function displayMyProfileSettings() {
   my_profile_button.style.backgroundColor = 'rgb(221, 220, 220)';
 
   var manager: Manager = await getManager();
-  console.log(manager);
   if (manager) {
     const photoObject = document.createElement('img');
     photoObject.classList.add('setting-user-photo');

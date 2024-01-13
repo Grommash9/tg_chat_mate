@@ -4,7 +4,7 @@ import getChatListFromApi from './api_methods/get_chat_list.js';
 import markChatAsRead from './api_methods/mark_chat_as_read.js';
 import loadChatMessages from './api_methods/get_chat_messages.js';
 import SendMessage from './api_methods/send_message.js';
-import { getManagerInfoAndDisplay } from './api_methods/get_manager_info.js';
+import { getManagerInfoAndDisplay } from './api_methods/manager.js';
 
 let active_chat = 0;
 
@@ -31,6 +31,7 @@ interface Manager {
   username: string;
   full_name: string;
   activated: string | boolean;
+  root: boolean;
   photo_uuid: string | null;
 }
 
