@@ -10,7 +10,6 @@ All services are in a single repository for quick deployment on client servers. 
 
 We are extremely welcoming to new contributors!
 
-This project aims to create a UI web panel for supporting Telegram bot users.
 
 Join our Telegram chat for questions: [Telegram Chat](https://t.me/tg_chat_mate_contributors)
 
@@ -19,4 +18,4 @@ Explore more information on our GitHub pages: [GitHub Pages](https://grommash9.g
 Although we have limited documentation, feel free to create an issue with your question, and we'll try to add relevant documentation.
 
 Additionally, please familiarize yourself with our [Code of Conduct]
-(https://github.com/Grommash9/tg_chat_mate/blob/master/CODE_OF_CONDUCT.md) and [Contributing guidlines](https://github.com/Grommash9/tg_chat_mate/blob/master/CONTRIBUTING.md). We encourage contributors to adhere to these principles and follow the guidance outlined to maintain a positive and collaborative community.
+(https://github.com/Grommash9/tg_chat_mate/blob/master/CODE_OF_CONDUCT.md) and [Contributing Guidelines](https://github.com/Grommash9/tg_chat_mate/blob/master/CONTRIBUTING.md). We encourage contributors to adhere to these principles and follow the guidance outlined to maintain a positive and collaborative community.
