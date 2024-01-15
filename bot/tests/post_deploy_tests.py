@@ -1,11 +1,13 @@
+import time
 from os import getenv
 
 import pytest
 import requests
 
-DOMAIN = getenv("DOMAIN", "4c78-86-30-162-24.ngrok-free.app")
+
+DOMAIN = getenv("DOMAIN", "3236-148-252-133-159.ngrok-free.app")
 USER_NAME = "root"
-PASSWORD = getenv("ROOT_PASSWORD", "root_strong_password")
+PASSWORD = getenv("ROOT_PASSWORD", "root")
 
 
 # @staticmethod
@@ -171,6 +173,36 @@ class TestUser:
         assert (
             response.status_code == 404
         ), "Wrong status code on update user information"
+
+    def test_user_send_notification_about_manager_activity(self, access_token):
+        headers = {
+            "AuthorizationToken": access_token,
+        }
+
+        url = f"https://{DOMAIN}/tg-bot/user/72105900/typing"
+        response = requests.post(url, headers=headers, verify=False)
+
+        assert response.status_code == 500
+        assert (
+            response.json().get("result")
+            == "cant send notification to user, error "
+            "Telegram server says - Bad Request: chat not found"
+        )
+
+        response = requests.post(url, headers=headers, verify=False)
+        assert response.status_code == 429
+        assert (
+            response.json().get("result")
+            == "notification don`t pass flood check"
+        ), "wrong result received in flood error response"
+        time.sleep(5)
+        response = requests.post(url, headers=headers, verify=False)
+        assert response.status_code == 500
+        assert (
+            response.json().get("result")
+            == "cant send notification to user, error "
+            "Telegram server says - Bad Request: chat not found"
+        )
 
 
 class TestManager:
