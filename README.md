@@ -17,5 +17,4 @@ Explore more information on our GitHub pages: [GitHub Pages](https://grommash9.g
 
 Although we have limited documentation, feel free to create an issue with your question, and we'll try to add relevant documentation.
 
-Additionally, please familiarize yourself with our [Code of Conduct]
-(https://github.com/Grommash9/tg_chat_mate/blob/master/CODE_OF_CONDUCT.md) and [Contributing Guidelines](https://github.com/Grommash9/tg_chat_mate/blob/master/CONTRIBUTING.md). We encourage contributors to adhere to these principles and follow the guidance outlined to maintain a positive and collaborative community.
+Additionally, please familiarize yourself with our [Code of Conduct](https://github.com/Grommash9/tg_chat_mate/blob/master/CODE_OF_CONDUCT.md) and [Contributing Guidelines](https://github.com/Grommash9/tg_chat_mate/blob/master/CONTRIBUTING.md). We encourage contributors to adhere to these principles and follow the guidance outlined to maintain a positive and collaborative community.
