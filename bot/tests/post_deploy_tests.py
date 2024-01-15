@@ -4,7 +4,6 @@ from os import getenv
 import pytest
 import requests
 
-
 DOMAIN = getenv("DOMAIN", "3236-148-252-133-159.ngrok-free.app")
 USER_NAME = "root"
 PASSWORD = getenv("ROOT_PASSWORD", "root")
