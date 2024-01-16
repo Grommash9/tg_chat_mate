@@ -68,6 +68,31 @@ function getManager(): Promise<Manager> {
     });
 }
 
+function changePassword(old_password: string, new_password: string) {
+  const payload = { new_password: new_password, old_password: old_password };
+  return fetch(`/tg-bot/manager/change-password`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (response.status === 201) {
+        console.log('Success: password was changed!');
+        return { success: true, status: response.status, result: data.result };
+      } else {
+        console.error('Error: password was not changed:', response.status);
+        return { success: false, status: response.status, result: data.result };
+      }
+    })
+    .catch((error) => {
+      console.error('There was an error in password changing:', error);
+      return { success: false, status: 500, result: 'Internal Server Error' };
+    });
+}
+
 function deleteManager(username: string) {
   const payload = { username: username };
   return fetch(`/tg-bot/manager`, {
@@ -128,5 +153,6 @@ export {
   getManagerInfoAndDisplay,
   getAllManagers,
   deleteManager,
-  updateManager
+  updateManager,
+  changePassword
 };
