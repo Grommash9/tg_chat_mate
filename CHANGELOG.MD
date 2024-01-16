@@ -1,4 +1,5 @@
 # 0.0.1 Unreleased
+    - [PR-154] Manager endpoint and UI logic for changing password 
     - Bot file system refactoring
     - New bot routes
         - `/tg-bot/chat-list` GET getting chat list (unread count, last message text, last message date)

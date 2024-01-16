@@ -5,7 +5,7 @@ from aiohttp import web
 from aiohttp.web_request import Request
 
 from support_bot import db
-from support_bot.misc import DOMAIN, get_manager_from_request, set_cors_headers
+from support_bot.misc import get_manager_from_request, set_cors_headers
 
 ACTION_LIST = [
     "typing",
@@ -27,10 +27,8 @@ def require_auth(f):
     async def decorated_function(request: Request, *args, **kwargs):
         manager_username = get_manager_from_request(request)
         if manager_username is None:
-            if DOMAIN == request.headers.get("Host"):
-                return await f(request, *args, **kwargs)
             response = web.json_response(
-                {"result": "AuthorizationToken"}, status=401
+                {"result": "Unauthorized"}, status=401
             )
             return set_cors_headers(response)
 
