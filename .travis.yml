@@ -36,7 +36,6 @@ jobs:
         - pipenv run isort --check-only support_bot tests
         - echo "Python linting completed successfully"
 
-    - stage: linting
       name: TypeScript linting
       script:
         - echo "Running TypeScript linting"
