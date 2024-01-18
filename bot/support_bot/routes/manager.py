@@ -96,6 +96,10 @@ async def get_managers(request: Request):
 @web_routes.patch("/tg-bot/manager")
 @require_auth
 async def update_manager(request: Request):
+    if not request["manager_is_root"]:
+        return json_response(
+            {"result": "Non-Root manager can`t update manager"}, status=403
+        )
     payload = await request.json()
     try:
         username = payload["username"]
@@ -114,6 +118,10 @@ async def update_manager(request: Request):
 @web_routes.delete("/tg-bot/manager")
 @require_auth
 async def delete_manager(request: Request):
+    if not request["manager_is_root"]:
+        return json_response(
+            {"result": "Non-Root manager can`t delete manager"}, status=403
+        )
     payload = await request.json()
     try:
         username = payload["username"]

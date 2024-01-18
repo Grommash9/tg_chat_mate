@@ -2,3 +2,5 @@
 *node_modules
 *.js
 .idea
+*.vscode
+*_pycache_*
