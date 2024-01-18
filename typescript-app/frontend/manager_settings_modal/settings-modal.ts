@@ -294,8 +294,11 @@ function cleanUpSettings() {
       button.style.backgroundColor = 'rgb(255, 255, 255)';
     }
   });
+  const settingContainerContent = document.getElementById(
+    'settings-content-object'
+  ) as HTMLDivElement;
 
-  if (settingContent) {
-    settingContent.innerHTML = '';
+  if (settingContainerContent) {
+    settingContainerContent.innerHTML = '';
   }
 }
