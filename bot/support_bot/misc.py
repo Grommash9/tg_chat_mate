@@ -6,7 +6,7 @@ from typing import Any, Awaitable, Callable, Dict, Union
 
 import aiohttp
 import jwt
-import magic
+
 from aiogram import BaseMiddleware, Bot, Dispatcher, Router
 from aiogram.enums import ParseMode
 from aiogram.filters import BaseFilter
@@ -59,6 +59,7 @@ def set_cors_headers(response):
 async def upload_file_to_db_using_file_id(
     file_id: str, base_file_name: str | None = None
 ):
+    import magic
     file_info = await bot.get_file(file_id)  # type: ignore[union-attr]
     if file_info.file_path is None:
         raise FileNotFoundError
