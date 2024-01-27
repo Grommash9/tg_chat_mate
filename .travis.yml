@@ -5,6 +5,7 @@ if: branch = master AND type = push OR type = pull_request
 
 stages:
   - name: linting
+  - name: unitttest
   - name: deploy
   - name: test
 
@@ -44,6 +45,15 @@ jobs:
         - npm install
         - npx prettier --check --config .prettierrc --ignore-path .prettierignore frontend app.ts
         - echo "TypeScript linting completed successfully"
+    
+    - stage: unitttest
+      script:
+        - echo "Installing dependencies"
+        - cd bot
+        - pip install pipenv
+        - pipenv install --dev --skip-lock
+        - echo "Running unit tests"
+        - pipenv run pytest tests -v
 
     - stage: deploy
       script:

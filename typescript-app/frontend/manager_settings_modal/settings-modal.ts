@@ -1,10 +1,12 @@
 import {
   getManager,
+  changePassword,
   getAllManagers,
   deleteManager,
   updateManager
 } from '../api_methods/manager.js';
 import { Manager } from '../index.js';
+import clearCookies from '../login.js';
 
 var modal = document.getElementById('settings-modal') as HTMLDivElement;
 var btn = document.getElementById(
@@ -236,7 +238,7 @@ async function displayMyProfileSettings() {
   settingContent.appendChild(passwordChangeBlock);
 }
 
-function passwordChangeButtonClick() {
+async function passwordChangeButtonClick() {
   const old_password = document.getElementById(
     'manager-change-password-old-password'
   ) as HTMLInputElement;
@@ -255,7 +257,19 @@ function passwordChangeButtonClick() {
     alert('New password should include at least 6 symbols!');
   } else {
     // TODO CALL API HERE AND CHANGE PASSWORD
-    alert('Password changing are not implemented yet!');
+    const result = await changePassword(
+      old_password.value,
+      new_password2.value
+    );
+    alert(result['result']);
+    if (result['success']) {
+      clearCookies();
+      window.location.replace('/');
+    } else {
+      new_password.value = '';
+      new_password2.value = '';
+      old_password.value = '';
+    }
   }
 }
 
@@ -280,8 +294,11 @@ function cleanUpSettings() {
       button.style.backgroundColor = 'rgb(255, 255, 255)';
     }
   });
+  const settingContainerContent = document.getElementById(
+    'settings-content-object'
+  ) as HTMLDivElement;
 
-  if (settingContent) {
-    settingContent.innerHTML = '';
+  if (settingContainerContent) {
+    settingContainerContent.innerHTML = '';
   }
 }

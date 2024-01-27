@@ -129,7 +129,11 @@ def get_manager_from_request(request: Request):
 
 
 async def upload_file_to_db(binary, file_name, mime_type):
-    headers = {"X-Filename": file_name, "Content-Type": mime_type}
+    headers = {
+        "X-Filename": file_name,
+        "Content-Type": mime_type,
+        "AuthorizationToken": create_token_for_manager("root"),
+    }
     async with aiohttp.ClientSession(
         connector=aiohttp.TCPConnector(ssl=ssl_context)
     ) as session:
