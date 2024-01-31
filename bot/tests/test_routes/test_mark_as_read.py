@@ -41,13 +41,13 @@ async def test_mark_chat_as_read(
     ],
 )
 async def test_mark_message_as_read(
-        test_client,
-        mocker,
-        chat_id,
-        message_id,
-        status,
-        expected_resp,
-        modified_count,
+    test_client,
+    mocker,
+    chat_id,
+    message_id,
+    status,
+    expected_resp,
+    modified_count,
 ):
     mocker.patch(
         "support_bot.db.message.get_async_mongo_db",
