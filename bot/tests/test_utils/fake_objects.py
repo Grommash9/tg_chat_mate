@@ -35,6 +35,9 @@ class FakeCollection:
     async def update_one(self, *args):
         return FakeResult(self.modified_count)
 
+    async def update_many(self, *args):
+        return FakeResult(self.modified_count)
+
 
 class FakeResult:
     def __init__(self, modified_count):

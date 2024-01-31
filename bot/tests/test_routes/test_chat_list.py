@@ -1,5 +1,3 @@
-import pytest
-
 from tests.test_utils.fake_objects import FakeDB
 
 
