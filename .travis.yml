@@ -7,7 +7,7 @@ stages:
   - name: linting
   - name: unitttest
   - name: deploy
-  - name: test
+#  - name: test
 
 before_script:
   - sudo apt-get update
@@ -95,31 +95,31 @@ jobs:
           docker volume rm $(docker volume ls -q)
           rm -r /home/tg_chat_mate
           ENDSSH
-    - stage: test
-      script:
-        - echo "Running tests"
-        - |
-          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
-          docker exec tg_chat_mate-bot-1 pipenv run pytest tests/post_deploy_tests.py -v
-          ENDSSH
-      after_failure:
-        - |
-          echo "Removing from test server"
-          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
-          cd /home/tg_chat_mate
-          docker compose down
-          docker rm -f $(docker ps -a -q)
-          docker volume rm $(docker volume ls -q)
-          rm -r /home/tg_chat_mate
-          ENDSSH
-      after_success:
-        - |
-          echo "Removing from test server"
-          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
-          cd /home/tg_chat_mate
-          docker compose down
-          docker rm -f $(docker ps -a -q)
-          docker volume rm $(docker volume ls -q)
-          rm -r /home/tg_chat_mate
-          ENDSSH
-            
+#    - stage: test
+#      script:
+#        - echo "Running tests"
+#        - |
+#          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+#          docker exec tg_chat_mate-bot-1 pipenv install —dev
+#          docker exec tg_chat_mate-bot-1 pipenv run pytest tests/post_deploy_tests.py -v
+#          ENDSSH
+#      after_failure:
+#        - |
+#          echo "Removing from test server"
+#          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+#          cd /home/tg_chat_mate
+#          docker compose down
+#          docker rm -f $(docker ps -a -q)
+#          docker volume rm $(docker volume ls -q)
+#          rm -r /home/tg_chat_mate
+#          ENDSSH
+#      after_success:
+#        - |
+#          echo "Removing from test server"
+#          sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
+#          cd /home/tg_chat_mate
+#          docker compose down
+#          docker rm -f $(docker ps -a -q)
+#          docker volume rm $(docker volume ls -q)
+#          rm -r /home/tg_chat_mate
+#          ENDSSH

@@ -2,7 +2,6 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from support_bot.data_types import Manager
 from tests.test_utils.fake_objects import FakeDB, FakeRedis
 from tests.test_utils.mock_data import (
     FLOOD_CHECK_ERROR,
@@ -16,31 +15,6 @@ from tests.test_utils.mock_data import (
 )
 
 
-@pytest.fixture(autouse=True)
-def mock_authorization(mocker):
-    """
-    This mock will bypass all authorization checks for all tests in this file.
-    """
-    manager_obj = Manager(
-        hashed_password="hashed_password",
-        full_name="full_name",
-        root=True,
-        activated=True,
-        username="username",
-    )
-
-    mocker.patch(
-        "support_bot.misc.get_manager_username_from_jwt",
-        return_value="username",
-    )
-    mocker.patch(
-        "support_bot.db.manager.get_manager_by_username",
-        side_effect=AsyncMock(return_value=manager_obj),
-    )
-    yield
-
-
-@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "user_id, status, expected_resp, doc_found",
     [
@@ -70,7 +44,6 @@ async def test_get_user_info(
     assert data == expected_resp
 
 
-@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "user_id, status, expected_resp, modified_count",
     [
@@ -102,7 +75,6 @@ async def test_update_user_info(
     assert data == expected_resp
 
 
-@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "action, status, expect_resp, redis_exists, tele_exception",
     [
