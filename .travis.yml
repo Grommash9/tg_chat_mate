@@ -98,6 +98,7 @@ jobs:
     - stage: test
       script:
         - echo "Running tests"
+        - pipenv install --dev --skip-lock
         - |
           sshpass -p $PIPELINE_SERVER_PASSWORD ssh -o StrictHostKeyChecking=no root@$PIPELINE_SERVER_IP_ADDRESS << 'ENDSSH'
           docker exec tg_chat_mate-bot-1 pipenv run pytest tests/post_deploy_tests.py -v

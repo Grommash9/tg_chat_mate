@@ -10,7 +10,7 @@ from support_bot.misc import web_routes
 @pytest.fixture(autouse=True)
 def mock_authorization(mocker):
     """
-    This mock will bypass all authorization checks for all tests in this file.
+    This mock will bypass all authorization checks for all tests.
     """
     manager_obj = Manager(
         hashed_password="hashed_password",
